@@ -10,60 +10,53 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#1c4c24">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M26 28 C46 16 70 40 100 24 L106 82 C80 98 54 72 30 86 Z' fill='%23f2c200' stroke='%238f7100' stroke-width='6'/%3E%3Ccircle cx='24' cy='30' r='12' fill='%23f2c200' stroke='%238f7100' stroke-width='6'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#000080">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M0 0h3v16H0z'/%3E%3Cpath fill='%23fff' d='M1 1h1v14H1z'/%3E%3Cpath fill='%23000' d='M3 2h12v9H3z'/%3E%3Cpath fill='%23ffd200' d='M3 3h11v7H3z'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Pixelify+Sans:wght@400;700&family=VT323&display=swap">
 <style>
-/* Layout: one left-aligned column. Masthead and section links, the week's penalty flag (hero), awards beside the scoreboard,
-   the playoff race, standings, a full-bleed turf band for coach efficiency, luck, the schedule swap grid, then the record book.
-   Turf and penalty-flag yellow are the brand. */
+/* Layout: a late-90s desktop. Tiled turf wallpaper, a WordArt logo, a scrolling score ticker, and every section as a
+   Windows 98-style window stacked in one column (awards and scoreboard side by side on wide screens). A fixed taskbar
+   at the bottom holds the Start menu, the jukebox and a clock. Deliberately one look in every theme, like the era. */
 :root {
-  --paper: #f6f8f4;
-  --ink: #15281c;
-  --ink-2: #4b5e51;
-  --rule: #d6dfd7;
-  --turf: #2e7a3e;
-  --turf-2: #286c37;
-  --sideline: #23602f;
-  --chalk: #ffffff;
-  --chalk-2: rgba(255, 255, 255, 0.72);
-  --flag: #f2c200;
-  --flag-edge: #b58f00;
-  --football: #8a4b2a;
-  --lucky: #2f6db5;
-  --unlucky: #c8432b;
-  --zero: #9aa89d;
-  --odds-bye: #18692f;
-  --odds-in: #9ad3a6;
-  --heat-lo: #eef2f8;
-  --heat-hi: #2f6db5;
-  --heat-ink: #ffffff;
-  --tip-bg: #15281c;
-  --tip-fg: #f6f8f4;
-  --display: "Big Shoulders Display", "Big Shoulders", "Arial Narrow", "Roboto Condensed", "Helvetica Neue", sans-serif;
-  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #111c15; --ink: #e7efe8; --ink-2: #a2b4a6; --rule: #2a3b2f;
-    --turf: #276631; --turf-2: #225b2b; --sideline: #1c4c24; --chalk: #f4f7f2; --chalk-2: rgba(244, 247, 242, 0.7);
-    --flag: #f2c200; --flag-edge: #8f7100; --football: #9a5632;
-    --lucky: #5b8fd6; --unlucky: #dd6448; --zero: #5d6e61; --tip-bg: #e7efe8; --tip-fg: #111c15;
-    --odds-bye: #79d38b; --odds-in: #2e6b3c; --heat-lo: #18241d; --heat-hi: #5b8fd6; --heat-ink: #0d1510;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --paper: #111c15; --ink: #e7efe8; --ink-2: #a2b4a6; --rule: #2a3b2f;
-  --turf: #276631; --turf-2: #225b2b; --sideline: #1c4c24; --chalk: #f4f7f2; --chalk-2: rgba(244, 247, 242, 0.7);
-  --flag: #f2c200; --flag-edge: #8f7100; --football: #9a5632;
-  --lucky: #5b8fd6; --unlucky: #dd6448; --zero: #5d6e61; --tip-bg: #e7efe8; --tip-fg: #111c15;
-  --odds-bye: #79d38b; --odds-in: #2e6b3c; --heat-lo: #18241d; --heat-hi: #5b8fd6; --heat-ink: #0d1510;
-  color-scheme: dark;
+  --turf-1: #2e7a3e;
+  --turf-2: #276b35;
+  --chalk: #eef6e8;
+  --silver: #c0c0c0;
+  --hi: #ffffff;
+  --lite: #dfdfdf;
+  --lo: #808080;
+  --dk: #0a0a0a;
+  --title-1: #000080;
+  --title-2: #1084d0;
+  --ink: #000000;
+  --ink-2: #3a3a3a;
+  --field: #ffffff;
+  --link: #0000ee;
+  --flag: #ffd200;
+  --flag-dk: #b08800;
+  --tip: #ffffe1;
+  --led-bg: #120d02;
+  --led: #ffb000;
+  --led-dim: #8a5e00;
+  --lcd-bg: #0b1a0b;
+  --lcd: #39ff5a;
+  --prog-bye: #000080;
+  --prog-in: #4f86d9;
+  --lucky: #0000a8;
+  --unlucky: #a80000;
+  --heat-lo: #ffffff;
+  --heat-hi: #000080;
+  --red: #c00000;
+  --wordart: "Anton", Impact, "Haettenschweiler", "Arial Narrow Bold", sans-serif;
+  --pixel: "Pixelify Sans", "MS Sans Serif", Tahoma, Verdana, sans-serif;
+  --led-font: "VT323", "Courier New", monospace;
+  --body: Verdana, "DejaVu Sans", Geneva, Tahoma, sans-serif;
+  --mono: "Courier New", Courier, "Liberation Mono", monospace;
+  --bar-h: 42px;
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -72,338 +65,470 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
-  background: var(--paper);
   color: var(--ink);
-  font: 400 1.0625rem/1.5 var(--body);
-  -webkit-font-smoothing: antialiased;
+  font: 400 14px/1.45 var(--body);
+  background-color: var(--turf-1);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' shape-rendering='crispEdges'%3E%3Cdefs%3E%3Cpattern id='d' width='4' height='4' patternUnits='userSpaceOnUse'%3E%3Crect width='2' height='2' fill='%23276b35'/%3E%3Crect x='2' y='2' width='2' height='2' fill='%23276b35'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='48' height='96' fill='%232e7a3e'/%3E%3Crect x='48' width='48' height='96' fill='url(%23d)'/%3E%3Crect x='48' width='48' height='96' fill='%232e7a3e' opacity='.35'/%3E%3Crect width='2' height='96' fill='%23eef6e8' opacity='.55'/%3E%3Crect x='46' y='10' width='4' height='2' fill='%23eef6e8' opacity='.5'/%3E%3Crect x='46' y='58' width='4' height='2' fill='%23eef6e8' opacity='.5'/%3E%3C/svg%3E");
+  image-rendering: pixelated;
+  padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px) + 24px);
 }
 .wrap {
-  max-width: 1080px;
+  max-width: 1040px;
   margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 0.95; }
-p { margin: 0; }
-a { color: inherit; }
+h1, h2, h3, p { margin: 0; }
+a { color: var(--link); }
 .num { font-variant-numeric: tabular-nums; }
-:focus-visible { outline: 3px solid var(--flag); outline-offset: 2px; }
-section[id] { scroll-margin-top: 12px; }
+:focus-visible { outline: 1px dotted var(--ink); outline-offset: 2px; }
+.title-bar :focus-visible, .taskbar :focus-visible { outline-color: var(--hi); }
+
+/* Bevels, the whole look in four shadows */
+.raised { background: var(--silver); box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--lite), inset -2px -2px var(--lo), inset 2px 2px var(--hi); }
+.sunken { background: var(--field); box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--lo), inset -2px -2px var(--lite), inset 2px 2px var(--dk); }
+.btn {
+  font: 400 13px var(--body); color: var(--ink); min-height: 28px; padding: 4px 14px; border: 0; cursor: pointer;
+  background: var(--silver); box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo), inset 2px 2px var(--lite);
+}
+.btn:active, .btn[aria-pressed="true"], .btn[aria-expanded="true"] { box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--dk), inset -2px -2px var(--lite), inset 2px 2px var(--lo); }
+.btn.default { outline: 1px solid var(--dk); outline-offset: -1px; }
+select.retro {
+  font: 400 13px var(--body); color: var(--ink); background: var(--field); border: 0; border-radius: 0; padding: 4px 6px; min-height: 26px;
+  box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--lo), inset -2px -2px var(--lite), inset 2px 2px var(--dk);
+}
+
+/* Ticker */
+.ticker { background: #000; color: var(--led); font: 400 22px/1 var(--led-font); border-bottom: 2px solid var(--flag); overflow: hidden; white-space: nowrap; }
+.ticker-track { display: inline-flex; gap: 0; padding-block: 6px; animation: crawl 60s linear infinite; }
+.ticker:hover .ticker-track { animation-play-state: paused; }
+.ticker-track span { padding-right: 48px; }
+@keyframes crawl { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ticker { overflow-x: auto; } .ticker-track { animation: none; } }
 
 /* Masthead */
-.masthead { padding-block: 20px 8px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
-.wordmark { font-weight: 900; font-size: clamp(2.4rem, 6vw, 3.4rem); letter-spacing: 0.01em; }
-.season { color: var(--ink-2); font-size: 0.95rem; margin-top: 4px; }
-.picker { display: flex; align-items: center; gap: 10px; }
-.picker label { font-family: var(--display); font-weight: 700; font-size: 1.25rem; }
-.picker select {
-  font: 500 1rem var(--body); color: var(--ink); background: var(--paper);
-  border: 2px solid var(--ink); border-radius: 6px; padding: 6px 30px 6px 10px; cursor: pointer;
+.masthead { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 24px; padding-block: 28px 20px; }
+.wordart {
+  position: relative; display: inline-block; font: 400 clamp(3.4rem, 13vw, 7.2rem)/0.9 var(--wordart); text-transform: uppercase; letter-spacing: 0.01em;
+  transform: perspective(500px) rotateX(10deg) skewX(-6deg); transform-origin: left bottom; margin-left: 6px;
 }
-.sections { display: flex; gap: 4px 20px; overflow-x: auto; padding-block: 6px 10px; scrollbar-width: none; }
-.sections::-webkit-scrollbar { display: none; }
-.sections a { font-family: var(--display); font-weight: 700; font-size: 1.1rem; text-decoration: none; white-space: nowrap; color: var(--ink-2); padding-block: 4px; border-bottom: 2px solid transparent; }
-.sections a:hover { color: var(--ink); border-bottom-color: var(--flag); }
-.sample-note { border-left: 4px solid var(--flag); padding: 6px 12px; color: var(--ink-2); font-size: 0.95rem; margin-block: 8px 0; }
-
-/* Hero: the flag thrown on this week's worst lineup */
-.hero { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; align-items: start; padding-block: 32px 40px; border-bottom: 2px solid var(--ink); border-top: 2px solid var(--ink); }
-.hero svg { width: clamp(84px, 14vw, 150px); height: auto; margin-top: 6px; }
-.hero-body { min-width: 0; display: grid; gap: 10px; justify-items: start; }
-.hero-kicker { font-weight: 700; font-size: 1.5rem; }
-.hero-team { font-family: var(--display); font-weight: 900; font-size: clamp(2.8rem, 8.5vw, 6rem); line-height: 0.88; overflow-wrap: anywhere; }
-.hero-manager { color: var(--ink-2); font-size: 1rem; }
-.hero-line { font-size: clamp(1.3rem, 2.6vw, 1.75rem); line-height: 1.25; }
-.hero-line strong { font-family: var(--display); font-weight: 900; font-size: 1.35em; background: linear-gradient(transparent 62%, var(--flag) 62%); padding-inline: 2px; }
-.hero-detail { max-width: 62ch; color: var(--ink-2); }
-.hero-sting { font-weight: 600; }
-.share-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 8px; }
-.share-btn {
-  font: 600 1rem var(--body); color: #15281c; background: var(--flag); border: 2px solid var(--flag-edge);
-  border-radius: 6px; padding: 8px 14px; cursor: pointer;
+.wordart::before {
+  content: attr(data-text); position: absolute; inset: 0; z-index: 0; color: #5a0d00;
+  text-shadow: 1px 1px 0 #5a0d00, 2px 2px 0 #5a0d00, 3px 3px 0 #5a0d00, 4px 4px 0 #5a0d00, 5px 5px 0 #5a0d00, 6px 6px 0 #3a0800, 8px 9px 0 rgba(0,0,0,.35);
 }
-.share-btn:hover { filter: brightness(1.05); }
-.share-status { color: var(--ink-2); font-size: 0.95rem; }
-.share-fallback { width: min(100%, 36rem); min-height: 6rem; font: 400 0.95rem/1.4 var(--body); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 8px; }
+.wordart span {
+  position: relative; z-index: 1;
+  background: linear-gradient(180deg, #fffbd0 0%, #ffe100 28%, #ff9a00 52%, #e8330a 70%, #ffd400 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-stroke: 1.5px #3a0800;
+}
+.tagline { font: 700 15px var(--pixel); color: var(--chalk); text-shadow: 1px 1px 0 #000; margin-top: 14px; letter-spacing: 0.02em; }
+.odometer { display: grid; gap: 4px; justify-items: end; }
+.odometer-digits { display: flex; gap: 2px; padding: 4px; }
+.odometer-digits b { display: grid; place-items: center; width: 22px; height: 30px; background: #000; color: #fff; font: 400 26px/1 var(--led-font); }
+.odometer-label { font: 700 12px var(--pixel); color: var(--chalk); text-shadow: 1px 1px 0 #000; text-align: right; }
+.sample-note { margin-bottom: 16px; padding: 8px 12px; font-size: 13px; }
 
-/* Week: awards + scoreboard */
-.week { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 48px; padding-block: 40px; }
-.section-head { display: grid; gap: 6px; margin-bottom: 18px; }
-.section-head h2 { font-weight: 900; font-size: 2.1rem; }
-.section-head p { color: var(--ink-2); max-width: 66ch; }
-.awards { margin: 0; display: grid; }
-.award { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding-block: 12px; border-top: 1px solid var(--rule); }
-.award:last-child { border-bottom: 1px solid var(--rule); }
-.award dt { font-family: var(--display); font-weight: 700; font-size: 1.2rem; grid-column: 1; }
-.award dd { margin: 0; grid-column: 1; color: var(--ink-2); min-width: 0; }
-.award dd b { color: var(--ink); font-weight: 600; }
-.award .stat { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-family: var(--display); font-weight: 900; font-size: 1.9rem; color: var(--ink); }
-.games { display: grid; gap: 0; }
-.game { padding-block: 10px; border-top: 1px solid var(--rule); display: grid; gap: 2px; }
-.game:last-child { border-bottom: 1px solid var(--rule); }
-.side { display: grid; grid-template-columns: 1fr auto; gap: 12px; color: var(--ink-2); }
-.side span:first-child { min-width: 0; overflow-wrap: anywhere; }
-.side.won { color: var(--ink); font-weight: 600; }
-.side .score { font-family: var(--display); font-weight: 700; font-size: 1.2rem; }
+/* Windows */
+.desk { display: grid; gap: 22px; }
+.pair { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 22px; align-items: start; }
+.win { padding: 3px; scroll-margin-top: 12px; min-width: 0; }
+.title-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 3px 3px 3px 5px; background: linear-gradient(90deg, var(--title-1), var(--title-2)); color: #fff; }
+.title-bar h2, .title-bar .t { display: flex; align-items: center; gap: 6px; font: 700 14px/1.2 var(--pixel); letter-spacing: 0.02em; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.title-bar svg { width: 16px; height: 16px; flex: none; }
+.tb-btn { width: 20px; height: 18px; padding: 0; min-height: 0; font: 700 12px/1 var(--pixel); display: grid; place-items: center; flex: none; }
+.win-body { padding: 12px; display: grid; gap: 12px; }
+.win.min .win-body { display: none; }
+.lede { color: var(--ink-2); max-width: 70ch; font-size: 13px; }
+.status-bar { display: flex; gap: 3px; margin-top: 2px; font-size: 12px; color: var(--ink-2); }
+.status-bar span { padding: 2px 6px; box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--lo); flex: 1; min-width: 0; }
+.table-scroll { overflow-x: auto; }
+
+/* Hero: the error dialog */
+.dialog { max-width: 760px; margin-inline: auto; width: 100%; }
+.dialog .win-body { grid-template-columns: auto minmax(0, 1fr); gap: 14px 18px; padding: 18px 18px 14px; }
+.dialog-icon svg { width: 64px; height: 64px; }
+.dialog-text { display: grid; gap: 10px; min-width: 0; }
+.dialog-kicker { font: 700 16px var(--pixel); }
+.dialog-team { font: 400 clamp(2.4rem, 8vw, 4.4rem)/0.95 var(--wordart); text-transform: uppercase; overflow-wrap: anywhere; }
+.dialog-line { font-size: 15px; }
+.dialog-line strong { font: 400 1.6em/1 var(--led-font); background: var(--flag); padding: 0 4px; }
+.details { font: 400 13px/1.5 var(--mono); padding: 10px 12px; display: grid; gap: 2px; }
+.details .sting { color: var(--red); font-weight: 700; }
+.dialog-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding-top: 4px; }
+.dialog-foot .left { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.dialog-foot .right { display: flex; flex-wrap: wrap; gap: 8px; }
+.copy-status { font-size: 12px; color: var(--ink-2); grid-column: 1 / -1; min-height: 1em; }
+.share-fallback { grid-column: 1 / -1; width: 100%; min-height: 5.5rem; font: 400 13px/1.4 var(--body); border: 0; padding: 6px; resize: vertical; }
+
+/* Awards as a Notepad file */
+.notepad { font: 400 14px/1.5 var(--mono); padding: 10px 12px; display: grid; gap: 10px; align-content: start; }
+.note { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; }
+.note dt { font-weight: 700; text-transform: uppercase; grid-column: 1; }
+.note dd { margin: 0; grid-column: 1; min-width: 0; overflow-wrap: anywhere; }
+.note .v { grid-column: 2; grid-row: 1 / span 2; align-self: center; font: 400 26px/1 var(--led-font); }
+.notepad dl { margin: 0; display: grid; gap: 10px; }
+
+/* Scoreboard as an LED board */
+.led { background: var(--led-bg); padding: 12px 14px; display: grid; gap: 10px; box-shadow: inset 0 0 0 2px #000, inset 0 0 0 4px #3a2a00; }
+.led-game { display: grid; gap: 0; padding-bottom: 8px; border-bottom: 1px dashed #4a3500; }
+.led-game:last-child { border-bottom: 0; padding-bottom: 0; }
+.led-side { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; font: 400 22px/1.05 var(--led-font); color: var(--led-dim); text-transform: uppercase; }
+.led-side span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.led-side.won { color: var(--led); text-shadow: 0 0 6px rgba(255, 176, 0, .45); }
 
 /* Playoff race */
-.race { padding-block: 8px 48px; }
-.gow { font-size: 1.15rem; line-height: 1.4; max-width: 62ch; padding: 12px 16px; border-left: 4px solid var(--flag); background: color-mix(in srgb, var(--flag) 10%, transparent); margin-bottom: 20px; }
-.gow b { font-weight: 600; }
-.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9rem; color: var(--ink-2); margin-bottom: 14px; }
-.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-.race-rows { display: grid; }
-.race-row {
-  display: grid; align-items: center; gap: 4px 16px; padding-block: 10px; border-top: 1px solid var(--rule);
-  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) 4.5rem minmax(0, 17rem);
-  grid-template-areas: "name bar pct meta";
-}
-.race-row:last-child { border-bottom: 1px solid var(--rule); }
+.balloon { background: var(--tip); border: 1px solid #000; padding: 10px 12px; font-size: 14px; max-width: 70ch; position: relative; }
+.balloon b { font-weight: 700; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--ink-2); }
+.legend i { display: inline-block; width: 14px; height: 12px; margin-right: 6px; vertical-align: -1px; border: 1px solid #000; }
+.race-list { display: grid; padding: 4px 10px; }
+.race-row { display: grid; align-items: center; gap: 4px 14px; padding-block: 9px; border-bottom: 1px solid var(--lite);
+  grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr) 4.2rem minmax(0, 16rem); grid-template-areas: "name bar pct meta"; }
+.race-row:last-child { border-bottom: 0; }
 .race-name { grid-area: name; min-width: 0; }
-.race-name b { display: block; font-weight: 600; overflow-wrap: anywhere; }
-.race-name small { color: var(--ink-2); font-size: 0.85rem; }
-.race-bar { grid-area: bar; position: relative; height: 16px; border-radius: 4px; background: var(--rule); overflow: hidden; }
-.race-bar span { position: absolute; top: 0; bottom: 0; left: 0; }
-.race-bar .in { background: var(--odds-in); }
-.race-bar .bye { background: var(--odds-bye); }
-.race-pct { grid-area: pct; font-family: var(--display); font-weight: 900; font-size: 1.6rem; text-align: right; }
-.race-meta { grid-area: meta; display: grid; gap: 2px; font-size: 0.9rem; color: var(--ink-2); }
-.race-meta b { color: var(--ink); font-weight: 600; }
-.cutline { display: flex; align-items: center; gap: 10px; padding-block: 6px; color: var(--ink); font-family: var(--display); font-weight: 700; font-size: 1rem; }
-.cutline::before, .cutline::after { content: ""; flex: 1; border-top: 2px dashed var(--ink-2); }
-.cutline::before { flex: 0 0 24px; }
-.race-foot { color: var(--ink-2); font-size: 0.9rem; margin-top: 12px; max-width: 70ch; }
+.race-name b { display: block; font-weight: 700; overflow-wrap: anywhere; }
+.race-name small { color: var(--ink-2); font-size: 12px; }
+.prog { grid-area: bar; position: relative; height: 20px; padding: 3px; }
+.prog span { position: absolute; top: 3px; bottom: 3px; left: 3px; max-width: calc(100% - 6px); }
+.prog .in { background: repeating-linear-gradient(90deg, var(--prog-in) 0 9px, transparent 9px 11px); }
+.prog .bye { background: repeating-linear-gradient(90deg, var(--prog-bye) 0 9px, transparent 9px 11px); }
+.race-pct { grid-area: pct; font: 400 30px/1 var(--led-font); text-align: right; }
+.race-meta { grid-area: meta; display: grid; gap: 2px; font-size: 12px; color: var(--ink-2); }
+.race-meta b { color: var(--ink); }
+.cutline { display: flex; align-items: center; gap: 8px; padding-block: 6px; font: 700 13px var(--pixel); color: var(--red); }
+.cutline::before, .cutline::after { content: ""; flex: 1; border-top: 2px dashed var(--red); }
+.cutline::before { flex: 0 0 18px; }
+.foot-note { font-size: 12px; color: var(--ink-2); max-width: 75ch; }
 
-/* Standings */
-.standings { padding-block: 8px 48px; }
-.table-scroll { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; }
-.standings table { min-width: 640px; }
-.standings th, .standings td { text-align: right; padding: 10px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
-.standings th { font-weight: 600; font-size: 0.9rem; color: var(--ink-2); border-bottom: 2px solid var(--ink); }
-.standings th:nth-child(-n+2), .standings td:nth-child(-n+2) { text-align: left; }
-.standings td:first-child { font-family: var(--display); font-weight: 900; font-size: 1.25rem; width: 2.5rem; }
-.team-cell { white-space: normal !important; min-width: 11rem; }
-.team-cell b { display: block; font-weight: 600; }
-.team-cell small { color: var(--ink-2); font-size: 0.85rem; }
-.luck-val { font-weight: 600; }
-.luck-mark { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: 1px; }
+/* Standings as a details list view */
+.listview { overflow-x: auto; }
+.listview table { border-collapse: collapse; width: 100%; min-width: 620px; background: var(--field); }
+.listview th { position: sticky; top: 0; font: 400 12px var(--body); text-align: right; padding: 4px 8px; white-space: nowrap;
+  background: var(--silver); box-shadow: inset -1px -1px var(--dk), inset 1px 1px var(--hi), inset -2px -2px var(--lo); }
+.listview td { text-align: right; padding: 6px 8px; white-space: nowrap; border-bottom: 1px dotted var(--lite); font-size: 13px; }
+.listview th:nth-child(-n+2), .listview td:nth-child(-n+2) { text-align: left; }
+.listview td:first-child { font: 400 22px/1 var(--led-font); width: 2.4rem; }
+.listview .team-cell { white-space: normal; min-width: 10rem; }
+.listview .team-cell b { display: block; }
+.listview .team-cell small { color: var(--ink-2); font-size: 11px; }
+.luck-mark { display: inline-block; width: 8px; height: 8px; margin-right: 6px; vertical-align: 0; border: 1px solid #000; }
 
 /* Coach efficiency: the field */
-.field-band { background: var(--sideline); color: var(--chalk); padding-block: 40px 32px; }
-.field-band .section-head p { color: var(--chalk-2); }
-.field { display: grid; grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr) 2.75rem; border: 3px solid var(--chalk); border-radius: 4px; overflow: hidden; }
+.field-wrap { padding: 10px; background: #1c4c24; }
+.field { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 2.75rem; border: 3px solid var(--chalk); overflow: hidden; }
 .lane { display: contents; }
-.lane-name, .lane-track, .lane-ez { height: 40px; }
-.lane-name { grid-column: 1; }
-.lane-track { grid-column: 2; }
-.lane-ez { grid-column: 3; }
-.lane-name { display: flex; align-items: center; padding: 0 12px; font-weight: 600; font-size: 0.95rem; background: var(--sideline); border-right: 3px solid var(--chalk); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lane-name, .lane-track, .lane-ez { height: 36px; }
+.lane-name { grid-column: 1; display: flex; align-items: center; padding: 0 10px; font: 700 12px var(--body); color: var(--chalk); background: #1c4c24; border-right: 3px solid var(--chalk); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lane-name .abbr { display: none; }
-.lane-track {
-  position: relative; cursor: default;
+.lane-track { grid-column: 2; position: relative; cursor: default;
   background:
     repeating-linear-gradient(to right, var(--chalk) 0 2px, transparent 2px 100%) 0 0 / calc(100% / var(--steps)) 100%,
-    repeating-linear-gradient(to right, var(--turf) 0 50%, var(--turf-2) 50% 100%) 0 0 / calc(200% / var(--steps)) 100%;
-}
-.lane-track:focus-visible { outline-offset: -3px; }
-.lane-ez { background: var(--turf-2); border-left: 3px solid var(--chalk); }
+    repeating-linear-gradient(to right, var(--turf-1) 0 50%, var(--turf-2) 50% 100%) 0 0 / calc(200% / var(--steps)) 100%; }
+.lane-ez { grid-column: 3; background: var(--turf-2); border-left: 3px solid var(--chalk); }
 .ez-label { grid-column: 3; grid-row: 1 / span var(--rows); display: flex; align-items: center; justify-content: center; pointer-events: none; }
-.ez-label span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--display); font-weight: 900; font-size: 1.35rem; letter-spacing: 0.04em; color: var(--chalk-2); }
-.ball {
-  position: absolute; top: 50%; left: var(--x); width: 24px; height: 15px; transform: translate(-50%, -50%);
-  background: var(--football); border: 2px solid var(--chalk); border-radius: 50%;
-}
-.ball::after { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 2px; background: var(--chalk); transform: translate(-50%, -50%); }
-.lane-val { position: absolute; top: 50%; right: calc(100% - var(--x) + 18px); transform: translateY(-50%); font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--chalk); white-space: nowrap; }
-.lane-val.after { right: auto; left: calc(var(--x) + 18px); }
-.axis { display: grid; grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr) 2.75rem; margin-top: 6px; }
-.axis-track { position: relative; height: 22px; grid-column: 2; }
-.axis-track span { position: absolute; transform: translateX(-50%); font-size: 0.85rem; color: var(--chalk-2); }
+.ez-label span { writing-mode: vertical-rl; transform: rotate(180deg); font: 400 22px/1 var(--wordart); letter-spacing: 0.06em; color: var(--chalk); opacity: .8; }
+.ball { position: absolute; top: 50%; left: var(--x); width: 22px; height: 22px; transform: translate(-50%, -50%); image-rendering: pixelated; }
+.ball svg { width: 22px; height: 22px; display: block; }
+.lane-val { position: absolute; top: 50%; right: calc(100% - var(--x) + 16px); transform: translateY(-50%); font: 400 22px/1 var(--led-font); color: #fff; text-shadow: 1px 1px 0 #000; white-space: nowrap; }
+.lane-val.after { right: auto; left: calc(var(--x) + 16px); }
+.axis { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 2.75rem; margin-top: 4px; }
+.axis-track { position: relative; height: 18px; grid-column: 2; }
+.axis-track span { position: absolute; transform: translateX(-50%); font-size: 11px; color: var(--chalk); }
 .axis-track span:last-child { transform: translateX(-100%); }
-.axis-note { grid-column: 2 / span 2; font-size: 0.85rem; color: var(--chalk-2); }
 
-/* Luck chart */
-.luck { padding-block: 40px 48px; }
+/* Luck */
+.luck-panel { padding: 12px 12px 8px; }
 .luck-rows { display: grid; }
-.luck-row { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); align-items: center; gap: 16px; padding-block: 4px; border-radius: 4px; }
-.luck-row:hover, .luck-row:focus-visible { background: color-mix(in srgb, var(--rule) 55%, transparent); }
-.luck-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 4px; }
+.luck-row { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); align-items: center; gap: 12px; padding-block: 3px; }
+.luck-row:hover, .luck-row:focus-visible { background: #000080; color: #fff; }
+.luck-row:hover .bar-val, .luck-row:focus-visible .bar-val { color: #fff; }
+.luck-name { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 4px; }
 .luck-name .abbr { display: none; }
-.luck-plot { position: relative; height: 26px; }
-.luck-plot::before { content: ""; position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--zero); }
-.bar { position: absolute; top: 5px; height: 16px; }
-.bar.pos { left: 50%; background: var(--lucky); border-radius: 0 4px 4px 0; }
-.bar.neg { right: 50%; background: var(--unlucky); border-radius: 4px 0 0 4px; }
-.bar-val { position: absolute; top: 50%; transform: translateY(-50%); font-family: var(--display); font-weight: 700; font-size: 1.05rem; color: var(--ink); white-space: nowrap; }
-.luck-axis { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); gap: 16px; margin-top: 8px; }
-.luck-axis div { position: relative; height: 20px; grid-column: 2; }
-.luck-axis span { position: absolute; transform: translateX(-50%); font-size: 0.85rem; color: var(--ink-2); }
+.luck-plot { position: relative; height: 24px; }
+.luck-plot::before { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; margin-left: -1px; background: var(--lo); }
+.bar { position: absolute; top: 5px; height: 14px; border: 1px solid #000; }
+.bar.pos { left: 50%; background: var(--lucky); }
+.bar.neg { right: 50%; background: var(--unlucky); }
+.bar-val { position: absolute; top: 50%; transform: translateY(-50%); font: 400 22px/1 var(--led-font); color: var(--ink); white-space: nowrap; }
+.luck-axis { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); gap: 12px; margin-top: 6px; }
+.luck-axis div { position: relative; height: 16px; grid-column: 2; }
+.luck-axis span { position: absolute; transform: translateX(-50%); font-size: 11px; color: var(--ink-2); }
 
-/* Schedule swap grid */
-.swap { padding-block: 8px 48px; border-top: 2px solid var(--ink); padding-top: 40px; }
-.swap-story { display: grid; gap: 6px; margin: 0 0 18px; padding: 0; list-style: none; max-width: 66ch; }
-.swap-story li { padding-left: 14px; border-left: 3px solid var(--rule); }
-.heat { width: auto; border-collapse: separate; border-spacing: 3px; }
-.heat th { font-weight: 600; font-size: 0.85rem; color: var(--ink-2); padding: 2px 4px; white-space: nowrap; }
-.heat thead th { text-align: center; vertical-align: bottom; }
-.heat tbody th { text-align: left; padding-right: 10px; color: var(--ink); }
+/* Schedule swap as a spreadsheet */
+.comments { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-width: 75ch; font-size: 13px; }
+.comments li { padding: 6px 10px; background: var(--tip); border: 1px solid #000; }
+.sheet { overflow-x: auto; background: var(--field); }
+.heat { border-collapse: collapse; background: var(--field); }
+.heat th { font: 400 12px var(--body); background: var(--silver); color: var(--ink); padding: 3px 6px; white-space: nowrap;
+  box-shadow: inset -1px -1px var(--lo), inset 1px 1px var(--hi); border: 0; }
+.heat thead th { text-align: center; }
+.heat tbody th { text-align: left; }
 .heat tbody th .abbr { display: none; }
-.heat td { width: 40px; height: 34px; text-align: center; border-radius: 4px; font-family: var(--display); font-weight: 700; font-size: 1.1rem; cursor: default; }
-.heat td.own { box-shadow: inset 0 0 0 2px var(--ink); }
-.heat-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 0.85rem; color: var(--ink-2); margin-top: 10px; }
+.heat td { width: 40px; height: 30px; text-align: center; font: 400 22px/1 var(--led-font); border: 1px solid #c8c8c8; cursor: cell; }
+.heat td.own { outline: 2px solid #000; outline-offset: -3px; }
+.heat-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 12px; color: var(--ink-2); }
 .heat-legend > span { white-space: nowrap; }
-.heat-legend .ramp { width: 160px; height: 12px; border-radius: 3px; background: linear-gradient(to right, var(--heat-lo), var(--heat-hi)); border: 1px solid var(--rule); }
-.heat-legend .own-key { display: inline-block; width: 14px; height: 14px; border-radius: 3px; box-shadow: inset 0 0 0 2px var(--ink); vertical-align: -2px; margin-right: 6px; }
+.heat-legend .ramp { display: inline-block; width: 140px; height: 12px; background: linear-gradient(to right, var(--heat-lo), var(--heat-hi)); border: 1px solid #000; vertical-align: -2px; }
+.heat-legend .own-key { display: inline-block; width: 14px; height: 14px; outline: 2px solid #000; outline-offset: -3px; background: var(--field); border: 1px solid #c8c8c8; vertical-align: -3px; margin-right: 4px; }
 
 /* Record book */
-.records { padding-block: 40px 56px; border-top: 2px solid var(--ink); }
-.records-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 48px; }
-.records h3 { font-weight: 900; font-size: 1.5rem; margin-bottom: 12px; }
-.flags { list-style: none; margin: 0; padding: 0; display: grid; }
-.flags li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding-block: 10px; border-top: 1px solid var(--rule); }
-.flags li:last-child { border-bottom: 1px solid var(--rule); }
-.flags .who b { font-weight: 600; display: block; }
-.flags .who small { color: var(--ink-2); font-size: 0.85rem; }
-.flags .count { display: flex; gap: 2px; align-items: center; }
-.flags .count svg { width: 26px; height: 26px; }
-.flags-note { color: var(--ink-2); font-size: 0.95rem; margin-bottom: 8px; }
+.hof { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; }
+.hof h3 { font: 700 14px var(--pixel); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.hof h3 svg { width: 16px; height: 16px; }
+.flags { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.flags li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: center; }
+.flags .who b { display: block; }
+.flags .who small { color: var(--ink-2); font-size: 12px; }
+.flags .count { display: flex; gap: 2px; }
+.flags .count svg { width: 24px; height: 24px; }
+.flags-note { font-size: 12px; color: var(--ink-2); margin-bottom: 8px; }
 
-footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(--ink-2); font-size: 0.9rem; display: grid; gap: 4px; }
+/* Footer badges */
+.footer { display: grid; gap: 12px; justify-items: center; text-align: center; padding-block: 28px 8px; color: var(--chalk); font-size: 12px; text-shadow: 1px 1px 0 #000; }
+.badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.badge { width: 88px; height: 31px; display: grid; place-items: center; text-align: center; font: 700 10px/1.05 var(--pixel); text-shadow: none; border: 1px solid #000; padding: 2px; }
+.badge.b1 { background: linear-gradient(#000080, #1084d0); color: #fff; }
+.badge.b2 { background: var(--flag); color: #000; }
+.badge.b3 { background: #000; color: var(--lcd); font-family: var(--led-font); font-size: 15px; font-weight: 400; }
+.badge.b4 { background: var(--silver); color: #000; box-shadow: inset -1px -1px var(--lo), inset 1px 1px var(--hi); }
+.badge.b5 { background: #a80000; color: #fff; }
 
-.tip {
-  position: fixed; z-index: 20; max-width: 280px; padding: 8px 10px; border-radius: 6px;
-  background: var(--tip-bg); color: var(--tip-fg); font-size: 0.9rem; line-height: 1.35; pointer-events: none;
+/* Tooltip */
+.tip { position: fixed; z-index: 40; max-width: 280px; padding: 3px 6px; background: var(--tip); color: #000; border: 1px solid #000; font-size: 12px; line-height: 1.35; pointer-events: none; }
+
+/* Taskbar */
+.taskbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: flex; align-items: center; gap: 6px;
+  min-height: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px));
+  padding: 4px max(6px, env(safe-area-inset-right, 0px)) calc(4px + env(safe-area-inset-bottom, 0px)) max(6px, env(safe-area-inset-left, 0px));
+  background: var(--silver); box-shadow: inset 0 1px var(--lite), inset 0 2px var(--hi);
 }
+.start { display: flex; align-items: center; gap: 6px; font: 700 14px var(--pixel); padding: 3px 10px 3px 6px; }
+.start svg { width: 18px; height: 18px; }
+.task { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 3px 8px; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.task svg { width: 16px; height: 16px; flex: none; }
+.task span { overflow: hidden; text-overflow: ellipsis; }
+.tray { display: flex; align-items: center; gap: 8px; padding: 3px 8px; height: 30px; font-size: 12px; box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--lo); }
+.tray button { background: none; border: 0; padding: 0; cursor: pointer; display: grid; place-items: center; }
+.tray svg { width: 16px; height: 16px; }
+.tray .muted { opacity: .45; }
+.start-menu { position: fixed; z-index: 35; left: max(6px, env(safe-area-inset-left, 0px)); bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px)); display: flex; min-width: 230px; padding: 3px; }
+.start-side { width: 28px; background: linear-gradient(0deg, #000080, #1084d0); color: #fff; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; }
+.start-side span { writing-mode: vertical-rl; transform: rotate(180deg); font: 400 20px/1 var(--wordart); letter-spacing: 0.05em; }
+.start-menu ul { list-style: none; margin: 0; padding: 2px; flex: 1; }
+.start-menu a { display: flex; align-items: center; gap: 10px; padding: 7px 12px 7px 8px; color: var(--ink); text-decoration: none; font-size: 13px; }
+.start-menu a:hover, .start-menu a:focus-visible { background: #000080; color: #fff; outline: none; }
+.start-menu svg { width: 20px; height: 20px; }
+.start-menu hr { border: 0; border-top: 1px solid var(--lo); border-bottom: 1px solid var(--hi); margin: 3px 2px; }
+
+/* Jukebox */
+.jukebox { position: fixed; z-index: 32; right: max(10px, env(safe-area-inset-right, 0px)); bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px) + 10px); width: 270px; }
+.lcd { background: var(--lcd-bg); color: var(--lcd); font: 400 20px/1.1 var(--led-font); padding: 6px 8px; display: grid; gap: 4px; box-shadow: inset 0 0 0 2px #000; }
+.lcd-row { display: flex; justify-content: space-between; gap: 8px; }
+.lcd-title { overflow: hidden; white-space: nowrap; }
+.lcd-title span { display: inline-block; padding-left: 100%; animation: crawl-lcd 12s linear infinite; }
+@keyframes crawl-lcd { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@media (prefers-reduced-motion: reduce) { .lcd-title span { animation: none; padding-left: 0; } }
+.scope { width: 100%; height: 34px; display: block; image-rendering: pixelated; }
+.jb-controls { display: flex; gap: 6px; padding: 8px 2px 2px; align-items: center; }
+.jb-controls .btn { padding: 4px 10px; font-size: 12px; }
+.jb-note { font-size: 11px; color: var(--ink-2); margin-left: auto; }
+
+/* Welcome dialog */
+.overlay { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px;
+  background: rgba(0, 0, 0, .35) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='1' height='1' fill='%23000' opacity='.35'/%3E%3C/svg%3E"); }
+.welcome { width: min(100%, 460px); }
+.welcome .win-body { grid-template-columns: auto minmax(0, 1fr); gap: 14px 16px; padding: 18px; }
+.welcome .dialog-icon svg { width: 48px; height: 48px; }
+.welcome h3 { font: 700 16px var(--pixel); margin-bottom: 6px; }
+.welcome p { font-size: 13px; }
+.welcome .row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
 
 @media (max-width: 760px) {
-  .week, .records-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
-  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 24px 32px; }
-  .hero svg { width: 76px; }
+  body { font-size: 15px; }
+  .pair, .hof { grid-template-columns: minmax(0, 1fr); }
+  .masthead { padding-block: 20px 14px; }
+  .odometer { justify-items: start; }
+  .odometer-label { text-align: left; }
+  .dialog .win-body { grid-template-columns: minmax(0, 1fr); }
+  .dialog-icon svg { width: 44px; height: 44px; }
   .race-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name pct" "bar bar" "meta meta"; }
-  .race-pct { font-size: 1.4rem; }
-  .field, .axis { grid-template-columns: minmax(0, 4.25rem) minmax(0, 1fr) 2.1rem; }
-  .lane-name { padding: 0 8px; }
+  .field, .axis { grid-template-columns: minmax(0, 3.6rem) minmax(0, 1fr) 2rem; }
+  .lane-name { padding: 0 6px; }
   .lane-name .full, .luck-name .full, .heat tbody th .full { display: none; }
   .lane-name .abbr, .luck-name .abbr, .heat tbody th .abbr { display: inline; }
-  .ez-label span { font-size: 1.05rem; }
-  .luck-row, .luck-axis { grid-template-columns: minmax(0, 4rem) minmax(0, 1fr); gap: 10px; }
-  .heat { border-spacing: 2px; }
-  .heat td { width: 30px; height: 30px; font-size: 1rem; }
-  .heat-legend .ramp { width: 90px; }
-  .heat th { padding: 2px 2px; font-size: 0.75rem; }
+  .ez-label span { font-size: 16px; }
+  .luck-row, .luck-axis { grid-template-columns: minmax(0, 3.6rem) minmax(0, 1fr); gap: 8px; }
+  .heat td { width: 29px; height: 28px; font-size: 19px; }
+  .heat th { padding: 2px 3px; font-size: 10px; }
+  .heat-legend .ramp { width: 80px; }
+  .task { display: none; }
+  .taskbar { justify-content: space-between; }
+  .jukebox { width: min(270px, calc(100vw - 20px)); }
 }
 </style>
+
+<div class="ticker" id="ticker" aria-label="Latest scores"><div class="ticker-track" id="ticker-track"></div></div>
 
 <div class="wrap">
   <header class="masthead">
     <div>
-      <h1 class="wordmark">Yowza League</h1>
-      <p class="season" id="season"></p>
+      <h1 class="wordart" data-text="Yowza League"><span>Yowza League</span></h1>
+      <p class="tagline" id="season"></p>
     </div>
-    <div class="picker" id="picker-wrap">
-      <label for="week">Week</label>
-      <select id="week"></select>
+    <div class="odometer" id="odometer" hidden>
+      <div class="odometer-digits sunken" id="odometer-digits" aria-hidden="true"></div>
+      <p class="odometer-label" id="odometer-label"></p>
     </div>
   </header>
-  <nav class="sections" aria-label="Sections">
-    <a href="#this-week">This week</a>
-    <a href="#playoffs" id="nav-playoffs">Playoff race</a>
-    <a href="#standings">Standings</a>
-    <a href="#coaching">Coaching</a>
-    <a href="#luck">Luck</a>
-    <a href="#schedules">Schedules</a>
-    <a href="#records">Record book</a>
-  </nav>
-  <p class="sample-note" id="sample-note" hidden>These are made-up teams and scores for previewing the site. Real Yowza League scores replace them after the first ESPN sync.</p>
 
-  <section class="hero" id="this-week" aria-live="polite"></section>
+  <p class="sample-note raised" id="sample-note" hidden>These are made-up teams and scores for previewing the site. Real Yowza League scores replace them after the first ESPN sync.</p>
 
-  <div class="week" id="week-detail">
-    <section>
-      <div class="section-head"><h2 id="awards-title">Awards</h2></div>
-      <dl class="awards" id="awards"></dl>
+  <main class="desk">
+    <section class="win raised dialog" id="this-week" aria-labelledby="dialog-title">
+      <div class="title-bar"><h2 id="dialog-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body" id="dialog-body"></div>
     </section>
-    <section>
-      <div class="section-head"><h2>Scoreboard</h2></div>
-      <div class="games" id="games"></div>
+
+    <div class="pair" id="week-detail">
+      <section class="win raised" aria-labelledby="awards-title">
+        <div class="title-bar"><h2 id="awards-title">awards.txt - Notepad</h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+        <div class="win-body"><div class="notepad sunken"><dl id="awards"></dl></div></div>
+      </section>
+      <section class="win raised" aria-labelledby="score-title">
+        <div class="title-bar"><h2 id="score-title">Scoreboard</h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+        <div class="win-body"><div class="led" id="games"></div></div>
+      </section>
+    </div>
+
+    <section class="win raised" id="playoffs" aria-labelledby="race-title">
+      <div class="title-bar"><h2 id="race-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body">
+        <p class="lede" id="race-note"></p>
+        <p class="balloon" id="gow" hidden></p>
+        <div class="legend" id="race-legend"></div>
+        <div class="race-list sunken" id="race-rows" role="list"></div>
+        <p class="foot-note" id="race-foot"></p>
+      </div>
     </section>
-  </div>
 
-  <section class="race" id="playoffs">
-    <div class="section-head">
-      <h2>Playoff race</h2>
-      <p id="race-note"></p>
-    </div>
-    <p class="gow" id="gow" hidden></p>
-    <div class="legend" id="race-legend"></div>
-    <div class="race-rows" id="race-rows" role="list"></div>
-    <p class="race-foot" id="race-foot"></p>
-  </section>
-
-  <section class="standings" id="standings">
-    <div class="section-head">
-      <h2>Standings</h2>
-      <p id="standings-note"></p>
-    </div>
-    <div class="table-scroll"><table id="standings-table"></table></div>
-  </section>
-</div>
-
-<section class="field-band" id="coaching">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Coach efficiency</h2>
-      <p>Each team's season points as a share of the best lineup it could have started from its own roster. A ball in the end zone means a perfect lineup every week.</p>
-    </div>
-    <div class="field" id="field" role="list"></div>
-    <div class="axis"><div class="axis-track" id="field-axis"></div><p class="axis-note">Share of best possible points. Each yard line is 5 percentage points.</p></div>
-  </div>
-</section>
-
-<div class="wrap">
-  <section class="luck" id="luck">
-    <div class="section-head">
-      <h2>Luck index</h2>
-      <p>Actual wins compared with the wins each team's scores would have earned against the whole league every week. Positive means the schedule handed them wins their scores didn't earn.</p>
-    </div>
-    <div class="legend"><span><i style="background: var(--lucky)"></i>More wins than their scores earned</span><span><i style="background: var(--unlucky)"></i>Fewer wins than their scores earned</span></div>
-    <div class="luck-rows" id="luck-rows" role="list"></div>
-    <div class="luck-axis"><div id="luck-axis"></div></div>
-  </section>
-
-  <section class="swap" id="schedules">
-    <div class="section-head">
-      <h2>Schedule swap</h2>
-      <p>Each row is a team's record if it had played the schedule of the team at the top of the column, using its own weekly scores. The outlined square is the real record.</p>
-    </div>
-    <ul class="swap-story" id="swap-story"></ul>
-    <div class="table-scroll"><table class="heat" id="heat"></table></div>
-    <div class="heat-legend"><span>Fewer wins</span><span class="ramp"></span><span>More wins</span><span><span class="own-key"></span>Real schedule</span></div>
-  </section>
-
-  <section class="records" id="records">
-    <div class="section-head">
-      <h2>Record book</h2>
-      <p id="records-note"></p>
-    </div>
-    <div class="records-grid">
-      <div>
-        <h3>Season records</h3>
-        <dl class="awards" id="rec-list"></dl>
+    <section class="win raised" id="standings" aria-labelledby="standings-title">
+      <div class="title-bar"><h2 id="standings-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body">
+        <p class="lede" id="standings-note"></p>
+        <div class="listview sunken"><table id="standings-table"></table></div>
       </div>
-      <div>
-        <h3>Yowza flags</h3>
-        <p class="flags-note">Weeks each manager left the most points on the bench in the league.</p>
-        <ol class="flags" id="flags"></ol>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <footer>
+    <section class="win raised" id="coaching" aria-labelledby="coaching-title">
+      <div class="title-bar"><h2 id="coaching-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body">
+        <p class="lede">Each team's season points as a share of the best lineup it could have started from its own roster. A ball in the end zone means a perfect lineup every week. Each yard line is 5 percentage points.</p>
+        <div class="field-wrap sunken">
+          <div class="field" id="field" role="list"></div>
+          <div class="axis"><div class="axis-track" id="field-axis"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="win raised" id="luck" aria-labelledby="luck-title">
+      <div class="title-bar"><h2 id="luck-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body">
+        <p class="lede">Actual wins compared with the wins each team's scores would have earned against the whole league every week. Positive means the schedule handed them wins their scores didn't earn.</p>
+        <div class="legend"><span><i style="background: var(--lucky)"></i>More wins than their scores earned</span><span><i style="background: var(--unlucky)"></i>Fewer wins than their scores earned</span></div>
+        <div class="luck-panel sunken">
+          <div class="luck-rows" id="luck-rows" role="list"></div>
+          <div class="luck-axis"><div id="luck-axis"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="win raised" id="schedules" aria-labelledby="swap-title">
+      <div class="title-bar"><h2 id="swap-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body">
+        <p class="lede">Each row is a team's record if it had played the schedule of the team at the top of the column, using its own weekly scores. The outlined cell is the real record.</p>
+        <ul class="comments" id="swap-story"></ul>
+        <div class="sheet sunken"><table class="heat" id="heat"></table></div>
+        <div class="heat-legend"><span>Fewer wins</span><span class="ramp"></span><span>More wins</span><span><span class="own-key"></span>Real schedule</span></div>
+      </div>
+    </section>
+
+    <section class="win raised" id="records" aria-labelledby="records-title">
+      <div class="title-bar"><h2 id="records-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body">
+        <p class="lede" id="records-note"></p>
+        <div class="hof">
+          <div class="notepad sunken"><h3 id="rec-head"></h3><dl id="rec-list"></dl></div>
+          <div class="notepad sunken">
+            <h3 id="flags-head"></h3>
+            <p class="flags-note">Weeks each manager left the most points on the bench in the league.</p>
+            <ol class="flags" id="flags"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="badges" aria-hidden="true">
+      <span class="badge b1">YOWZA LEAGUE 2026</span>
+      <span class="badge b2">NO POINTS LEFT BEHIND</span>
+      <span class="badge b3">LUCK CERTIFIED</span>
+      <span class="badge b4">MADE WITH NOTEPAD</span>
+      <span class="badge b5">WEB 1.0 4EVER</span>
+    </div>
+    <p>Best viewed at 800 &times; 600 with your speakers on.</p>
     <p id="updated"></p>
     <p>Scores come from ESPN. Awards, odds, luck and coach efficiency are calculated here every morning.</p>
   </footer>
+</div>
+
+<div class="jukebox win raised" id="jukebox" hidden aria-labelledby="jb-title">
+  <div class="title-bar"><span class="t" id="jb-title"></span><button class="btn tb-btn" type="button" id="jb-close" aria-label="Hide the jukebox" title="Hide">&times;</button></div>
+  <div class="win-body" style="padding: 6px; gap: 0">
+    <div class="lcd">
+      <div class="lcd-row"><span id="jb-state">STOPPED</span><span id="jb-time" class="num">00:00</span></div>
+      <div class="lcd-title"><span>YOWZA THEME (ORIGINAL MIDI MIX) &#9733; COMPOSED FOR THE YOWZA LEAGUE &#9733;</span></div>
+      <canvas class="scope" id="jb-scope" width="240" height="34" aria-hidden="true"></canvas>
+    </div>
+    <div class="jb-controls">
+      <button class="btn" type="button" id="jb-play">&#9654; Play</button>
+      <button class="btn" type="button" id="jb-stop">&#9632; Stop</button>
+      <span class="jb-note">Loops forever</span>
+    </div>
+  </div>
+</div>
+
+<nav class="start-menu win raised" id="start-menu" hidden aria-label="Start menu">
+  <div class="start-side"><span>Yowza 98</span></div>
+  <ul id="start-items"></ul>
+</nav>
+
+<div class="taskbar" role="toolbar" aria-label="Taskbar">
+  <button class="btn start" type="button" id="start-btn" aria-expanded="false" aria-controls="start-menu"><span id="start-icon"></span>Start</button>
+  <button class="btn task" type="button" id="task-btn"></button>
+  <div class="tray">
+    <button type="button" id="tray-music" aria-label="Show the jukebox" title="Jukebox"></button>
+    <span id="clock" class="num"></span>
+  </div>
+</div>
+
+<div class="overlay" id="welcome" hidden>
+  <div class="win raised welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div class="title-bar"><span class="t" id="welcome-title">Welcome to the Yowza League</span></div>
+    <div class="win-body">
+      <div class="dialog-icon" id="welcome-icon"></div>
+      <div>
+        <h3>The Official Home Page of the Yowza League</h3>
+        <p>This site has a theme song. Turn your volume up, then come on in.</p>
+      </div>
+      <div class="row">
+        <button class="btn" type="button" id="enter-quiet">Enter quietly</button>
+        <button class="btn default" type="button" id="enter-music">Enter with music</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="tip" id="tip" role="tooltip" hidden></div>
@@ -420,22 +545,53 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
   const name = id => esc(T[id] ? T[id].name : "Unknown team");
   const plain = id => (T[id] ? T[id].name : "Unknown team");
   const abbr = id => esc(T[id] && T[id].abbrev ? T[id].abbrev : plain(id).slice(0, 4));
+  const owns = id => name(id) + (plain(id).endsWith("s") ? "’" : "’s");
   const signed = n => (n > 0 ? "+" : n < 0 ? "−" : "") + Math.abs(n).toFixed(1);
   const record = (w, l, t) => w + "–" + l + (t ? "–" + t : "");
   const pct = p => (p >= 0.995 ? ">99%" : p <= 0.005 ? "<1%" : Math.round(p * 100) + "%");
-  const owns = id => name(id) + (plain(id).endsWith("s") ? "’" : "’s");
+  const store = {
+    get(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { sessionStorage.setItem(k, v); } catch (e) { /* private mode */ } }
+  };
 
-  const flagPaths =
-    '<path d="M26 28 C46 16 70 40 100 24 L106 82 C80 98 54 72 30 86 Z" style="fill: var(--flag); stroke: var(--flag-edge)" stroke-width="3" stroke-linejoin="round"/>' +
-    '<path d="M44 46 C58 40 72 56 90 46" style="fill: none; stroke: var(--flag-edge)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>' +
-    '<circle cx="24" cy="30" r="10" style="fill: var(--flag); stroke: var(--flag-edge)" stroke-width="3"/>' +
-    '<path d="M18 38 L10 58 M26 40 L24 62" style="fill: none; stroke: var(--flag-edge)" stroke-width="3" stroke-linecap="round"/>';
-  const flagSvg = '<svg viewBox="0 0 120 120" aria-hidden="true">' + flagPaths + '</svg>';
+  // ----- pixel sprites -----
+  const PAL = { K: "#000000", W: "#ffffff", Y: "#ffd200", O: "#b08800", B: "#8a4b2a", G: "#808080" };
+  const SPRITES = {
+    flag: ["KK..............", "KWK.............", "KWKKKKKK.....KK.", "KWKYYYYYKK..KYK.", "KWKYYYYYYYKKYYK.", "KWKYYYYYYYYYYYK.",
+      "KWKYYYYYYYYYYYK.", "KWKYYOOYYYYYYYK.", "KWKYYYYOOYYYYYK.", "KWKKKYYYYYKKYYK.", "KWK..KKYYK..KKK.", "KWK....KK.......",
+      "KWK.............", "KWK.............", "KWK.............", "KKK............."],
+    trophy: ["................", "...KKKKKKKKKK...", ".KKYYYYYYYYYYKK.", "K.KYYWYYYYYYYK.K", "K.KYYWYYYYYYYK.K", ".KKYYYYYYYYYYKK.",
+      "...KYYYYYYYYK...", "....KYYYYYYK....", ".....KKYYKK.....", "......KYYK......", "......KYYK......", ".....KYYYYK.....",
+      "....KKKKKKKK....", "....KOOOOOOK....", "....KKKKKKKK....", "................"],
+    ball: ["................", "..........KKK...", "........KKBBBK..", "......KKBBBBBBK.", ".....KBBBBWBBBK.", "....KBBBBWBWBBK.",
+      "...KBBBBWBWBBK..", "...KBBBWBWBBBK..", "..KBBBWBWBBBK...", "..KBBWBWBBBK....", ".KBBBBWBBBBK....", ".KBBBBBBBKK.....",
+      ".KBBBBBKK.......", "..KKKKK.........", "................", "................"],
+    note: ["................", ".......KKKKKKKK.", ".......KKKKKKKK.", ".......K......K.", ".......K......K.", ".......K......K.",
+      ".......K......K.", ".......K......K.", ".......K......K.", ".......K......K.", "....KKKK...KKKK.", "...KKKKK..KKKKK.",
+      "...KKKKK..KKKKK.", "....KKK....KKK..", "................", "................"]
+  };
+  function sprite(key) {
+    const rows = SPRITES[key];
+    let rects = "";
+    rows.forEach((row, y) => {
+      let x = 0;
+      while (x < row.length) {
+        const c = row[x];
+        if (c === ".") { x++; continue; }
+        let w = 1;
+        while (row[x + w] === c) w++;
+        rects += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="1" fill="' + PAL[c] + '"/>';
+        x += w;
+      }
+    });
+    return '<svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
+  }
+  const titled = (icon, text) => sprite(icon) + "<span>" + esc(text) + "</span>";
 
   // ----- header -----
   const L = D.league;
   const lastWeek = D.weeks.length ? D.weeks[D.weeks.length - 1].week : null;
-  $("season").textContent = lastWeek ? L.season + " season, through Week " + lastWeek : L.season + " season";
+  $("season").textContent = "The official home page of the Yowza League. " + (lastWeek ? L.season + " season, through Week " + lastWeek + "." : L.season + " season.");
   $("sample-note").hidden = !L.isSample;
   try {
     const when = new Date(L.updatedAt);
@@ -446,14 +602,54 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
     }
   } catch (e) { /* leave blank */ }
 
-  const select = $("week");
-  D.weeks.slice().reverse().forEach(w => {
-    const o = document.createElement("option");
-    o.value = w.week;
-    o.textContent = w.week + (w.playoff ? " (playoffs)" : "");
-    select.appendChild(o);
+  const totalPoints = D.weeks.reduce((s, w) => s + w.matchups.reduce((a, m) => a + m.homeScore + m.awayScore, 0), 0);
+  if (totalPoints > 0) {
+    const digits = String(Math.round(totalPoints)).padStart(7, "0");
+    $("odometer-digits").innerHTML = digits.split("").map(d => "<b>" + d + "</b>").join("");
+    $("odometer-label").textContent = Math.round(totalPoints).toLocaleString("en-US") + " points scored this season";
+    $("odometer").hidden = false;
+  }
+
+  // ----- ticker -----
+  (function ticker() {
+    const items = [];
+    const last = D.weeks[D.weeks.length - 1];
+    if (last) {
+      const y = last.awards.yowza;
+      if (y && y.left > 0.005) items.push("★ YOWZA OF THE WEEK " + last.week + ": " + plain(y.team).toUpperCase() + " LEFT " + pts(y.left) + " ON THE BENCH");
+      items.push("★ WEEK " + last.week + " FINALS");
+      last.matchups.forEach(m => items.push(plain(m.home).toUpperCase() + " " + pts(m.homeScore) + "  " + plain(m.away).toUpperCase() + " " + pts(m.awayScore)));
+    }
+    if (D.race && D.race.gameOfWeek) {
+      const g = D.race.gameOfWeek;
+      items.push("★ BIGGEST GAME OF WEEK " + D.race.week + ": " + plain(g.home).toUpperCase() + " VS " + plain(g.away).toUpperCase());
+    }
+    if (!items.length) items.push("★ WELCOME TO THE YOWZA LEAGUE ★ KICKOFF IS COMING");
+    const run = items.map(t => "<span>" + esc(t) + "</span>").join("");
+    $("ticker-track").innerHTML = run + run;
+  })();
+
+  // ----- window titles -----
+  const setTitle = (id, icon, text) => { $(id).innerHTML = titled(icon, text); };
+  setTitle("race-title", "ball", "Playoff Race");
+  setTitle("standings-title", "trophy", "Standings");
+  setTitle("coaching-title", "ball", "Coach Efficiency");
+  setTitle("luck-title", "ball", "Luck Index");
+  setTitle("swap-title", "ball", "schedule_swap.xls");
+  setTitle("records-title", "trophy", "Record Book");
+  $("rec-head").innerHTML = sprite("trophy") + "Season records";
+  $("flags-head").innerHTML = sprite("flag") + "Yowza flags";
+
+  // minimize buttons
+  document.querySelectorAll("[data-min]").forEach(b => {
+    b.addEventListener("click", () => {
+      const win = b.closest(".win");
+      const min = win.classList.toggle("min");
+      b.textContent = min ? "□" : "_";
+      b.setAttribute("aria-label", min ? "Restore" : "Minimize");
+      b.title = min ? "Restore" : "Minimize";
+    });
   });
-  $("picker-wrap").hidden = !D.weeks.length;
 
   // ----- group chat text -----
   function chatText(w) {
@@ -471,97 +667,103 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
     return "Week " + w.week + " top score: " + plain(a.top.team) + " with " + pts(a.top.score) + ".\n" + url;
   }
 
-  function wireShare(w) {
-    const btn = $("share-btn"), status = $("share-status"), box = $("share-fallback");
-    if (!btn) return;
-    btn.addEventListener("click", () => {
-      const text = chatText(w);
-      const fallback = () => {
-        box.hidden = false;
-        box.value = text;
-        box.focus();
-        box.select();
-        status.textContent = "Copy this text and paste it in the chat.";
-      };
-      try {
-        navigator.clipboard.writeText(text).then(() => {
-          status.textContent = "Copied. Paste it in the group chat.";
-          box.hidden = true;
-        }, fallback);
-      } catch (e) { fallback(); }
-    });
-  }
+  const weekOptions = () => D.weeks.slice().reverse().map(w =>
+    '<option value="' + w.week + '">' + w.week + (w.playoff ? " (playoffs)" : "") + '</option>').join("");
 
   // ----- one week -----
   function renderWeek(w) {
-    const a = w.awards;
-    const y = a.yowza;
-    const share = '<div class="share-row"><button class="share-btn" id="share-btn" type="button">Copy for the group chat</button>' +
-      '<span class="share-status" id="share-status" role="status"></span></div>' +
-      '<textarea class="share-fallback" id="share-fallback" readonly hidden aria-label="Text for the group chat"></textarea>';
-    if (y) {
+    const a = w.awards, y = a.yowza;
+    let title, text;
+    if (y && y.left > 0.005) {
       const t = T[y.team] || {};
+      title = "Yowza of the Week " + w.week;
       const result = y.result === "W"
-        ? "Won anyway, " + pts(y.score) + " to " + pts(y.oppScore) + ", against " + name(y.opp) + "."
-        : y.result === "L"
-          ? "Lost " + pts(y.score) + " to " + pts(y.oppScore) + " against " + name(y.opp) + "."
+        ? "Won anyway, " + pts(y.score) + " to " + pts(y.oppScore) + ", vs " + name(y.opp) + "."
+        : y.result === "L" ? "Lost " + pts(y.score) + " to " + pts(y.oppScore) + " vs " + name(y.opp) + "."
           : "Tied " + name(y.opp) + " at " + pts(y.score) + ".";
-      const call = y.worstCall
-        ? "Started " + esc(y.worstCall.started.name) + " at " + esc(y.worstCall.started.slot) + " (" + pts(y.worstCall.started.points) + " points) while " +
-          esc(y.worstCall.benched.name) + " scored " + pts(y.worstCall.benched.points) + " on the bench. "
-        : "";
-      $("this-week").innerHTML = flagSvg +
-        '<div class="hero-body">' +
-          '<h2 class="hero-kicker">Yowza of the Week ' + w.week + '</h2>' +
-          '<p class="hero-team">' + name(y.team) + '</p>' +
-          (t.manager ? '<p class="hero-manager">Managed by ' + esc(t.manager) + '</p>' : "") +
-          (y.left > 0.005
-            ? '<p class="hero-line">Left <strong class="num">' + pts(y.left) + '</strong> points on the bench.</p>'
-            : '<p class="hero-line">Every manager set a perfect lineup. Nobody gets the flag.</p>') +
-          '<p class="hero-detail">' + call + result + '</p>' +
-          (y.costGame ? '<p class="hero-sting">The best lineup would have won the game.</p>' : "") +
-          share +
-        '</div>';
+      const lines = [];
+      if (y.worstCall) {
+        lines.push("Started " + esc(y.worstCall.started.name) + " at " + esc(y.worstCall.started.slot) + ": " + pts(y.worstCall.started.points) + " pts.");
+        lines.push(esc(y.worstCall.benched.name) + " on the bench: " + pts(y.worstCall.benched.points) + " pts.");
+      }
+      lines.push(result);
+      if (y.costGame) lines.push('<span class="sting">The best lineup would have won the game.</span>');
+      text = '<p class="dialog-kicker">This team has performed an illegal lineup.</p>' +
+        '<p class="dialog-team">' + name(y.team) + '</p>' +
+        '<p class="dialog-line">' + (t.manager ? esc(t.manager) + " left " : "Left ") + '<strong class="num">' + pts(y.left) + '</strong> points on the bench. If the problem persists, contact the commissioner.</p>' +
+        '<div class="details sunken" id="details">' + lines.map(l => "<span>" + l + "</span>").join("") + '</div>';
+    } else if (y) {
+      title = "Week " + w.week;
+      text = '<p class="dialog-kicker">No illegal lineups detected.</p><p class="dialog-team">Perfect week</p>' +
+        '<p class="dialog-line">Every manager started the best possible lineup. Nobody gets the flag.</p>';
     } else {
-      $("this-week").innerHTML = flagSvg +
-        '<div class="hero-body"><h2 class="hero-kicker">Week ' + w.week + '</h2>' +
-        '<p class="hero-team">' + name(a.top.team) + '</p>' +
-        '<p class="hero-line">Top score of the week: <strong class="num">' + pts(a.top.score) + '</strong>.</p>' +
-        '<p class="hero-detail">Lineup details aren’t available for this week, so there’s no Yowza of the Week.</p>' + share + '</div>';
+      title = "Week " + w.week;
+      text = '<p class="dialog-kicker">Top score of the week</p><p class="dialog-team">' + name(a.top.team) + '</p>' +
+        '<p class="dialog-line"><strong class="num">' + pts(a.top.score) + '</strong> points. Lineup details aren’t available for this week, so there’s no Yowza of the Week.</p>';
     }
-    wireShare(w);
+    $("dialog-title").innerHTML = titled("flag", title);
+    $("dialog-body").innerHTML =
+      '<div class="dialog-icon">' + sprite("flag") + '</div>' +
+      '<div class="dialog-text">' + text + '</div>' +
+      '<div class="dialog-foot"><label class="left" for="week">Week <select class="retro" id="week">' + weekOptions() + '</select></label>' +
+        '<div class="right">' + (text.includes('id="details"') ? '<button class="btn" type="button" id="details-btn" aria-expanded="true" aria-controls="details">&lt;&lt; Details</button>' : "") +
+        '<button class="btn default" type="button" id="share-btn">Copy for the group chat</button></div></div>' +
+      '<p class="copy-status" id="share-status" role="status"></p>' +
+      '<textarea class="share-fallback sunken" id="share-fallback" readonly hidden aria-label="Text for the group chat"></textarea>';
+    const select = $("week");
+    select.value = w.week;
+    select.addEventListener("change", () => {
+      const nw = D.weeks.find(x => x.week === Number(select.value));
+      if (nw) { renderWeek(nw); try { history.replaceState(null, "", "#week-" + nw.week); } catch (e) { location.hash = "week-" + nw.week; } $("week").focus(); }
+    });
+    const db = $("details-btn");
+    if (db) db.addEventListener("click", () => {
+      const open = db.getAttribute("aria-expanded") === "true";
+      db.setAttribute("aria-expanded", String(!open));
+      db.innerHTML = open ? "Details &gt;&gt;" : "&lt;&lt; Details";
+      $("details").hidden = open;
+    });
+    $("share-btn").addEventListener("click", () => {
+      const msg = chatText(w), status = $("share-status"), box = $("share-fallback");
+      const fallback = () => { box.hidden = false; box.value = msg; box.focus(); box.select(); status.textContent = "Copy this text and paste it in the chat."; };
+      try {
+        navigator.clipboard.writeText(msg).then(() => { status.textContent = "Copied. Paste it in the group chat."; box.hidden = true; }, fallback);
+      } catch (e) { fallback(); }
+    });
 
-    $("awards-title").textContent = "Week " + w.week + " awards";
+    $("awards-title").innerHTML = titled("flag", "week_" + w.week + "_awards.txt - Notepad");
+    setTitle("score-title", "ball", "Week " + w.week + " Scoreboard");
+    $("task-btn").innerHTML = sprite("flag") + "<span>Yowza League - Week " + w.week + "</span>";
     const rows = [];
     const n = w.matchups.length * 2 - 1;
-    if (a.top) rows.push(["Top score", "<b>" + name(a.top.team) + "</b>", pts(a.top.score)]);
-    if (a.mvp) rows.push(["Best player", "<b>" + esc(a.mvp.name) + "</b> (" + esc(a.mvp.pos) + ") for " + name(a.mvp.team), pts(a.mvp.points)]);
-    if (a.blowout) rows.push(["Biggest blowout", "<b>" + name(a.blowout.winner) + "</b> over " + name(a.blowout.loser), "+" + pts(a.blowout.margin)]);
-    if (a.nailbiter) rows.push(["Closest game", "<b>" + name(a.nailbiter.winner) + "</b> over " + name(a.nailbiter.loser), "+" + pts(a.nailbiter.margin)]);
-    if (a.robbed) rows.push(["Unluckiest loss", "<b>" + name(a.robbed.team) + "</b> lost with a score that beats " + a.robbed.wouldBeat + " of " + n + " teams", pts(a.robbed.score)]);
-    if (a.lucky) rows.push(["Luckiest win", "<b>" + name(a.lucky.team) + "</b> won with a score that beats " + a.lucky.wouldBeat + " of " + n + " teams", pts(a.lucky.score)]);
-    if (a.perfect && a.perfect.length) rows.push(["Perfect lineup", a.perfect.map(id => "<b>" + name(id) + "</b>").join(", ") + " started the best possible lineup", "100%"]);
-    $("awards").innerHTML = rows.map(r =>
-      '<div class="award"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd><span class="stat num">' + r[2] + '</span></div>').join("");
+    if (a.top) rows.push(["Top score", name(a.top.team), pts(a.top.score)]);
+    if (a.mvp) rows.push(["Best player", esc(a.mvp.name) + " (" + esc(a.mvp.pos) + ") for " + name(a.mvp.team), pts(a.mvp.points)]);
+    if (a.blowout) rows.push(["Biggest blowout", name(a.blowout.winner) + " over " + name(a.blowout.loser), "+" + pts(a.blowout.margin)]);
+    if (a.nailbiter) rows.push(["Closest game", name(a.nailbiter.winner) + " over " + name(a.nailbiter.loser), "+" + pts(a.nailbiter.margin)]);
+    if (a.robbed) rows.push(["Unluckiest loss", name(a.robbed.team) + " lost with a score that beats " + a.robbed.wouldBeat + " of " + n + " teams", pts(a.robbed.score)]);
+    if (a.lucky) rows.push(["Luckiest win", name(a.lucky.team) + " won with a score that beats " + a.lucky.wouldBeat + " of " + n + " teams", pts(a.lucky.score)]);
+    if (a.perfect && a.perfect.length) rows.push(["Perfect lineup", a.perfect.map(id => name(id)).join(", "), "100%"]);
+    $("awards").innerHTML = rows.map(r => '<div class="note"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd><span class="v num">' + r[2] + '</span></div>').join("");
 
     $("games").innerHTML = w.matchups.map(m => {
       const hw = m.homeScore > m.awayScore, aw = m.awayScore > m.homeScore;
-      return '<div class="game">' +
-        '<div class="side' + (hw ? " won" : "") + '"><span>' + name(m.home) + '</span><span class="score num">' + pts(m.homeScore) + '</span></div>' +
-        '<div class="side' + (aw ? " won" : "") + '"><span>' + name(m.away) + '</span><span class="score num">' + pts(m.awayScore) + '</span></div></div>';
+      return '<div class="led-game">' +
+        '<div class="led-side' + (hw ? " won" : "") + '"><span>' + name(m.home) + '</span><span class="num">' + pts(m.homeScore) + '</span></div>' +
+        '<div class="led-side' + (aw ? " won" : "") + '"><span>' + name(m.away) + '</span><span class="num">' + pts(m.awayScore) + '</span></div></div>';
     }).join("");
   }
 
   function emptyState() {
-    $("this-week").innerHTML = flagSvg + '<div class="hero-body"><h2 class="hero-kicker">Yowza of the Week</h2>' +
-      '<p class="hero-team">Coming soon</p><p class="hero-detail">The first flag gets thrown once Week 1 is final.</p></div>';
+    $("dialog-title").innerHTML = titled("flag", "Yowza of the Week");
+    $("dialog-body").innerHTML = '<div class="dialog-icon">' + sprite("flag") + '</div><div class="dialog-text"><p class="dialog-kicker">Please wait.</p>' +
+      '<p class="dialog-team">Coming soon</p><p class="dialog-line">The first flag gets thrown once Week 1 is final.</p></div>';
     $("week-detail").hidden = true;
   }
 
   // ----- playoff race -----
   function renderRace() {
     const R = D.race;
-    if (!R) { $("playoffs").hidden = true; $("nav-playoffs").hidden = true; return; }
+    if (!R) { $("playoffs").hidden = true; return; }
     const S = Object.fromEntries(D.standings.map(r => [r.team, r]));
     const rows = Object.entries(R.teams).map(([id, o]) => ({ id: Number(id), ...o }))
       .sort((a, b) => b.playoffs - a.playoffs || (b.bye || 0) - (a.bye || 0) || b.first - a.first);
@@ -569,9 +771,8 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
       "The top " + R.spots + " make the playoffs" + (R.byes ? " and the top " + R.byes + " get a first-round bye." : ".");
     $("race-foot").textContent = "Ties in the standings are broken by points scored, which may not match every tiebreaker in your league settings." +
       (R.divisions > 1 ? " Division titles aren’t modeled." : "") + " Odds update every morning.";
-    $("race-legend").innerHTML = (R.byes ? '<span><i style="background: var(--odds-bye)"></i>Gets a bye</span>' : "") +
-      '<span><i style="background: var(--odds-in)"></i>Makes the playoffs' + (R.byes ? " without a bye" : "") + '</span>';
-
+    $("race-legend").innerHTML = (R.byes ? '<span><i style="background: var(--prog-bye)"></i>Gets a bye</span>' : "") +
+      '<span><i style="background: var(--prog-in)"></i>Makes the playoffs' + (R.byes ? " without a bye" : "") + '</span>';
     const g = R.gameOfWeek;
     if (g) {
       const h = R.teams[g.home].next, a = R.teams[g.away].next;
@@ -580,7 +781,6 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
         name(g.home) + " is at " + pct(h.ifWin) + " with a win and " + pct(h.ifLoss) + " with a loss. " +
         name(g.away) + " is at " + pct(a.ifWin) + " with a win and " + pct(a.ifLoss) + " with a loss.";
     }
-
     let html = "";
     rows.forEach((o, i) => {
       const t = T[o.id] || {}, s = S[o.id] || { w: 0, l: 0, t: 0 };
@@ -591,11 +791,11 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
       const tip = plain(o.id) + ": " + pct(o.playoffs) + " to make the playoffs" + (R.byes ? ", " + pct(bye) + " to get a bye" : "") + ", " + pct(o.first) + " to finish first. Projected " + o.projWins.toFixed(1) + " wins.";
       html += '<div class="race-row" role="listitem">' +
         '<div class="race-name"><b>' + name(o.id) + '</b><small>' + record(s.w, s.l, s.t) + (t.manager ? "  " + esc(t.manager) : "") + '</small></div>' +
-        '<div class="race-bar" data-tip="' + esc(tip) + '"><span class="in" style="width:' + (o.playoffs * 100).toFixed(1) + '%"></span>' +
-          (R.byes ? '<span class="bye" style="width:' + (bye * 100).toFixed(1) + '%"></span>' : "") + '</div>' +
+        '<div class="prog sunken" data-tip="' + esc(tip) + '"><span class="in" style="width:calc((100% - 6px) * ' + o.playoffs.toFixed(3) + ')"></span>' +
+          (R.byes ? '<span class="bye" style="width:calc((100% - 6px) * ' + bye.toFixed(3) + ')"></span>' : "") + '</div>' +
         '<div class="race-pct num">' + pct(o.playoffs) + '</div>' +
         '<div class="race-meta">' + meta.join("") + '</div></div>';
-      if (i === R.spots - 1 && i < rows.length - 1) html += '<div class="cutline" role="presentation"><span>Playoff line</span></div>';
+      if (i === R.spots - 1 && i < rows.length - 1) html += '<div class="cutline" role="presentation">PLAYOFF LINE</div>';
     });
     $("race-rows").innerHTML = html;
   }
@@ -609,14 +809,12 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
     $("standings-table").innerHTML = '<thead><tr><th scope="col">#</th><th scope="col">Team</th><th scope="col">Record</th><th scope="col">Points for</th><th scope="col">Points against</th><th scope="col">All-play</th><th scope="col">Luck</th></tr></thead><tbody>' +
       S.map((r, i) => {
         const t = T[r.team] || {};
-        const color = r.luck > 0.005 ? "var(--lucky)" : r.luck < -0.005 ? "var(--unlucky)" : "var(--zero)";
+        const color = r.luck > 0.005 ? "var(--lucky)" : r.luck < -0.005 ? "var(--unlucky)" : "var(--lo)";
         return '<tr><td class="num">' + (i + 1) + '</td>' +
           '<td class="team-cell"><b>' + name(r.team) + '</b>' + (t.manager ? '<small>' + esc(t.manager) + '</small>' : "") + '</td>' +
-          '<td class="num">' + record(r.w, r.l, r.t) + '</td>' +
-          '<td class="num">' + pts(r.pf) + '</td>' +
-          '<td class="num">' + pts(r.pa) + '</td>' +
+          '<td class="num">' + record(r.w, r.l, r.t) + '</td><td class="num">' + pts(r.pf) + '</td><td class="num">' + pts(r.pa) + '</td>' +
           '<td class="num">' + record(r.apW, r.apL, r.apT) + '</td>' +
-          '<td class="num luck-val"><span class="luck-mark" style="background:' + color + '"></span>' + signed(r.luck) + '</td></tr>';
+          '<td class="num"><span class="luck-mark" style="background:' + color + '"></span>' + signed(r.luck) + '</td></tr>';
       }).join("") + '</tbody>';
   }
 
@@ -629,16 +827,16 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
     const field = $("field");
     field.style.setProperty("--steps", steps);
     field.style.setProperty("--rows", rows.length);
+    const ball = sprite("ball");
     field.innerHTML = rows.map((r, i) => {
-      const t = T[r.team] || {};
       const xv = x(r.efficiency);
-      const tip = esc(t.name || "") + ": started " + pts(r.startedPts) + " of a possible " + pts(r.bestPts) + " points, leaving " + pts(r.benchLeft) + " on the bench.";
+      const tip = plain(r.team) + ": started " + pts(r.startedPts) + " of a possible " + pts(r.bestPts) + " points, leaving " + pts(r.benchLeft) + " on the bench.";
       return '<div class="lane" role="listitem">' +
         '<div class="lane-name" style="grid-row:' + (i + 1) + '"><span class="full">' + name(r.team) + '</span><span class="abbr">' + abbr(r.team) + '</span></div>' +
-        '<div class="lane-track" tabindex="0" data-tip="' + tip + '" style="grid-row:' + (i + 1) + ';--x:' + xv.toFixed(2) + '%" aria-label="' + tip + '">' +
-          '<span class="lane-val num' + (xv < 36 ? " after" : "") + '">' + r.efficiency.toFixed(1) + '%</span><span class="ball"></span></div>' +
+        '<div class="lane-track" tabindex="0" data-tip="' + esc(tip) + '" style="grid-row:' + (i + 1) + ';--x:' + xv.toFixed(2) + '%" aria-label="' + esc(tip) + '">' +
+          '<span class="lane-val num' + (xv < 36 ? " after" : "") + '">' + r.efficiency.toFixed(1) + '%</span><span class="ball">' + ball + '</span></div>' +
         '<div class="lane-ez" style="grid-row:' + (i + 1) + '"></div></div>';
-    }).join("") + '<div class="ez-label"><span>Perfect</span></div>';
+    }).join("") + '<div class="ez-label"><span>PERFECT</span></div>';
     const ticks = [];
     for (let v = lo; v <= 100; v += 10) ticks.push('<span style="left:' + x(v) + '%">' + v + '%</span>');
     $("field-axis").innerHTML = ticks.join("");
@@ -647,14 +845,11 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
   function renderLuck() {
     const rows = D.standings.slice().sort((a, b) => b.luck - a.luck);
     if (!L.weeksPlayed) { $("luck").hidden = true; return; }
-    // leave room past the longest bar for its label
     const max = Math.max(1, Math.ceil(Math.max(...rows.map(r => Math.abs(r.luck))) + 0.6));
     const half = v => (Math.abs(v) / max) * 50;
     $("luck-rows").innerHTML = rows.map(r => {
-      const pos = r.luck >= 0;
-      const w = half(r.luck);
-      const tip = plain(r.team) + " went " + record(r.w, r.l, r.t) + ". Against everyone, their scores went " + record(r.apW, r.apL, r.apT) +
-        ", worth " + r.xWins.toFixed(1) + " wins.";
+      const pos = r.luck >= 0, w = half(r.luck);
+      const tip = plain(r.team) + " went " + record(r.w, r.l, r.t) + ". Against everyone, their scores went " + record(r.apW, r.apL, r.apT) + ", worth " + r.xWins.toFixed(1) + " wins.";
       const valPos = pos ? "left: calc(50% + " + w + "% + 6px)" : "right: calc(50% + " + w + "% + 6px)";
       return '<div class="luck-row" role="listitem" tabindex="0" data-tip="' + esc(tip) + '" aria-label="' + esc(tip) + ' Luck ' + signed(r.luck) + '.">' +
         '<span class="luck-name"><span class="full">' + name(r.team) + '</span><span class="abbr">' + abbr(r.team) + '</span></span>' +
@@ -673,39 +868,31 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
     const order = D.standings.map(r => r.team);
     const rec = (a, b) => G.records[a][b];
     const nWeeks = G.weeks;
-    let head = '<thead><tr><th scope="col"><span class="sr-only"></span></th>' +
-      order.map(b => '<th scope="col" title="' + esc(plain(b)) + ' schedule">' + abbr(b) + '</th>').join("") + '</tr></thead>';
-    let body = "<tbody>" + order.map(a => {
-      return '<tr><th scope="row"><span class="full">' + name(a) + '</span><span class="abbr">' + abbr(a) + '</span></th>' +
-        order.map(b => {
-          const r = rec(a, b), share = nWeeks ? r[0] / nWeeks : 0;
-          const mix = Math.round(share * 100);
-          const fg = share > 0.55 ? "var(--heat-ink)" : "var(--ink)";
-          const tip = a === b
-            ? plain(a) + " real record: " + record(r[0], r[1], r[2])
-            : plain(a) + " with " + plain(b) + (plain(b).endsWith("s") ? "’" : "’s") + " schedule: " + record(r[0], r[1], r[2]);
-          return '<td class="num' + (a === b ? " own" : "") + '" data-tip="' + esc(tip) + '" aria-label="' + esc(tip) + '" style="background: color-mix(in oklab, var(--heat-hi) ' + mix + '%, var(--heat-lo)); color: ' + fg + '">' + r[0] + '</td>';
-        }).join("") + '</tr>';
-    }).join("") + "</tbody>";
+    const head = '<thead><tr><th scope="col"></th>' + order.map(b => '<th scope="col" title="' + esc(plain(b)) + ' schedule">' + abbr(b) + '</th>').join("") + '</tr></thead>';
+    const body = "<tbody>" + order.map(a => '<tr><th scope="row"><span class="full">' + name(a) + '</span><span class="abbr">' + abbr(a) + '</span></th>' +
+      order.map(b => {
+        const r = rec(a, b), share = nWeeks ? r[0] / nWeeks : 0;
+        const fg = share > 0.5 ? "#ffffff" : "#000000";
+        const tip = a === b ? plain(a) + " real record: " + record(r[0], r[1], r[2])
+          : plain(a) + " with " + plain(b) + (plain(b).endsWith("s") ? "’" : "’s") + " schedule: " + record(r[0], r[1], r[2]);
+        return '<td class="num' + (a === b ? " own" : "") + '" data-tip="' + esc(tip) + '" aria-label="' + esc(tip) + '" style="background: color-mix(in srgb, var(--heat-hi) ' + Math.round(share * 100) + '%, var(--heat-lo)); color: ' + fg + '">' + r[0] + '</td>';
+      }).join("") + '</tr>').join("") + "</tbody>";
     $("heat").innerHTML = head + body;
 
-    // the three stories worth telling
     const stories = [];
     let robbed = null, blessed = null;
     order.forEach(a => {
       const real = rec(a, a);
       order.forEach(b => {
         if (a === b) return;
-        const r = rec(a, b);
-        const gain = r[0] - real[0];
+        const r = rec(a, b), gain = r[0] - real[0];
         if (!robbed || gain > robbed.gain) robbed = { a, b, gain, r, real };
         if (!blessed || -gain > blessed.gain) blessed = { a, b, gain: -gain, r, real };
       });
     });
     if (robbed && robbed.gain > 0) stories.push("<b>" + name(robbed.a) + "</b> is " + record(...robbed.real) + " but would be " + record(...robbed.r) + " with " + owns(robbed.b) + " schedule.");
     if (blessed && blessed.gain > 0) stories.push("<b>" + name(blessed.a) + "</b> is " + record(...blessed.real) + " and would be " + record(...blessed.r) + " with " + owns(blessed.b) + " schedule.");
-    const avg = order.map(b => ({ b, w: order.reduce((s, a) => s + rec(a, b)[0], 0) / order.length }));
-    avg.sort((x, y) => x.w - y.w);
+    const avg = order.map(b => ({ b, w: order.reduce((s, a) => s + rec(a, b)[0], 0) / order.length })).sort((x, y) => x.w - y.w);
     if (avg.length > 1) stories.push("Toughest schedule: <b>" + name(avg[0].b) + "</b>. The average team would win " + avg[0].w.toFixed(1) + " of " + nWeeks + " games with it. Easiest: <b>" + name(avg[avg.length - 1].b) + "</b>, at " + avg[avg.length - 1].w.toFixed(1) + ".");
     $("swap-story").innerHTML = stories.map(s => "<li>" + s + "</li>").join("");
   }
@@ -717,28 +904,26 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
     const R = B.records;
     $("records-note").textContent = "The " + L.season + " season so far. This is the league’s first season on ESPN, so next year this becomes the all-time book.";
     const rows = [];
-    if (R.high) rows.push(["Highest score", "<b>" + name(R.high.team) + "</b> in Week " + R.high.week, pts(R.high.score)]);
-    if (R.low) rows.push(["Lowest score", "<b>" + name(R.low.team) + "</b> in Week " + R.low.week, pts(R.low.score)]);
-    if (R.blowout) rows.push(["Biggest blowout", "<b>" + name(R.blowout.winner) + "</b> over " + name(R.blowout.loser) + ", " + pts(R.blowout.winScore) + " to " + pts(R.blowout.loseScore) + " in Week " + R.blowout.week, "+" + pts(R.blowout.margin)]);
-    if (R.closest) rows.push(["Closest game", "<b>" + name(R.closest.winner) + "</b> over " + name(R.closest.loser) + " in Week " + R.closest.week, "+" + pts(R.closest.margin)]);
-    if (R.player) rows.push(["Best single game", "<b>" + esc(R.player.name) + "</b> (" + esc(R.player.pos) + ") for " + name(R.player.team) + " in Week " + R.player.week, pts(R.player.points)]);
-    if (R.bench) rows.push(["Most points left on the bench", "<b>" + name(R.bench.team) + "</b> in Week " + R.bench.week, pts(R.bench.left)]);
-    if (R.streak && R.streak.length > 1) rows.push(["Longest winning streak", "<b>" + name(R.streak.team) + "</b>, Weeks " + R.streak.from + "–" + R.streak.to, R.streak.length + " W"]);
+    if (R.high) rows.push(["Highest score", name(R.high.team) + ", Week " + R.high.week, pts(R.high.score)]);
+    if (R.low) rows.push(["Lowest score", name(R.low.team) + ", Week " + R.low.week, pts(R.low.score)]);
+    if (R.blowout) rows.push(["Biggest blowout", name(R.blowout.winner) + " over " + name(R.blowout.loser) + ", " + pts(R.blowout.winScore) + " to " + pts(R.blowout.loseScore) + ", Week " + R.blowout.week, "+" + pts(R.blowout.margin)]);
+    if (R.closest) rows.push(["Closest game", name(R.closest.winner) + " over " + name(R.closest.loser) + ", Week " + R.closest.week, "+" + pts(R.closest.margin)]);
+    if (R.player) rows.push(["Best single game", esc(R.player.name) + " (" + esc(R.player.pos) + ") for " + name(R.player.team) + ", Week " + R.player.week, pts(R.player.points)]);
+    if (R.bench) rows.push(["Most left on the bench", name(R.bench.team) + ", Week " + R.bench.week, pts(R.bench.left)]);
+    if (R.streak && R.streak.length > 1) rows.push(["Longest winning streak", name(R.streak.team) + ", Weeks " + R.streak.from + "–" + R.streak.to, R.streak.length + "W"]);
     const cur = Object.entries(B.streaks || {}).map(([id, s]) => ({ id: Number(id), ...s }));
     const hot = cur.filter(s => s.type === "W").sort((a, b) => b.length - a.length)[0];
     const cold = cur.filter(s => s.type === "L").sort((a, b) => b.length - a.length)[0];
-    if (hot && hot.length > 1) rows.push(["Hottest right now", "<b>" + name(hot.id) + "</b> has won " + hot.length + " straight", hot.length + " W"]);
-    if (cold && cold.length > 1) rows.push(["Coldest right now", "<b>" + name(cold.id) + "</b> has lost " + cold.length + " straight", cold.length + " L"]);
-    $("rec-list").innerHTML = rows.map(r =>
-      '<div class="award"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd><span class="stat num">' + r[2] + '</span></div>').join("");
-
-    const mini = '<svg viewBox="0 0 120 120" aria-hidden="true">' + flagPaths + '</svg>';
+    if (hot && hot.length > 1) rows.push(["Hottest right now", name(hot.id) + " has won " + hot.length + " straight", hot.length + "W"]);
+    if (cold && cold.length > 1) rows.push(["Coldest right now", name(cold.id) + " has lost " + cold.length + " straight", cold.length + "L"]);
+    $("rec-list").innerHTML = rows.map(r => '<div class="note"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd><span class="v num">' + r[2] + '</span></div>').join("");
+    const flag = sprite("flag");
     $("flags").innerHTML = (B.flags || []).map(f => {
       const t = T[f.team] || {};
       return '<li><div class="who"><b>' + name(f.team) + '</b><small>' + (t.manager ? esc(t.manager) + ". " : "") +
         (f.weeks.length > 1 ? "Weeks " : "Week ") + f.weeks.join(", ") + '</small></div>' +
-        '<div class="count" aria-label="' + f.count + (f.count === 1 ? " flag" : " flags") + '">' + mini.repeat(f.count) + '</div></li>';
-    }).join("") || '<li><div class="who">No flags yet.</div></li>';
+        '<div class="count" aria-label="' + f.count + (f.count === 1 ? " flag" : " flags") + '">' + flag.repeat(f.count) + '</div></li>';
+    }).join("") || "<li>No flags yet.</li>";
   }
 
   // ----- tooltip -----
@@ -748,10 +933,10 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
     tip.hidden = false;
     const r = el.getBoundingClientRect();
     const tw = tip.offsetWidth, th = tip.offsetHeight;
-    let left = (cx != null ? cx : r.left + r.width / 2) - tw / 2;
-    let top = (cy != null ? cy : r.top) - th - 12;
-    if (top < 8) top = r.bottom + 8;
-    left = Math.max(8, Math.min(window.innerWidth - tw - 8, left));
+    let left = (cx != null ? cx + 12 : r.left + r.width / 2 - tw / 2);
+    let top = (cy != null ? cy + 18 : r.bottom + 6);
+    if (top + th > window.innerHeight - 50) top = (cy != null ? cy : r.top) - th - 8;
+    left = Math.max(6, Math.min(window.innerWidth - tw - 6, left));
     tip.style.left = left + "px";
     tip.style.top = top + "px";
   }
@@ -763,19 +948,209 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
   document.addEventListener("focusout", () => { tip.hidden = true; });
   window.addEventListener("scroll", () => { tip.hidden = true; }, { passive: true });
 
-  // ----- week picker + #week-N links -----
+  // ----- taskbar: Start menu and clock -----
+  $("start-icon").innerHTML = sprite("flag");
+  const menu = $("start-menu"), startBtn = $("start-btn");
+  const items = [["this-week", "flag", "Yowza of the Week"], ["playoffs", "ball", "Playoff Race"], ["standings", "trophy", "Standings"],
+    ["coaching", "ball", "Coach Efficiency"], ["luck", "ball", "Luck Index"], ["schedules", "ball", "Schedule Swap"], ["records", "trophy", "Record Book"]]
+    .filter(([id]) => !$(id).hidden);
+  $("start-items").innerHTML = items.map(([id, icon, label]) => '<li><a href="#' + id + '">' + sprite(icon) + label + '</a></li>').join("") +
+    '<li><hr></li><li><a href="#jukebox" id="menu-jukebox">' + sprite("note") + 'Jukebox</a></li>';
+  function closeMenu() { menu.hidden = true; startBtn.setAttribute("aria-expanded", "false"); }
+  startBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    const open = menu.hidden;
+    menu.hidden = !open;
+    startBtn.setAttribute("aria-expanded", String(open));
+    if (open) { const first = menu.querySelector("a"); if (first) first.focus(); }
+  });
+  menu.addEventListener("click", e => {
+    const a = e.target.closest("a");
+    if (!a) return;
+    if (a.id === "menu-jukebox") { e.preventDefault(); showJukebox(); }
+    closeMenu();
+  });
+  document.addEventListener("click", e => { if (!menu.hidden && !menu.contains(e.target)) closeMenu(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !menu.hidden) { closeMenu(); startBtn.focus(); } });
+  $("task-btn").addEventListener("click", () => $("this-week").scrollIntoView({ block: "start" }));
+  function tick() { $("clock").textContent = new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }); }
+  tick();
+  setInterval(tick, 15000);
+
+  // ----- jukebox: an original theme rendered in the browser -----
+  const Theme = (function () {
+    const BPM = 132, EIGHTH = 60 / BPM / 2, BARS = 16, RATE = 22050;
+    const H = "-", R = null;
+    // Lead melody, eight eighth-notes per bar, MIDI note numbers. "-" holds the previous note.
+    const A = [76, H, 79, 76, 84, H, 79, R, 81, H, 79, 76, 74, H, 72, R, 77, H, 81, 77, 84, H, 81, 79, 79, H, H, 74, 79, 81, 83, R];
+    const B = [84, H, 83, 81, 79, H, 76, 79, 81, H, H, 76, 81, 83, 84, R, 81, H, 79, 77, 76, H, 74, 77, 79, H, H, H, 71, 72, 74, R];
+    const C = [81, H, 84, H, 81, 79, 77, R, 79, H, 83, H, 86, H, 83, R, 84, H, 83, 81, 76, H, 81, R, 79, H, 77, 76, 74, H, H, R];
+    const lead = A.concat(B, A, C);
+    const roots = [48, 45, 41, 43, 48, 45, 41, 43, 48, 45, 41, 43, 41, 43, 45, 43];
+    const freq = m => 440 * Math.pow(2, (m - 69) / 12);
+    let buffer = null, url = null;
+
+    async function render() {
+      const length = Math.ceil(BARS * 8 * EIGHTH * RATE);
+      const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+      if (!OAC) throw new Error("no audio");
+      const ctx = new OAC(1, length, RATE);
+      const master = ctx.createGain();
+      master.gain.value = 0.55;
+      master.connect(ctx.destination);
+      const tone = (type, f, t, dur, vol) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = type; o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
+        g.gain.exponentialRampToValueAtTime(vol * 0.6, t + 0.08);
+        g.gain.setValueAtTime(vol * 0.6, t + Math.max(0.09, dur - 0.04));
+        g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        o.connect(g); g.connect(master);
+        o.start(t); o.stop(t + dur + 0.02);
+      };
+      const noiseBuf = ctx.createBuffer(1, RATE * 0.3, RATE);
+      const nd = noiseBuf.getChannelData(0);
+      for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+      const hit = (t, dur, vol, cutoff) => {
+        const s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+        s.buffer = noiseBuf; f.type = "highpass"; f.frequency.value = cutoff;
+        g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t + dur + 0.01);
+      };
+      const kick = t => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.12);
+        g.gain.setValueAtTime(0.9, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+        o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.18);
+      };
+      lead.forEach((n, i) => {
+        if (typeof n !== "number") return;
+        let len = 1;
+        while (lead[i + len] === H) len++;
+        tone("square", freq(n), i * EIGHTH, len * EIGHTH * 0.95, 0.09);
+      });
+      roots.forEach((r, bar) => {
+        for (let e = 0; e < 8; e++) {
+          const t = (bar * 8 + e) * EIGHTH;
+          tone("triangle", freq(e % 2 ? r + 12 : r), t, EIGHTH * 0.9, 0.32);
+          hit(t, 0.03, 0.08, 7000);
+          if (e === 0 || e === 4 || (e === 7 && bar % 4 === 3)) kick(t);
+          if (e === 2 || e === 6) hit(t, 0.12, 0.22, 1800);
+        }
+        const third = (bar % 4 === 1 || bar === 14) ? 3 : 4;
+        [0, third, 7].forEach(iv => tone("square", freq(r + 24 + iv), bar * 8 * EIGHTH + EIGHTH * 3, EIGHTH * 0.5, 0.025));
+      });
+      buffer = await ctx.startRendering();
+      return buffer;
+    }
+
+    function wav(buf) {
+      const data = buf.getChannelData(0), n = data.length;
+      const out = new DataView(new ArrayBuffer(44 + n * 2));
+      const str = (o, s) => { for (let i = 0; i < s.length; i++) out.setUint8(o + i, s.charCodeAt(i)); };
+      str(0, "RIFF"); out.setUint32(4, 36 + n * 2, true); str(8, "WAVE"); str(12, "fmt ");
+      out.setUint32(16, 16, true); out.setUint16(20, 1, true); out.setUint16(22, 1, true);
+      out.setUint32(24, buf.sampleRate, true); out.setUint32(28, buf.sampleRate * 2, true);
+      out.setUint16(32, 2, true); out.setUint16(34, 16, true); str(36, "data"); out.setUint32(40, n * 2, true);
+      for (let i = 0; i < n; i++) out.setInt16(44 + i * 2, Math.max(-1, Math.min(1, data[i])) * 0x7fff, true);
+      return new Blob([out], { type: "audio/wav" });
+    }
+
+    async function prepare() {
+      if (url) return url;
+      await render();
+      url = URL.createObjectURL(wav(buffer));
+      return url;
+    }
+    return { prepare, samples: () => buffer && buffer.getChannelData(0), rate: RATE };
+  })();
+
+  const audio = new Audio();
+  audio.loop = true;
+  audio.preload = "auto";
+  let ready = false, pending = false;
+  Theme.prepare().then(u => {
+    audio.src = u;
+    ready = true;
+    if (pending) { pending = false; play(); }
+  }).catch(() => { $("jb-state").textContent = "NO AUDIO"; });
+
+  const jb = $("jukebox");
+  $("jb-title").innerHTML = titled("note", "Jukebox - yowza_theme");
+  function trayIcon() {
+    $("tray-music").innerHTML = sprite("note");
+    $("tray-music").classList.toggle("muted", audio.paused);
+    $("tray-music").setAttribute("aria-label", jb.hidden ? "Show the jukebox" : "Hide the jukebox");
+  }
+  function showJukebox() { jb.hidden = false; trayIcon(); }
+  function play() {
+    if (!ready) { $("jb-state").textContent = "LOADING"; pending = true; return; }
+    const p = audio.play();
+    if (p && p.catch) p.catch(() => { $("jb-state").textContent = "TAP PLAY"; });
+  }
+  $("jb-play").addEventListener("click", () => { if (audio.paused) play(); else audio.pause(); });
+  $("jb-stop").addEventListener("click", () => { audio.pause(); audio.currentTime = 0; });
+  $("jb-close").addEventListener("click", () => { jb.hidden = true; trayIcon(); });
+  $("tray-music").addEventListener("click", () => { jb.hidden = !jb.hidden; trayIcon(); });
+  audio.addEventListener("play", () => { $("jb-state").textContent = "▶ PLAYING"; $("jb-play").innerHTML = "&#10074;&#10074; Pause"; trayIcon(); draw(); });
+  audio.addEventListener("pause", () => { $("jb-state").textContent = audio.currentTime > 0 ? "‖ PAUSED" : "STOPPED"; $("jb-play").innerHTML = "&#9654; Play"; trayIcon(); draw(); });
+
+  const scope = $("jb-scope"), sctx = scope.getContext("2d");
+  function draw() {
+    const s = Theme.samples();
+    const t = audio.currentTime || 0;
+    const mm = String(Math.floor(t / 60)).padStart(2, "0"), ss = String(Math.floor(t % 60)).padStart(2, "0");
+    $("jb-time").textContent = mm + ":" + ss;
+    sctx.fillStyle = "#0b1a0b"; sctx.fillRect(0, 0, scope.width, scope.height);
+    sctx.fillStyle = "#39ff5a";
+    const mid = scope.height / 2;
+    if (s && !audio.paused) {
+      const start = Math.floor(t * Theme.rate) % s.length, span = 900;
+      for (let x = 0; x < scope.width; x += 2) {
+        const v = s[(start + Math.floor(x / scope.width * span)) % s.length];
+        sctx.fillRect(x, Math.round(mid - v * mid * 1.6), 2, 2);
+      }
+      requestAnimationFrame(draw);
+    } else {
+      sctx.fillRect(0, mid, scope.width, 1);
+    }
+  }
+  draw();
+  trayIcon();
+
+  // ----- welcome dialog -----
+  const welcome = $("welcome");
+  $("welcome-icon").innerHTML = sprite("note");
+  function enter(withMusic) {
+    welcome.hidden = true;
+    store.set("yowza-entered", "1");
+    if (withMusic) {
+      showJukebox();
+      play();
+      // on a phone, tuck the player into the taskbar so it doesn't cover the page
+      if (window.matchMedia("(max-width: 760px)").matches) setTimeout(() => { jb.hidden = true; trayIcon(); }, 4000);
+    }
+  }
+  if (!store.get("yowza-entered")) {
+    welcome.hidden = false;
+    $("enter-music").focus();
+    welcome.addEventListener("keydown", e => {
+      if (e.key === "Escape") enter(false);
+      if (e.key === "Tab") { e.preventDefault(); (document.activeElement === $("enter-music") ? $("enter-quiet") : $("enter-music")).focus(); }
+    });
+  }
+  $("enter-music").addEventListener("click", () => enter(true));
+  $("enter-quiet").addEventListener("click", () => enter(false));
+
+  // ----- #week-N links -----
   function weekFromHash() {
     const m = /^#week-(\d+)$/.exec(location.hash);
     return m && D.weeks.find(w => w.week === Number(m[1]));
   }
-  function show(w) { select.value = w.week; renderWeek(w); }
-  select.addEventListener("change", () => {
-    const w = D.weeks.find(x => x.week === Number(select.value));
-    if (w) { show(w); try { history.replaceState(null, "", "#week-" + w.week); } catch (e) { location.hash = "week-" + w.week; } }
-  });
-  window.addEventListener("hashchange", () => { const w = weekFromHash(); if (w) show(w); });
+  window.addEventListener("hashchange", () => { const w = weekFromHash(); if (w) renderWeek(w); });
 
-  if (D.weeks.length) show(weekFromHash() || D.weeks[D.weeks.length - 1]); else emptyState();
+  if (D.weeks.length) renderWeek(weekFromHash() || D.weeks[D.weeks.length - 1]); else emptyState();
   renderRace();
   renderStandings();
   renderField();
