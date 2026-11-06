@@ -1,3 +1,4 @@
 site/
 preview.html
 __pycache__/
+.fonts/

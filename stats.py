@@ -179,6 +179,8 @@ def season_table(league, summaries):
 
 
 def build_payload(league, updated_at):
+    import season
+
     summaries = [week_summary(w, league["slotCounts"]) for w in league["weeks"]]
     standings, weeks_played = season_table(league, summaries)
     for s in summaries:
@@ -190,4 +192,7 @@ def build_payload(league, updated_at):
         "teams": league["teams"],
         "standings": standings,
         "weeks": summaries,
+        "race": season.playoff_odds(league, standings, summaries),
+        "swap": season.schedule_swap(league, summaries),
+        "records": season.season_records(league, summaries),
     }

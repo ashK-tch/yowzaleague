@@ -99,7 +99,8 @@ def make(season, seed=7):
     league = {
         "id": 0, "seasonId": season,
         "settings": {"name": "Yowza League", "rosterSettings": {"lineupSlotCounts": SLOTS},
-                     "scheduleSettings": {"matchupPeriodCount": WEEKS_TOTAL,
+                     "scheduleSettings": {"matchupPeriodCount": WEEKS_TOTAL, "playoffTeamCount": 6,
+                                          "divisions": [{"id": 0, "name": "League"}],
                                           "matchupPeriods": {str(w): [w] for w in range(1, WEEKS_TOTAL + 1)}}},
         "members": members, "teams": teams, "schedule": schedule,
         "status": {"currentMatchupPeriod": WEEKS_DONE + 1},

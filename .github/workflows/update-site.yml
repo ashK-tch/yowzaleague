@@ -30,8 +30,10 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - name: Check the lineup math
-        run: python test_lineup.py
+      - name: Check the math
+        run: |
+          python test_lineup.py
+          python test_season.py
 
       - name: Build the site from ESPN
         env:

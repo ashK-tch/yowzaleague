@@ -151,8 +151,21 @@ def normalize(league, boxes, season, is_sample=False):
     counts = settings.get("rosterSettings", {}).get("lineupSlotCounts", {})
     slot_counts = {int(k): v for k, v in counts.items() if v and int(k) not in (BENCH, IR)}
 
+    sched = settings.get("scheduleSettings", {})
+    decided = decided_periods(league)
+    regular_weeks = sched.get("matchupPeriodCount") or 0
+    remaining = []
+    for g in league.get("schedule", []):
+        p = g["matchupPeriodId"]
+        if p in decided or "away" not in g or (regular_weeks and p > regular_weeks):
+            continue
+        if g.get("playoffTierType", "NONE") not in ("NONE", None):
+            continue
+        remaining.append({"week": p, "home": g["home"]["teamId"], "away": g["away"]["teamId"]})
+    remaining.sort(key=lambda r: r["week"])
+
     weeks = []
-    for period in decided_periods(league):
+    for period in decided:
         games = [m for m in league["schedule"] if m["matchupPeriodId"] == period]
         box_games = {m["id"]: m for m in boxes.get(period, {}).get("schedule", [])
                      if m.get("matchupPeriodId") == period}
@@ -179,4 +192,8 @@ def normalize(league, boxes, season, is_sample=False):
         "teams": teams,
         "slotCounts": slot_counts,
         "weeks": weeks,
+        "regularWeeks": regular_weeks,
+        "playoffTeams": sched.get("playoffTeamCount") or 0,
+        "divisions": len(sched.get("divisions") or []),
+        "remaining": remaining,
     }

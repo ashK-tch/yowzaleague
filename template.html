@@ -1,13 +1,26 @@
 <title>Yowza League</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Weekly awards, standings, luck and lineup grades for the Yowza League.">
+<meta name="description" content="__OG_DESC__">
+<meta property="og:site_name" content="Yowza League">
+<meta property="og:type" content="website">
+<meta property="og:title" content="__OG_TITLE__">
+<meta property="og:description" content="__OG_DESC__">
+<meta property="og:url" content="__SITE_URL__/">
+<meta property="og:image" content="__OG_IMAGE__">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1c4c24">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M26 28 C46 16 70 40 100 24 L106 82 C80 98 54 72 30 86 Z' fill='%23f2c200' stroke='%238f7100' stroke-width='6'/%3E%3Ccircle cx='24' cy='30' r='12' fill='%23f2c200' stroke='%238f7100' stroke-width='6'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap">
 <style>
-/* Layout: one left-aligned column. Masthead, the week's penalty flag (hero), awards beside the scoreboard on wide screens,
-   standings, a full-bleed turf band for coach efficiency, then the luck chart. Turf and penalty-flag yellow are the brand. */
+/* Layout: one left-aligned column. Masthead and section links, the week's penalty flag (hero), awards beside the scoreboard,
+   the playoff race, standings, a full-bleed turf band for coach efficiency, luck, the schedule swap grid, then the record book.
+   Turf and penalty-flag yellow are the brand. */
 :root {
   --paper: #f6f8f4;
   --ink: #15281c;
@@ -24,6 +37,11 @@
   --lucky: #2f6db5;
   --unlucky: #c8432b;
   --zero: #9aa89d;
+  --odds-bye: #18692f;
+  --odds-in: #9ad3a6;
+  --heat-lo: #eef2f8;
+  --heat-hi: #2f6db5;
+  --heat-ink: #ffffff;
   --tip-bg: #15281c;
   --tip-fg: #f6f8f4;
   --display: "Big Shoulders Display", "Big Shoulders", "Arial Narrow", "Roboto Condensed", "Helvetica Neue", sans-serif;
@@ -35,6 +53,7 @@
     --turf: #276631; --turf-2: #225b2b; --sideline: #1c4c24; --chalk: #f4f7f2; --chalk-2: rgba(244, 247, 242, 0.7);
     --flag: #f2c200; --flag-edge: #8f7100; --football: #9a5632;
     --lucky: #5b8fd6; --unlucky: #dd6448; --zero: #5d6e61; --tip-bg: #e7efe8; --tip-fg: #111c15;
+    --odds-bye: #79d38b; --odds-in: #2e6b3c; --heat-lo: #18241d; --heat-hi: #5b8fd6; --heat-ink: #0d1510;
     color-scheme: dark;
   }
 }
@@ -43,11 +62,14 @@
   --turf: #276631; --turf-2: #225b2b; --sideline: #1c4c24; --chalk: #f4f7f2; --chalk-2: rgba(244, 247, 242, 0.7);
   --flag: #f2c200; --flag-edge: #8f7100; --football: #9a5632;
   --lucky: #5b8fd6; --unlucky: #dd6448; --zero: #5d6e61; --tip-bg: #e7efe8; --tip-fg: #111c15;
+  --odds-bye: #79d38b; --odds-in: #2e6b3c; --heat-lo: #18241d; --heat-hi: #5b8fd6; --heat-ink: #0d1510;
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
   background: var(--paper);
@@ -63,8 +85,10 @@ body {
 }
 h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 0.95; }
 p { margin: 0; }
+a { color: inherit; }
 .num { font-variant-numeric: tabular-nums; }
 :focus-visible { outline: 3px solid var(--flag); outline-offset: 2px; }
+section[id] { scroll-margin-top: 12px; }
 
 /* Masthead */
 .masthead { padding-block: 20px 8px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
@@ -76,12 +100,16 @@ p { margin: 0; }
   font: 500 1rem var(--body); color: var(--ink); background: var(--paper);
   border: 2px solid var(--ink); border-radius: 6px; padding: 6px 30px 6px 10px; cursor: pointer;
 }
+.sections { display: flex; gap: 4px 20px; overflow-x: auto; padding-block: 6px 10px; scrollbar-width: none; }
+.sections::-webkit-scrollbar { display: none; }
+.sections a { font-family: var(--display); font-weight: 700; font-size: 1.1rem; text-decoration: none; white-space: nowrap; color: var(--ink-2); padding-block: 4px; border-bottom: 2px solid transparent; }
+.sections a:hover { color: var(--ink); border-bottom-color: var(--flag); }
 .sample-note { border-left: 4px solid var(--flag); padding: 6px 12px; color: var(--ink-2); font-size: 0.95rem; margin-block: 8px 0; }
 
 /* Hero: the flag thrown on this week's worst lineup */
-.hero { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; align-items: start; padding-block: 36px 40px; border-bottom: 2px solid var(--ink); }
+.hero { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; align-items: start; padding-block: 32px 40px; border-bottom: 2px solid var(--ink); border-top: 2px solid var(--ink); }
 .hero svg { width: clamp(84px, 14vw, 150px); height: auto; margin-top: 6px; }
-.hero-body { min-width: 0; display: grid; gap: 10px; }
+.hero-body { min-width: 0; display: grid; gap: 10px; justify-items: start; }
 .hero-kicker { font-weight: 700; font-size: 1.5rem; }
 .hero-team { font-family: var(--display); font-weight: 900; font-size: clamp(2.8rem, 8.5vw, 6rem); line-height: 0.88; overflow-wrap: anywhere; }
 .hero-manager { color: var(--ink-2); font-size: 1rem; }
@@ -89,12 +117,20 @@ p { margin: 0; }
 .hero-line strong { font-family: var(--display); font-weight: 900; font-size: 1.35em; background: linear-gradient(transparent 62%, var(--flag) 62%); padding-inline: 2px; }
 .hero-detail { max-width: 62ch; color: var(--ink-2); }
 .hero-sting { font-weight: 600; }
+.share-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 8px; }
+.share-btn {
+  font: 600 1rem var(--body); color: #15281c; background: var(--flag); border: 2px solid var(--flag-edge);
+  border-radius: 6px; padding: 8px 14px; cursor: pointer;
+}
+.share-btn:hover { filter: brightness(1.05); }
+.share-status { color: var(--ink-2); font-size: 0.95rem; }
+.share-fallback { width: min(100%, 36rem); min-height: 6rem; font: 400 0.95rem/1.4 var(--body); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 8px; }
 
 /* Week: awards + scoreboard */
 .week { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 48px; padding-block: 40px; }
 .section-head { display: grid; gap: 6px; margin-bottom: 18px; }
 .section-head h2 { font-weight: 900; font-size: 2.1rem; }
-.section-head p { color: var(--ink-2); max-width: 62ch; }
+.section-head p { color: var(--ink-2); max-width: 66ch; }
 .awards { margin: 0; display: grid; }
 .award { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding-block: 12px; border-top: 1px solid var(--rule); }
 .award:last-child { border-bottom: 1px solid var(--rule); }
@@ -110,15 +146,44 @@ p { margin: 0; }
 .side.won { color: var(--ink); font-weight: 600; }
 .side .score { font-family: var(--display); font-weight: 700; font-size: 1.2rem; }
 
+/* Playoff race */
+.race { padding-block: 8px 48px; }
+.gow { font-size: 1.15rem; line-height: 1.4; max-width: 62ch; padding: 12px 16px; border-left: 4px solid var(--flag); background: color-mix(in srgb, var(--flag) 10%, transparent); margin-bottom: 20px; }
+.gow b { font-weight: 600; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9rem; color: var(--ink-2); margin-bottom: 14px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.race-rows { display: grid; }
+.race-row {
+  display: grid; align-items: center; gap: 4px 16px; padding-block: 10px; border-top: 1px solid var(--rule);
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr) 4.5rem minmax(0, 17rem);
+  grid-template-areas: "name bar pct meta";
+}
+.race-row:last-child { border-bottom: 1px solid var(--rule); }
+.race-name { grid-area: name; min-width: 0; }
+.race-name b { display: block; font-weight: 600; overflow-wrap: anywhere; }
+.race-name small { color: var(--ink-2); font-size: 0.85rem; }
+.race-bar { grid-area: bar; position: relative; height: 16px; border-radius: 4px; background: var(--rule); overflow: hidden; }
+.race-bar span { position: absolute; top: 0; bottom: 0; left: 0; }
+.race-bar .in { background: var(--odds-in); }
+.race-bar .bye { background: var(--odds-bye); }
+.race-pct { grid-area: pct; font-family: var(--display); font-weight: 900; font-size: 1.6rem; text-align: right; }
+.race-meta { grid-area: meta; display: grid; gap: 2px; font-size: 0.9rem; color: var(--ink-2); }
+.race-meta b { color: var(--ink); font-weight: 600; }
+.cutline { display: flex; align-items: center; gap: 10px; padding-block: 6px; color: var(--ink); font-family: var(--display); font-weight: 700; font-size: 1rem; }
+.cutline::before, .cutline::after { content: ""; flex: 1; border-top: 2px dashed var(--ink-2); }
+.cutline::before { flex: 0 0 24px; }
+.race-foot { color: var(--ink-2); font-size: 0.9rem; margin-top: 12px; max-width: 70ch; }
+
 /* Standings */
 .standings { padding-block: 8px 48px; }
 .table-scroll { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; min-width: 640px; }
-th, td { text-align: right; padding: 10px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
-th { font-weight: 600; font-size: 0.9rem; color: var(--ink-2); border-bottom: 2px solid var(--ink); }
-th:nth-child(-n+2), td:nth-child(-n+2) { text-align: left; }
-td:first-child { font-family: var(--display); font-weight: 900; font-size: 1.25rem; width: 2.5rem; }
-.team-cell { white-space: normal; min-width: 11rem; }
+table { border-collapse: collapse; width: 100%; }
+.standings table { min-width: 640px; }
+.standings th, .standings td { text-align: right; padding: 10px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.standings th { font-weight: 600; font-size: 0.9rem; color: var(--ink-2); border-bottom: 2px solid var(--ink); }
+.standings th:nth-child(-n+2), .standings td:nth-child(-n+2) { text-align: left; }
+.standings td:first-child { font-family: var(--display); font-weight: 900; font-size: 1.25rem; width: 2.5rem; }
+.team-cell { white-space: normal !important; min-width: 11rem; }
 .team-cell b { display: block; font-weight: 600; }
 .team-cell small { color: var(--ink-2); font-size: 0.85rem; }
 .luck-val { font-weight: 600; }
@@ -159,9 +224,7 @@ td:first-child { font-family: var(--display); font-weight: 900; font-size: 1.25r
 .axis-note { grid-column: 2 / span 2; font-size: 0.85rem; color: var(--chalk-2); }
 
 /* Luck chart */
-.luck { padding-block: 40px 56px; }
-.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9rem; color: var(--ink-2); margin-bottom: 14px; }
-.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.luck { padding-block: 40px 48px; }
 .luck-rows { display: grid; }
 .luck-row { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); align-items: center; gap: 16px; padding-block: 4px; border-radius: 4px; }
 .luck-row:hover, .luck-row:focus-visible { background: color-mix(in srgb, var(--rule) 55%, transparent); }
@@ -177,6 +240,35 @@ td:first-child { font-family: var(--display); font-weight: 900; font-size: 1.25r
 .luck-axis div { position: relative; height: 20px; grid-column: 2; }
 .luck-axis span { position: absolute; transform: translateX(-50%); font-size: 0.85rem; color: var(--ink-2); }
 
+/* Schedule swap grid */
+.swap { padding-block: 8px 48px; border-top: 2px solid var(--ink); padding-top: 40px; }
+.swap-story { display: grid; gap: 6px; margin: 0 0 18px; padding: 0; list-style: none; max-width: 66ch; }
+.swap-story li { padding-left: 14px; border-left: 3px solid var(--rule); }
+.heat { width: auto; border-collapse: separate; border-spacing: 3px; }
+.heat th { font-weight: 600; font-size: 0.85rem; color: var(--ink-2); padding: 2px 4px; white-space: nowrap; }
+.heat thead th { text-align: center; vertical-align: bottom; }
+.heat tbody th { text-align: left; padding-right: 10px; color: var(--ink); }
+.heat tbody th .abbr { display: none; }
+.heat td { width: 40px; height: 34px; text-align: center; border-radius: 4px; font-family: var(--display); font-weight: 700; font-size: 1.1rem; cursor: default; }
+.heat td.own { box-shadow: inset 0 0 0 2px var(--ink); }
+.heat-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 0.85rem; color: var(--ink-2); margin-top: 10px; }
+.heat-legend > span { white-space: nowrap; }
+.heat-legend .ramp { width: 160px; height: 12px; border-radius: 3px; background: linear-gradient(to right, var(--heat-lo), var(--heat-hi)); border: 1px solid var(--rule); }
+.heat-legend .own-key { display: inline-block; width: 14px; height: 14px; border-radius: 3px; box-shadow: inset 0 0 0 2px var(--ink); vertical-align: -2px; margin-right: 6px; }
+
+/* Record book */
+.records { padding-block: 40px 56px; border-top: 2px solid var(--ink); }
+.records-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 48px; }
+.records h3 { font-weight: 900; font-size: 1.5rem; margin-bottom: 12px; }
+.flags { list-style: none; margin: 0; padding: 0; display: grid; }
+.flags li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding-block: 10px; border-top: 1px solid var(--rule); }
+.flags li:last-child { border-bottom: 1px solid var(--rule); }
+.flags .who b { font-weight: 600; display: block; }
+.flags .who small { color: var(--ink-2); font-size: 0.85rem; }
+.flags .count { display: flex; gap: 2px; align-items: center; }
+.flags .count svg { width: 26px; height: 26px; }
+.flags-note { color: var(--ink-2); font-size: 0.95rem; margin-bottom: 8px; }
+
 footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(--ink-2); font-size: 0.9rem; display: grid; gap: 4px; }
 
 .tip {
@@ -185,15 +277,21 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
 }
 
 @media (max-width: 760px) {
-  .week { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .week, .records-grid { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   .hero { grid-template-columns: minmax(0, 1fr); padding-block: 24px 32px; }
   .hero svg { width: 76px; }
+  .race-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name pct" "bar bar" "meta meta"; }
+  .race-pct { font-size: 1.4rem; }
   .field, .axis { grid-template-columns: minmax(0, 4.25rem) minmax(0, 1fr) 2.1rem; }
   .lane-name { padding: 0 8px; }
-  .lane-name .full, .luck-name .full { display: none; }
-  .lane-name .abbr, .luck-name .abbr { display: inline; }
+  .lane-name .full, .luck-name .full, .heat tbody th .full { display: none; }
+  .lane-name .abbr, .luck-name .abbr, .heat tbody th .abbr { display: inline; }
   .ez-label span { font-size: 1.05rem; }
   .luck-row, .luck-axis { grid-template-columns: minmax(0, 4rem) minmax(0, 1fr); gap: 10px; }
+  .heat { border-spacing: 2px; }
+  .heat td { width: 30px; height: 30px; font-size: 1rem; }
+  .heat-legend .ramp { width: 90px; }
+  .heat th { padding: 2px 2px; font-size: 0.75rem; }
 }
 </style>
 
@@ -208,11 +306,20 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
       <select id="week"></select>
     </div>
   </header>
+  <nav class="sections" aria-label="Sections">
+    <a href="#this-week">This week</a>
+    <a href="#playoffs" id="nav-playoffs">Playoff race</a>
+    <a href="#standings">Standings</a>
+    <a href="#coaching">Coaching</a>
+    <a href="#luck">Luck</a>
+    <a href="#schedules">Schedules</a>
+    <a href="#records">Record book</a>
+  </nav>
   <p class="sample-note" id="sample-note" hidden>These are made-up teams and scores for previewing the site. Real Yowza League scores replace them after the first ESPN sync.</p>
 
-  <section class="hero" id="hero" aria-live="polite"></section>
+  <section class="hero" id="this-week" aria-live="polite"></section>
 
-  <div class="week">
+  <div class="week" id="week-detail">
     <section>
       <div class="section-head"><h2 id="awards-title">Awards</h2></div>
       <dl class="awards" id="awards"></dl>
@@ -223,16 +330,27 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
     </section>
   </div>
 
-  <section class="standings">
+  <section class="race" id="playoffs">
+    <div class="section-head">
+      <h2>Playoff race</h2>
+      <p id="race-note"></p>
+    </div>
+    <p class="gow" id="gow" hidden></p>
+    <div class="legend" id="race-legend"></div>
+    <div class="race-rows" id="race-rows" role="list"></div>
+    <p class="race-foot" id="race-foot"></p>
+  </section>
+
+  <section class="standings" id="standings">
     <div class="section-head">
       <h2>Standings</h2>
       <p id="standings-note"></p>
     </div>
-    <div class="table-scroll"><table id="standings"></table></div>
+    <div class="table-scroll"><table id="standings-table"></table></div>
   </section>
 </div>
 
-<section class="field-band">
+<section class="field-band" id="coaching">
   <div class="wrap">
     <div class="section-head">
       <h2>Coach efficiency</h2>
@@ -244,19 +362,47 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
 </section>
 
 <div class="wrap">
-  <section class="luck">
+  <section class="luck" id="luck">
     <div class="section-head">
       <h2>Luck index</h2>
       <p>Actual wins compared with the wins each team's scores would have earned against the whole league every week. Positive means the schedule handed them wins their scores didn't earn.</p>
     </div>
     <div class="legend"><span><i style="background: var(--lucky)"></i>More wins than their scores earned</span><span><i style="background: var(--unlucky)"></i>Fewer wins than their scores earned</span></div>
-    <div class="luck-rows" id="luck" role="list"></div>
+    <div class="luck-rows" id="luck-rows" role="list"></div>
     <div class="luck-axis"><div id="luck-axis"></div></div>
+  </section>
+
+  <section class="swap" id="schedules">
+    <div class="section-head">
+      <h2>Schedule swap</h2>
+      <p>Each row is a team's record if it had played the schedule of the team at the top of the column, using its own weekly scores. The outlined square is the real record.</p>
+    </div>
+    <ul class="swap-story" id="swap-story"></ul>
+    <div class="table-scroll"><table class="heat" id="heat"></table></div>
+    <div class="heat-legend"><span>Fewer wins</span><span class="ramp"></span><span>More wins</span><span><span class="own-key"></span>Real schedule</span></div>
+  </section>
+
+  <section class="records" id="records">
+    <div class="section-head">
+      <h2>Record book</h2>
+      <p id="records-note"></p>
+    </div>
+    <div class="records-grid">
+      <div>
+        <h3>Season records</h3>
+        <dl class="awards" id="rec-list"></dl>
+      </div>
+      <div>
+        <h3>Yowza flags</h3>
+        <p class="flags-note">Weeks each manager left the most points on the bench in the league.</p>
+        <ol class="flags" id="flags"></ol>
+      </div>
+    </div>
   </section>
 
   <footer>
     <p id="updated"></p>
-    <p>Scores come from ESPN. Awards, luck and coach efficiency are calculated here.</p>
+    <p>Scores come from ESPN. Awards, odds, luck and coach efficiency are calculated here every morning.</p>
   </footer>
 </div>
 
@@ -272,20 +418,24 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const pts = n => (Math.round(n * 10) === n * 10 ? n.toFixed(1) : n.toFixed(2));
   const name = id => esc(T[id] ? T[id].name : "Unknown team");
+  const plain = id => (T[id] ? T[id].name : "Unknown team");
+  const abbr = id => esc(T[id] && T[id].abbrev ? T[id].abbrev : plain(id).slice(0, 4));
   const signed = n => (n > 0 ? "+" : n < 0 ? "−" : "") + Math.abs(n).toFixed(1);
   const record = (w, l, t) => w + "–" + l + (t ? "–" + t : "");
+  const pct = p => (p >= 0.995 ? ">99%" : p <= 0.005 ? "<1%" : Math.round(p * 100) + "%");
+  const owns = id => name(id) + (plain(id).endsWith("s") ? "’" : "’s");
 
-  const flagSvg = '<svg viewBox="0 0 120 120" aria-hidden="true">' +
+  const flagPaths =
     '<path d="M26 28 C46 16 70 40 100 24 L106 82 C80 98 54 72 30 86 Z" style="fill: var(--flag); stroke: var(--flag-edge)" stroke-width="3" stroke-linejoin="round"/>' +
     '<path d="M44 46 C58 40 72 56 90 46" style="fill: none; stroke: var(--flag-edge)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>' +
     '<circle cx="24" cy="30" r="10" style="fill: var(--flag); stroke: var(--flag-edge)" stroke-width="3"/>' +
-    '<path d="M18 38 L10 58 M26 40 L24 62" style="fill: none; stroke: var(--flag-edge)" stroke-width="3" stroke-linecap="round"/></svg>';
+    '<path d="M18 38 L10 58 M26 40 L24 62" style="fill: none; stroke: var(--flag-edge)" stroke-width="3" stroke-linecap="round"/>';
+  const flagSvg = '<svg viewBox="0 0 120 120" aria-hidden="true">' + flagPaths + '</svg>';
 
   // ----- header -----
   const L = D.league;
-  $("season").textContent = D.weeks.length
-    ? L.season + " season, through Week " + D.weeks[D.weeks.length - 1].week
-    : L.season + " season";
+  const lastWeek = D.weeks.length ? D.weeks[D.weeks.length - 1].week : null;
+  $("season").textContent = lastWeek ? L.season + " season, through Week " + lastWeek : L.season + " season";
   $("sample-note").hidden = !L.isSample;
   try {
     const when = new Date(L.updatedAt);
@@ -305,10 +455,50 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
   });
   $("picker-wrap").hidden = !D.weeks.length;
 
+  // ----- group chat text -----
+  function chatText(w) {
+    const a = w.awards, y = a.yowza;
+    const url = (location.protocol.startsWith("http") ? location.origin : "https://yowzaleague.com") + "/#week-" + w.week;
+    if (y && y.left > 0.005) {
+      const t = T[y.team] || {};
+      let s = "\u{1F6A9} Yowza of the Week " + w.week + ": " + plain(y.team) + (t.manager ? " (" + t.manager + ")" : "") +
+        " left " + pts(y.left) + " points on the bench.";
+      if (y.worstCall) s += " Started " + y.worstCall.started.name + " (" + pts(y.worstCall.started.points) + ") with " +
+        y.worstCall.benched.name + " (" + pts(y.worstCall.benched.points) + ") sitting right there.";
+      if (y.costGame) s += " The right lineup wins that game.";
+      return s + "\n" + url;
+    }
+    return "Week " + w.week + " top score: " + plain(a.top.team) + " with " + pts(a.top.score) + ".\n" + url;
+  }
+
+  function wireShare(w) {
+    const btn = $("share-btn"), status = $("share-status"), box = $("share-fallback");
+    if (!btn) return;
+    btn.addEventListener("click", () => {
+      const text = chatText(w);
+      const fallback = () => {
+        box.hidden = false;
+        box.value = text;
+        box.focus();
+        box.select();
+        status.textContent = "Copy this text and paste it in the chat.";
+      };
+      try {
+        navigator.clipboard.writeText(text).then(() => {
+          status.textContent = "Copied. Paste it in the group chat.";
+          box.hidden = true;
+        }, fallback);
+      } catch (e) { fallback(); }
+    });
+  }
+
   // ----- one week -----
   function renderWeek(w) {
     const a = w.awards;
     const y = a.yowza;
+    const share = '<div class="share-row"><button class="share-btn" id="share-btn" type="button">Copy for the group chat</button>' +
+      '<span class="share-status" id="share-status" role="status"></span></div>' +
+      '<textarea class="share-fallback" id="share-fallback" readonly hidden aria-label="Text for the group chat"></textarea>';
     if (y) {
       const t = T[y.team] || {};
       const result = y.result === "W"
@@ -320,7 +510,7 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
         ? "Started " + esc(y.worstCall.started.name) + " at " + esc(y.worstCall.started.slot) + " (" + pts(y.worstCall.started.points) + " points) while " +
           esc(y.worstCall.benched.name) + " scored " + pts(y.worstCall.benched.points) + " on the bench. "
         : "";
-      $("hero").innerHTML = flagSvg +
+      $("this-week").innerHTML = flagSvg +
         '<div class="hero-body">' +
           '<h2 class="hero-kicker">Yowza of the Week ' + w.week + '</h2>' +
           '<p class="hero-team">' + name(y.team) + '</p>' +
@@ -330,14 +520,16 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
             : '<p class="hero-line">Every manager set a perfect lineup. Nobody gets the flag.</p>') +
           '<p class="hero-detail">' + call + result + '</p>' +
           (y.costGame ? '<p class="hero-sting">The best lineup would have won the game.</p>' : "") +
+          share +
         '</div>';
     } else {
-      $("hero").innerHTML = flagSvg +
+      $("this-week").innerHTML = flagSvg +
         '<div class="hero-body"><h2 class="hero-kicker">Week ' + w.week + '</h2>' +
         '<p class="hero-team">' + name(a.top.team) + '</p>' +
         '<p class="hero-line">Top score of the week: <strong class="num">' + pts(a.top.score) + '</strong>.</p>' +
-        '<p class="hero-detail">Lineup details aren’t available for this week, so there’s no Yowza of the Week.</p></div>';
+        '<p class="hero-detail">Lineup details aren’t available for this week, so there’s no Yowza of the Week.</p>' + share + '</div>';
     }
+    wireShare(w);
 
     $("awards-title").textContent = "Week " + w.week + " awards";
     const rows = [];
@@ -361,18 +553,60 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
   }
 
   function emptyState() {
-    $("hero").innerHTML = flagSvg + '<div class="hero-body"><h2 class="hero-kicker">Yowza of the Week</h2>' +
+    $("this-week").innerHTML = flagSvg + '<div class="hero-body"><h2 class="hero-kicker">Yowza of the Week</h2>' +
       '<p class="hero-team">Coming soon</p><p class="hero-detail">The first flag gets thrown once Week 1 is final.</p></div>';
-    document.querySelector(".week").hidden = true;
+    $("week-detail").hidden = true;
   }
 
-  // ----- season -----
+  // ----- playoff race -----
+  function renderRace() {
+    const R = D.race;
+    if (!R) { $("playoffs").hidden = true; $("nav-playoffs").hidden = true; return; }
+    const S = Object.fromEntries(D.standings.map(r => [r.team, r]));
+    const rows = Object.entries(R.teams).map(([id, o]) => ({ id: Number(id), ...o }))
+      .sort((a, b) => b.playoffs - a.playoffs || (b.bye || 0) - (a.bye || 0) || b.first - a.first);
+    $("race-note").textContent = "Odds from " + R.sims.toLocaleString("en-US") + " simulated finishes to the regular season, based on how each team has scored through Week " + lastWeek + ". " +
+      "The top " + R.spots + " make the playoffs" + (R.byes ? " and the top " + R.byes + " get a first-round bye." : ".");
+    $("race-foot").textContent = "Ties in the standings are broken by points scored, which may not match every tiebreaker in your league settings." +
+      (R.divisions > 1 ? " Division titles aren’t modeled." : "") + " Odds update every morning.";
+    $("race-legend").innerHTML = (R.byes ? '<span><i style="background: var(--odds-bye)"></i>Gets a bye</span>' : "") +
+      '<span><i style="background: var(--odds-in)"></i>Makes the playoffs' + (R.byes ? " without a bye" : "") + '</span>';
+
+    const g = R.gameOfWeek;
+    if (g) {
+      const h = R.teams[g.home].next, a = R.teams[g.away].next;
+      $("gow").hidden = false;
+      $("gow").innerHTML = "<b>Biggest game of Week " + R.week + ": " + name(g.home) + " vs " + name(g.away) + ".</b> " +
+        name(g.home) + " is at " + pct(h.ifWin) + " with a win and " + pct(h.ifLoss) + " with a loss. " +
+        name(g.away) + " is at " + pct(a.ifWin) + " with a win and " + pct(a.ifLoss) + " with a loss.";
+    }
+
+    let html = "";
+    rows.forEach((o, i) => {
+      const t = T[o.id] || {}, s = S[o.id] || { w: 0, l: 0, t: 0 };
+      const meta = [];
+      if (o.remaining && o.playoffs < 0.95 && o.winOut - o.playoffs >= 0.03) meta.push("<span>Wins out (" + o.remaining + "–0): <b>" + pct(o.winOut) + "</b></span>");
+      if (o.next && o.next.ifWin - o.next.ifLoss >= 0.02) meta.push("<span>Week " + R.week + " vs " + name(o.next.opp) + ": <b>" + pct(o.next.ifWin) + "</b> with a win, <b>" + pct(o.next.ifLoss) + "</b> with a loss</span>");
+      const bye = o.bye || 0;
+      const tip = plain(o.id) + ": " + pct(o.playoffs) + " to make the playoffs" + (R.byes ? ", " + pct(bye) + " to get a bye" : "") + ", " + pct(o.first) + " to finish first. Projected " + o.projWins.toFixed(1) + " wins.";
+      html += '<div class="race-row" role="listitem">' +
+        '<div class="race-name"><b>' + name(o.id) + '</b><small>' + record(s.w, s.l, s.t) + (t.manager ? "  " + esc(t.manager) : "") + '</small></div>' +
+        '<div class="race-bar" data-tip="' + esc(tip) + '"><span class="in" style="width:' + (o.playoffs * 100).toFixed(1) + '%"></span>' +
+          (R.byes ? '<span class="bye" style="width:' + (bye * 100).toFixed(1) + '%"></span>' : "") + '</div>' +
+        '<div class="race-pct num">' + pct(o.playoffs) + '</div>' +
+        '<div class="race-meta">' + meta.join("") + '</div></div>';
+      if (i === R.spots - 1 && i < rows.length - 1) html += '<div class="cutline" role="presentation"><span>Playoff line</span></div>';
+    });
+    $("race-rows").innerHTML = html;
+  }
+
+  // ----- standings -----
   function renderStandings() {
     const S = D.standings;
     $("standings-note").textContent = L.weeksPlayed
       ? "Regular season through " + L.weeksPlayed + (L.weeksPlayed === 1 ? " week" : " weeks") + ". All-play is the record each team would have against every other team, every week."
       : "No games played yet.";
-    $("standings").innerHTML = '<thead><tr><th scope="col">#</th><th scope="col">Team</th><th scope="col">Record</th><th scope="col">Points for</th><th scope="col">Points against</th><th scope="col">All-play</th><th scope="col">Luck</th></tr></thead><tbody>' +
+    $("standings-table").innerHTML = '<thead><tr><th scope="col">#</th><th scope="col">Team</th><th scope="col">Record</th><th scope="col">Points for</th><th scope="col">Points against</th><th scope="col">All-play</th><th scope="col">Luck</th></tr></thead><tbody>' +
       S.map((r, i) => {
         const t = T[r.team] || {};
         const color = r.luck > 0.005 ? "var(--lucky)" : r.luck < -0.005 ? "var(--unlucky)" : "var(--zero)";
@@ -388,7 +622,7 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
 
   function renderField() {
     const rows = D.standings.filter(r => r.efficiency !== null).sort((a, b) => b.efficiency - a.efficiency);
-    if (!rows.length) { document.querySelector(".field-band").hidden = true; return; }
+    if (!rows.length) { $("coaching").hidden = true; return; }
     const lo = Math.min(70, Math.floor((Math.min(...rows.map(r => r.efficiency)) - 2) / 10) * 10);
     const steps = (100 - lo) / 5;
     const x = v => Math.max(0, Math.min(100, ((v - lo) / (100 - lo)) * 100));
@@ -400,7 +634,7 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
       const xv = x(r.efficiency);
       const tip = esc(t.name || "") + ": started " + pts(r.startedPts) + " of a possible " + pts(r.bestPts) + " points, leaving " + pts(r.benchLeft) + " on the bench.";
       return '<div class="lane" role="listitem">' +
-        '<div class="lane-name" style="grid-row:' + (i + 1) + '"><span class="full">' + name(r.team) + '</span><span class="abbr">' + esc(t.abbrev || "") + '</span></div>' +
+        '<div class="lane-name" style="grid-row:' + (i + 1) + '"><span class="full">' + name(r.team) + '</span><span class="abbr">' + abbr(r.team) + '</span></div>' +
         '<div class="lane-track" tabindex="0" data-tip="' + tip + '" style="grid-row:' + (i + 1) + ';--x:' + xv.toFixed(2) + '%" aria-label="' + tip + '">' +
           '<span class="lane-val num' + (xv < 36 ? " after" : "") + '">' + r.efficiency.toFixed(1) + '%</span><span class="ball"></span></div>' +
         '<div class="lane-ez" style="grid-row:' + (i + 1) + '"></div></div>';
@@ -412,25 +646,99 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
 
   function renderLuck() {
     const rows = D.standings.slice().sort((a, b) => b.luck - a.luck);
-    if (!L.weeksPlayed) { document.querySelector(".luck").hidden = true; return; }
+    if (!L.weeksPlayed) { $("luck").hidden = true; return; }
     // leave room past the longest bar for its label
     const max = Math.max(1, Math.ceil(Math.max(...rows.map(r => Math.abs(r.luck))) + 0.6));
     const half = v => (Math.abs(v) / max) * 50;
-    $("luck").innerHTML = rows.map(r => {
-      const t = T[r.team] || {};
+    $("luck-rows").innerHTML = rows.map(r => {
       const pos = r.luck >= 0;
       const w = half(r.luck);
-      const tip = esc(t.name || "") + " went " + record(r.w, r.l, r.t) + ". Against everyone, their scores went " + record(r.apW, r.apL, r.apT) +
+      const tip = plain(r.team) + " went " + record(r.w, r.l, r.t) + ". Against everyone, their scores went " + record(r.apW, r.apL, r.apT) +
         ", worth " + r.xWins.toFixed(1) + " wins.";
       const valPos = pos ? "left: calc(50% + " + w + "% + 6px)" : "right: calc(50% + " + w + "% + 6px)";
-      return '<div class="luck-row" role="listitem" tabindex="0" data-tip="' + tip + '" aria-label="' + tip + ' Luck ' + signed(r.luck) + '.">' +
-        '<span class="luck-name"><span class="full">' + name(r.team) + '</span><span class="abbr">' + esc(t.abbrev || "") + '</span></span>' +
+      return '<div class="luck-row" role="listitem" tabindex="0" data-tip="' + esc(tip) + '" aria-label="' + esc(tip) + ' Luck ' + signed(r.luck) + '.">' +
+        '<span class="luck-name"><span class="full">' + name(r.team) + '</span><span class="abbr">' + abbr(r.team) + '</span></span>' +
         '<span class="luck-plot">' + (w > 0.2 ? '<span class="bar ' + (pos ? "pos" : "neg") + '" style="width:' + w + '%"></span>' : "") +
         '<span class="bar-val num" style="' + valPos + '">' + signed(r.luck) + '</span></span></div>';
     }).join("");
     const ticks = [];
     for (let v = -max; v <= max; v++) ticks.push('<span style="left:' + (50 + (v / max) * 50) + '%">' + (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v) + '</span>');
     $("luck-axis").innerHTML = ticks.join("");
+  }
+
+  // ----- schedule swap -----
+  function renderSwap() {
+    const G = D.swap;
+    if (!G || !G.weeks) { $("schedules").hidden = true; return; }
+    const order = D.standings.map(r => r.team);
+    const rec = (a, b) => G.records[a][b];
+    const nWeeks = G.weeks;
+    let head = '<thead><tr><th scope="col"><span class="sr-only"></span></th>' +
+      order.map(b => '<th scope="col" title="' + esc(plain(b)) + ' schedule">' + abbr(b) + '</th>').join("") + '</tr></thead>';
+    let body = "<tbody>" + order.map(a => {
+      return '<tr><th scope="row"><span class="full">' + name(a) + '</span><span class="abbr">' + abbr(a) + '</span></th>' +
+        order.map(b => {
+          const r = rec(a, b), share = nWeeks ? r[0] / nWeeks : 0;
+          const mix = Math.round(share * 100);
+          const fg = share > 0.55 ? "var(--heat-ink)" : "var(--ink)";
+          const tip = a === b
+            ? plain(a) + " real record: " + record(r[0], r[1], r[2])
+            : plain(a) + " with " + plain(b) + (plain(b).endsWith("s") ? "’" : "’s") + " schedule: " + record(r[0], r[1], r[2]);
+          return '<td class="num' + (a === b ? " own" : "") + '" data-tip="' + esc(tip) + '" aria-label="' + esc(tip) + '" style="background: color-mix(in oklab, var(--heat-hi) ' + mix + '%, var(--heat-lo)); color: ' + fg + '">' + r[0] + '</td>';
+        }).join("") + '</tr>';
+    }).join("") + "</tbody>";
+    $("heat").innerHTML = head + body;
+
+    // the three stories worth telling
+    const stories = [];
+    let robbed = null, blessed = null;
+    order.forEach(a => {
+      const real = rec(a, a);
+      order.forEach(b => {
+        if (a === b) return;
+        const r = rec(a, b);
+        const gain = r[0] - real[0];
+        if (!robbed || gain > robbed.gain) robbed = { a, b, gain, r, real };
+        if (!blessed || -gain > blessed.gain) blessed = { a, b, gain: -gain, r, real };
+      });
+    });
+    if (robbed && robbed.gain > 0) stories.push("<b>" + name(robbed.a) + "</b> is " + record(...robbed.real) + " but would be " + record(...robbed.r) + " with " + owns(robbed.b) + " schedule.");
+    if (blessed && blessed.gain > 0) stories.push("<b>" + name(blessed.a) + "</b> is " + record(...blessed.real) + " and would be " + record(...blessed.r) + " with " + owns(blessed.b) + " schedule.");
+    const avg = order.map(b => ({ b, w: order.reduce((s, a) => s + rec(a, b)[0], 0) / order.length }));
+    avg.sort((x, y) => x.w - y.w);
+    if (avg.length > 1) stories.push("Toughest schedule: <b>" + name(avg[0].b) + "</b>. The average team would win " + avg[0].w.toFixed(1) + " of " + nWeeks + " games with it. Easiest: <b>" + name(avg[avg.length - 1].b) + "</b>, at " + avg[avg.length - 1].w.toFixed(1) + ".");
+    $("swap-story").innerHTML = stories.map(s => "<li>" + s + "</li>").join("");
+  }
+
+  // ----- record book -----
+  function renderRecords() {
+    const B = D.records;
+    if (!B) { $("records").hidden = true; return; }
+    const R = B.records;
+    $("records-note").textContent = "The " + L.season + " season so far. This is the league’s first season on ESPN, so next year this becomes the all-time book.";
+    const rows = [];
+    if (R.high) rows.push(["Highest score", "<b>" + name(R.high.team) + "</b> in Week " + R.high.week, pts(R.high.score)]);
+    if (R.low) rows.push(["Lowest score", "<b>" + name(R.low.team) + "</b> in Week " + R.low.week, pts(R.low.score)]);
+    if (R.blowout) rows.push(["Biggest blowout", "<b>" + name(R.blowout.winner) + "</b> over " + name(R.blowout.loser) + ", " + pts(R.blowout.winScore) + " to " + pts(R.blowout.loseScore) + " in Week " + R.blowout.week, "+" + pts(R.blowout.margin)]);
+    if (R.closest) rows.push(["Closest game", "<b>" + name(R.closest.winner) + "</b> over " + name(R.closest.loser) + " in Week " + R.closest.week, "+" + pts(R.closest.margin)]);
+    if (R.player) rows.push(["Best single game", "<b>" + esc(R.player.name) + "</b> (" + esc(R.player.pos) + ") for " + name(R.player.team) + " in Week " + R.player.week, pts(R.player.points)]);
+    if (R.bench) rows.push(["Most points left on the bench", "<b>" + name(R.bench.team) + "</b> in Week " + R.bench.week, pts(R.bench.left)]);
+    if (R.streak && R.streak.length > 1) rows.push(["Longest winning streak", "<b>" + name(R.streak.team) + "</b>, Weeks " + R.streak.from + "–" + R.streak.to, R.streak.length + " W"]);
+    const cur = Object.entries(B.streaks || {}).map(([id, s]) => ({ id: Number(id), ...s }));
+    const hot = cur.filter(s => s.type === "W").sort((a, b) => b.length - a.length)[0];
+    const cold = cur.filter(s => s.type === "L").sort((a, b) => b.length - a.length)[0];
+    if (hot && hot.length > 1) rows.push(["Hottest right now", "<b>" + name(hot.id) + "</b> has won " + hot.length + " straight", hot.length + " W"]);
+    if (cold && cold.length > 1) rows.push(["Coldest right now", "<b>" + name(cold.id) + "</b> has lost " + cold.length + " straight", cold.length + " L"]);
+    $("rec-list").innerHTML = rows.map(r =>
+      '<div class="award"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd><span class="stat num">' + r[2] + '</span></div>').join("");
+
+    const mini = '<svg viewBox="0 0 120 120" aria-hidden="true">' + flagPaths + '</svg>';
+    $("flags").innerHTML = (B.flags || []).map(f => {
+      const t = T[f.team] || {};
+      return '<li><div class="who"><b>' + name(f.team) + '</b><small>' + (t.manager ? esc(t.manager) + ". " : "") +
+        (f.weeks.length > 1 ? "Weeks " : "Week ") + f.weeks.join(", ") + '</small></div>' +
+        '<div class="count" aria-label="' + f.count + (f.count === 1 ? " flag" : " flags") + '">' + mini.repeat(f.count) + '</div></li>';
+    }).join("") || '<li><div class="who">No flags yet.</div></li>';
   }
 
   // ----- tooltip -----
@@ -468,8 +776,11 @@ footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(
   window.addEventListener("hashchange", () => { const w = weekFromHash(); if (w) show(w); });
 
   if (D.weeks.length) show(weekFromHash() || D.weeks[D.weeks.length - 1]); else emptyState();
+  renderRace();
   renderStandings();
   renderField();
   renderLuck();
+  renderSwap();
+  renderRecords();
 })();
 </script>

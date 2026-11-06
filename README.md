@@ -102,6 +102,14 @@ Then open `site/index.html`.
   score. Ten teams means nine "games" per week.
 - **Luck**: actual wins minus the wins all-play says the scores earned.
   Standings, all-play and luck use regular-season weeks only.
+- **Playoff odds**: 20,000 simulated finishes to the regular season. Each team's weekly
+  score is drawn around its average so far (pulled a little toward the league average,
+  since eight games is a small sample). Ties in the standings are broken by points scored.
+- **Schedule swap**: each team's own weekly scores replayed against another team's
+  opponents. If that schedule includes a game against the team itself, it plays the
+  schedule's owner instead.
+- **Link preview**: every build draws `og.png`, the picture iMessage shows when someone
+  pastes the site's link, with that week's Yowza of the Week.
 
 ## Files
 
@@ -111,5 +119,8 @@ Then open `site/index.html`.
 | `stats.py` | Best lineups, awards, all-play, luck, efficiency |
 | `template.html` | The page design |
 | `build.py` | Puts it together into `site/index.html` |
+| `season.py` | Playoff odds, schedule swap grid, record book |
+| `share.py` | The link preview picture and app icon |
 | `sample.py` | Made-up league for previews |
+| `test_season.py` | Checks the playoff odds and schedule swap math |
 | `.github/workflows/update-site.yml` | The daily rebuild and publish |

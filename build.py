@@ -11,6 +11,7 @@ Writes site/index.html. Settings come from environment variables:
 
 import argparse
 import datetime as dt
+import html
 import json
 import os
 import sys
@@ -22,6 +23,7 @@ import sample
 import stats
 
 HERE = Path(__file__).parent
+SITE_URL = (os.environ.get("SITE_URL") or "https://yowzaleague.com").rstrip("/")
 SKELETON = """<!doctype html>
 <html lang="en">
 <head>
@@ -36,9 +38,20 @@ def current_season(today):
     return today.year if today.month >= 3 else today.year - 1
 
 
-def render(payload, full_document=True):
+def render(payload, full_document=True, card=None, site_url=SITE_URL):
     template = (HERE / "template.html").read_text(encoding="utf-8")
     data = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
+    card = card or {"title": "Yowza League", "line": ""}
+    last = payload["weeks"][-1]["week"] if payload["weeks"] else 0
+    desc = (card["line"] + " Standings, playoff odds and the Yowza of the Week.").strip()
+    swaps = {
+        "__OG_TITLE__": html.escape(card["title"]),
+        "__OG_DESC__": html.escape(desc),
+        "__OG_IMAGE__": html.escape(f"{site_url}/og.png?v={payload['league']['season']}-{last}"),
+        "__SITE_URL__": html.escape(site_url),
+    }
+    for k, v in swaps.items():
+        template = template.replace(k, v)
     page = template.replace("__YOWZA_DATA__", data)
     return SKELETON.format(page=page) if full_document else page
 
@@ -73,10 +86,16 @@ def main():
     payload = stats.build_payload(league, now.isoformat(timespec="minutes"))
     out = HERE / args.out
     out.mkdir(parents=True, exist_ok=True)
-    (out / "index.html").write_text(render(payload), encoding="utf-8")
+    card = None
+    try:
+        import share
+        card = share.make_card(payload, out, HERE / ".fonts", SITE_URL.split("//")[-1])
+    except Exception as e:  # the site still builds without its link preview picture
+        print(f"Skipped the share picture: {e}")
+    (out / "index.html").write_text(render(payload, card=card), encoding="utf-8")
     (out / "data.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
     if args.fragment:
-        Path(args.fragment).write_text(render(payload, full_document=False), encoding="utf-8")
+        Path(args.fragment).write_text(render(payload, full_document=False, card=card), encoding="utf-8")
     print(f"Built {out / 'index.html'}: {len(league['teams'])} teams, {len(league['weeks'])} weeks.")
 
 
