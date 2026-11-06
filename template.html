@@ -489,7 +489,7 @@ select.retro {
   <div class="win-body" style="padding: 6px; gap: 0">
     <div class="lcd">
       <div class="lcd-row"><span id="jb-state">STOPPED</span><span id="jb-time" class="num">00:00</span></div>
-      <div class="lcd-title"><span>YOWZA THEME (ORIGINAL MIDI MIX) &#9733; COMPOSED FOR THE YOWZA LEAGUE &#9733;</span></div>
+      <div class="lcd-title"><span id="jb-song">YOWZA THEME (ORIGINAL MIDI MIX) &#9733; COMPOSED FOR THE YOWZA LEAGUE &#9733;</span></div>
       <canvas class="scope" id="jb-scope" width="240" height="34" aria-hidden="true"></canvas>
     </div>
     <div class="jb-controls">
@@ -1068,16 +1068,29 @@ select.retro {
 
   const audio = new Audio();
   audio.loop = true;
-  audio.preload = "auto";
   let ready = false, pending = false;
-  Theme.prepare().then(u => {
-    audio.src = u;
+  const M = D.music;  // an audio file someone put in the repo's music/ folder
+  if (M && M.file) {
+    // only download the song when someone actually presses play
+    audio.preload = "none";
+    audio.src = M.file;
     ready = true;
-    if (pending) { pending = false; play(); }
-  }).catch(() => { $("jb-state").textContent = "NO AUDIO"; });
+    $("jb-song").textContent = M.title.toUpperCase() + " ★ ";
+    $("jb-scope").hidden = true;
+  } else {
+    audio.preload = "auto";
+    Theme.prepare().then(u => {
+      audio.src = u;
+      ready = true;
+      if (pending) { pending = false; play(); }
+    }).catch(() => { $("jb-state").textContent = "NO AUDIO"; });
+  }
+  audio.addEventListener("error", () => { $("jb-state").textContent = "CAN’T PLAY FILE"; });
+  audio.addEventListener("waiting", () => { if (!audio.paused) $("jb-state").textContent = "LOADING"; });
+  audio.addEventListener("playing", () => { $("jb-state").textContent = "▶ PLAYING"; });
 
   const jb = $("jukebox");
-  $("jb-title").innerHTML = titled("note", "Jukebox - yowza_theme");
+  $("jb-title").innerHTML = titled("note", "Jukebox");
   function trayIcon() {
     $("tray-music").innerHTML = sprite("note");
     $("tray-music").classList.toggle("muted", audio.paused);
@@ -1105,11 +1118,13 @@ select.retro {
     sctx.fillStyle = "#0b1a0b"; sctx.fillRect(0, 0, scope.width, scope.height);
     sctx.fillStyle = "#39ff5a";
     const mid = scope.height / 2;
-    if (s && !audio.paused) {
-      const start = Math.floor(t * Theme.rate) % s.length, span = 900;
-      for (let x = 0; x < scope.width; x += 2) {
-        const v = s[(start + Math.floor(x / scope.width * span)) % s.length];
-        sctx.fillRect(x, Math.round(mid - v * mid * 1.6), 2, 2);
+    if (!audio.paused) {
+      if (s) {
+        const start = Math.floor(t * Theme.rate) % s.length, span = 900;
+        for (let x = 0; x < scope.width; x += 2) {
+          const v = s[(start + Math.floor(x / scope.width * span)) % s.length];
+          sctx.fillRect(x, Math.round(mid - v * mid * 1.6), 2, 2);
+        }
       }
       requestAnimationFrame(draw);
     } else {

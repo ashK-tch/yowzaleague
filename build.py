@@ -14,6 +14,8 @@ import datetime as dt
 import html
 import json
 import os
+import re
+import shutil
 import sys
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -32,6 +34,29 @@ SKELETON = """<!doctype html>
 {page}
 </html>
 """
+
+
+AUDIO_TYPES = {".mp3": "audio/mpeg", ".m4a": "audio/mp4", ".aac": "audio/aac", ".ogg": "audio/ogg", ".wav": "audio/wav"}
+
+
+def add_music(out):
+    """Publish the audio file in music/ (if there is one) for the jukebox to play.
+    With no file there, the page plays its built-in theme song instead."""
+    for old in out.glob("theme.*"):
+        old.unlink()
+    folder = HERE / "music"
+    files = sorted(p for p in folder.glob("*") if p.is_file() and p.suffix.lower() in AUDIO_TYPES) if folder.is_dir() else []
+    if not files:
+        return None
+    if len(files) > 1:
+        print(f"More than one audio file in music/. Playing {files[0].name}; remove the others to choose a different one.")
+    src = files[0]
+    dest = out / ("theme" + src.suffix.lower())
+    shutil.copyfile(src, dest)
+    title = re.sub(r"[_]+", " ", src.stem)
+    title = re.sub(r"\s+", " ", title).strip() or "Theme song"
+    print(f"Jukebox will play {src.name} ({src.stat().st_size / 1e6:.1f} MB).")
+    return {"file": dest.name, "type": AUDIO_TYPES[src.suffix.lower()], "title": title}
 
 
 def current_season(today):
@@ -86,6 +111,7 @@ def main():
     payload = stats.build_payload(league, now.isoformat(timespec="minutes"))
     out = HERE / args.out
     out.mkdir(parents=True, exist_ok=True)
+    payload["music"] = add_music(out)
     card = None
     try:
         import share

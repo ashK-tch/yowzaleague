@@ -82,6 +82,17 @@ claiming yowzaleague.com on GitHub.
   site stops updating in the offseason, click Run workflow once to wake it up.
 - Shareable links to a specific week look like `yowzaleague.com/#week-6`.
 
+## Changing the theme song
+
+Upload an audio file (`.mp3` works best) into the `music` folder on GitHub: open the
+folder, click **Add file > Upload files**, drag the file in, and commit. The jukebox plays
+it from then on, and the file name becomes the scrolling title. Delete the file to go
+back to the built-in theme. Details are in `music/README.md`.
+
+The built-in theme is composed in code in `template.html` (search for "jukebox: an
+original theme"): `BPM` is the tempo, the `A`, `B` and `C` lists are the melody as MIDI
+note numbers (60 is middle C), and `roots` is the bass line.
+
 ## Running it on your own computer
 
 ```
