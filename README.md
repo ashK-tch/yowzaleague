@@ -1,0 +1,115 @@
+# Yowza League site
+
+The homepage for yowzaleague.com: Yowza of the Week, weekly awards, the scoreboard,
+standings with all-play records, coach efficiency, and the luck index. It rebuilds
+itself from ESPN every morning.
+
+## What it costs
+
+Nothing beyond the domain renewal.
+
+- ESPN's fantasy API is free. It's unofficial (ESPN doesn't document it), so it can
+  change without warning. If it does, the fix goes in `espn.py`.
+- GitHub Pages hosting and the daily GitHub Action are free as long as the repository
+  is public. Your ESPN cookies stay in GitHub's encrypted secrets and never appear in
+  the code or on the site.
+- You don't need any GoDaddy hosting or website-builder plan. Only the domain.
+
+## One-time setup (about 20 minutes)
+
+### 1. Put the code on GitHub
+
+1. Make a free account at github.com if you don't have one.
+2. Create a new **public** repository called `yowzaleague`.
+3. On the empty repo page, click **uploading an existing file**, drag in everything
+   from this folder, and commit. The `.github` folder is hidden on Mac; press
+   Cmd+Shift+. in Finder to show it, and make sure it uploads too.
+
+### 2. Tell it which league to read
+
+In the repo: **Settings > Secrets and variables > Actions**.
+
+- **Variables** tab > New repository variable: `LEAGUE_ID` = the number after
+  `leagueId=` in your ESPN league's URL.
+- If the league is private, **Secrets** tab > add two secrets:
+  - `ESPN_S2`: on espn.com (signed in), open Chrome DevTools > Application >
+    Cookies > espn.com, and copy the value of `espn_s2`.
+  - `ESPN_SWID`: the value of `SWID` from the same list, curly braces included.
+
+  These cookies expire every so often. When the daily build starts failing with an
+  "ESPN refused access" message, copy fresh ones in.
+
+  The simpler alternative: the league manager can make the league viewable to the
+  public in ESPN's league settings. Then no cookies are needed.
+
+- Optional variable `SEASON` (for example `2026`). Without it the site uses the
+  current NFL season.
+
+### 3. Turn on GitHub Pages
+
+**Settings > Pages**:
+
+1. Under **Build and deployment > Source**, choose **GitHub Actions**.
+2. Under **Custom domain**, enter `yowzaleague.com` and save.
+
+Then go to the **Actions** tab, pick **Update site**, and click **Run workflow**.
+The first run takes about a minute.
+
+### 4. Point the domain at GitHub (in GoDaddy)
+
+In GoDaddy, open the DNS records for yowzaleague.com (from your domain list, select the domain, then **DNS**).
+
+1. Delete any existing **A** record named `@` (GoDaddy's "Parked" record) and any
+   domain **forwarding** you set up.
+2. Add four **A** records, name `@`, one for each of these values:
+   `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+3. Edit the **CNAME** record named `www` so it points to `YOUR-GITHUB-USERNAME.github.io`
+   (your username only, no repository name).
+4. Don't add a wildcard (`*`) record.
+
+DNS changes usually take effect within an hour but can take up to a day. Once
+GitHub's Pages settings show the domain as working, tick **Enforce HTTPS**.
+
+Recommended: verify the domain in your GitHub account settings (**Settings > Pages >
+Add a domain**), which adds one TXT record in GoDaddy. It stops anyone else from
+claiming yowzaleague.com on GitHub.
+
+## Day to day
+
+- The site updates every morning on its own. To update it right now, use
+  **Actions > Update site > Run workflow**.
+- GitHub pauses scheduled runs in a public repo after 60 days with no commits. If the
+  site stops updating in the offseason, click Run workflow once to wake it up.
+- Shareable links to a specific week look like `yowzaleague.com/#week-6`.
+
+## Running it on your own computer
+
+```
+pip install -r requirements.txt
+python build.py --sample                     # made-up data
+LEAGUE_ID=123456 python build.py             # real league (add ESPN_S2 / ESPN_SWID if private)
+python test_lineup.py                        # checks the best-lineup math
+```
+
+Then open `site/index.html`.
+
+## How the numbers work
+
+- **Yowza of the Week**: the team that left the most points on its bench, measured
+  against the best legal lineup from its own roster that week.
+- **Coach efficiency**: season points started divided by best possible points.
+- **All-play**: each week, every team's score is compared with every other team's
+  score. Ten teams means nine "games" per week.
+- **Luck**: actual wins minus the wins all-play says the scores earned.
+  Standings, all-play and luck use regular-season weeks only.
+
+## Files
+
+| File | What it does |
+|---|---|
+| `espn.py` | Talks to ESPN and turns its data into plain lists |
+| `stats.py` | Best lineups, awards, all-play, luck, efficiency |
+| `template.html` | The page design |
+| `build.py` | Puts it together into `site/index.html` |
+| `sample.py` | Made-up league for previews |
+| `.github/workflows/update-site.yml` | The daily rebuild and publish |

@@ -1,0 +1,475 @@
+<title>Yowza League</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Weekly awards, standings, luck and lineup grades for the Yowza League.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: one left-aligned column. Masthead, the week's penalty flag (hero), awards beside the scoreboard on wide screens,
+   standings, a full-bleed turf band for coach efficiency, then the luck chart. Turf and penalty-flag yellow are the brand. */
+:root {
+  --paper: #f6f8f4;
+  --ink: #15281c;
+  --ink-2: #4b5e51;
+  --rule: #d6dfd7;
+  --turf: #2e7a3e;
+  --turf-2: #286c37;
+  --sideline: #23602f;
+  --chalk: #ffffff;
+  --chalk-2: rgba(255, 255, 255, 0.72);
+  --flag: #f2c200;
+  --flag-edge: #b58f00;
+  --football: #8a4b2a;
+  --lucky: #2f6db5;
+  --unlucky: #c8432b;
+  --zero: #9aa89d;
+  --tip-bg: #15281c;
+  --tip-fg: #f6f8f4;
+  --display: "Big Shoulders Display", "Big Shoulders", "Arial Narrow", "Roboto Condensed", "Helvetica Neue", sans-serif;
+  --body: "Barlow", "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111c15; --ink: #e7efe8; --ink-2: #a2b4a6; --rule: #2a3b2f;
+    --turf: #276631; --turf-2: #225b2b; --sideline: #1c4c24; --chalk: #f4f7f2; --chalk-2: rgba(244, 247, 242, 0.7);
+    --flag: #f2c200; --flag-edge: #8f7100; --football: #9a5632;
+    --lucky: #5b8fd6; --unlucky: #dd6448; --zero: #5d6e61; --tip-bg: #e7efe8; --tip-fg: #111c15;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111c15; --ink: #e7efe8; --ink-2: #a2b4a6; --rule: #2a3b2f;
+  --turf: #276631; --turf-2: #225b2b; --sideline: #1c4c24; --chalk: #f4f7f2; --chalk-2: rgba(244, 247, 242, 0.7);
+  --flag: #f2c200; --flag-edge: #8f7100; --football: #9a5632;
+  --lucky: #5b8fd6; --unlucky: #dd6448; --zero: #5d6e61; --tip-bg: #e7efe8; --tip-fg: #111c15;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.0625rem/1.5 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 0.95; }
+p { margin: 0; }
+.num { font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 3px solid var(--flag); outline-offset: 2px; }
+
+/* Masthead */
+.masthead { padding-block: 20px 8px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+.wordmark { font-weight: 900; font-size: clamp(2.4rem, 6vw, 3.4rem); letter-spacing: 0.01em; }
+.season { color: var(--ink-2); font-size: 0.95rem; margin-top: 4px; }
+.picker { display: flex; align-items: center; gap: 10px; }
+.picker label { font-family: var(--display); font-weight: 700; font-size: 1.25rem; }
+.picker select {
+  font: 500 1rem var(--body); color: var(--ink); background: var(--paper);
+  border: 2px solid var(--ink); border-radius: 6px; padding: 6px 30px 6px 10px; cursor: pointer;
+}
+.sample-note { border-left: 4px solid var(--flag); padding: 6px 12px; color: var(--ink-2); font-size: 0.95rem; margin-block: 8px 0; }
+
+/* Hero: the flag thrown on this week's worst lineup */
+.hero { display: grid; grid-template-columns: auto 1fr; gap: 8px 28px; align-items: start; padding-block: 36px 40px; border-bottom: 2px solid var(--ink); }
+.hero svg { width: clamp(84px, 14vw, 150px); height: auto; margin-top: 6px; }
+.hero-body { min-width: 0; display: grid; gap: 10px; }
+.hero-kicker { font-weight: 700; font-size: 1.5rem; }
+.hero-team { font-family: var(--display); font-weight: 900; font-size: clamp(2.8rem, 8.5vw, 6rem); line-height: 0.88; overflow-wrap: anywhere; }
+.hero-manager { color: var(--ink-2); font-size: 1rem; }
+.hero-line { font-size: clamp(1.3rem, 2.6vw, 1.75rem); line-height: 1.25; }
+.hero-line strong { font-family: var(--display); font-weight: 900; font-size: 1.35em; background: linear-gradient(transparent 62%, var(--flag) 62%); padding-inline: 2px; }
+.hero-detail { max-width: 62ch; color: var(--ink-2); }
+.hero-sting { font-weight: 600; }
+
+/* Week: awards + scoreboard */
+.week { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 48px; padding-block: 40px; }
+.section-head { display: grid; gap: 6px; margin-bottom: 18px; }
+.section-head h2 { font-weight: 900; font-size: 2.1rem; }
+.section-head p { color: var(--ink-2); max-width: 62ch; }
+.awards { margin: 0; display: grid; }
+.award { display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; padding-block: 12px; border-top: 1px solid var(--rule); }
+.award:last-child { border-bottom: 1px solid var(--rule); }
+.award dt { font-family: var(--display); font-weight: 700; font-size: 1.2rem; grid-column: 1; }
+.award dd { margin: 0; grid-column: 1; color: var(--ink-2); min-width: 0; }
+.award dd b { color: var(--ink); font-weight: 600; }
+.award .stat { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-family: var(--display); font-weight: 900; font-size: 1.9rem; color: var(--ink); }
+.games { display: grid; gap: 0; }
+.game { padding-block: 10px; border-top: 1px solid var(--rule); display: grid; gap: 2px; }
+.game:last-child { border-bottom: 1px solid var(--rule); }
+.side { display: grid; grid-template-columns: 1fr auto; gap: 12px; color: var(--ink-2); }
+.side span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.side.won { color: var(--ink); font-weight: 600; }
+.side .score { font-family: var(--display); font-weight: 700; font-size: 1.2rem; }
+
+/* Standings */
+.standings { padding-block: 8px 48px; }
+.table-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 640px; }
+th, td { text-align: right; padding: 10px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-weight: 600; font-size: 0.9rem; color: var(--ink-2); border-bottom: 2px solid var(--ink); }
+th:nth-child(-n+2), td:nth-child(-n+2) { text-align: left; }
+td:first-child { font-family: var(--display); font-weight: 900; font-size: 1.25rem; width: 2.5rem; }
+.team-cell { white-space: normal; min-width: 11rem; }
+.team-cell b { display: block; font-weight: 600; }
+.team-cell small { color: var(--ink-2); font-size: 0.85rem; }
+.luck-val { font-weight: 600; }
+.luck-mark { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: 1px; }
+
+/* Coach efficiency: the field */
+.field-band { background: var(--sideline); color: var(--chalk); padding-block: 40px 32px; }
+.field-band .section-head p { color: var(--chalk-2); }
+.field { display: grid; grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr) 2.75rem; border: 3px solid var(--chalk); border-radius: 4px; overflow: hidden; }
+.lane { display: contents; }
+.lane-name, .lane-track, .lane-ez { height: 40px; }
+.lane-name { grid-column: 1; }
+.lane-track { grid-column: 2; }
+.lane-ez { grid-column: 3; }
+.lane-name { display: flex; align-items: center; padding: 0 12px; font-weight: 600; font-size: 0.95rem; background: var(--sideline); border-right: 3px solid var(--chalk); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lane-name .abbr { display: none; }
+.lane-track {
+  position: relative; cursor: default;
+  background:
+    repeating-linear-gradient(to right, var(--chalk) 0 2px, transparent 2px 100%) 0 0 / calc(100% / var(--steps)) 100%,
+    repeating-linear-gradient(to right, var(--turf) 0 50%, var(--turf-2) 50% 100%) 0 0 / calc(200% / var(--steps)) 100%;
+}
+.lane-track:focus-visible { outline-offset: -3px; }
+.lane-ez { background: var(--turf-2); border-left: 3px solid var(--chalk); }
+.ez-label { grid-column: 3; grid-row: 1 / span var(--rows); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.ez-label span { writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--display); font-weight: 900; font-size: 1.35rem; letter-spacing: 0.04em; color: var(--chalk-2); }
+.ball {
+  position: absolute; top: 50%; left: var(--x); width: 24px; height: 15px; transform: translate(-50%, -50%);
+  background: var(--football); border: 2px solid var(--chalk); border-radius: 50%;
+}
+.ball::after { content: ""; position: absolute; left: 50%; top: 50%; width: 8px; height: 2px; background: var(--chalk); transform: translate(-50%, -50%); }
+.lane-val { position: absolute; top: 50%; right: calc(100% - var(--x) + 18px); transform: translateY(-50%); font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--chalk); white-space: nowrap; }
+.lane-val.after { right: auto; left: calc(var(--x) + 18px); }
+.axis { display: grid; grid-template-columns: minmax(0, 12.5rem) minmax(0, 1fr) 2.75rem; margin-top: 6px; }
+.axis-track { position: relative; height: 22px; grid-column: 2; }
+.axis-track span { position: absolute; transform: translateX(-50%); font-size: 0.85rem; color: var(--chalk-2); }
+.axis-track span:last-child { transform: translateX(-100%); }
+.axis-note { grid-column: 2 / span 2; font-size: 0.85rem; color: var(--chalk-2); }
+
+/* Luck chart */
+.luck { padding-block: 40px 56px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 0.9rem; color: var(--ink-2); margin-bottom: 14px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.luck-rows { display: grid; }
+.luck-row { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); align-items: center; gap: 16px; padding-block: 4px; border-radius: 4px; }
+.luck-row:hover, .luck-row:focus-visible { background: color-mix(in srgb, var(--rule) 55%, transparent); }
+.luck-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-left: 4px; }
+.luck-name .abbr { display: none; }
+.luck-plot { position: relative; height: 26px; }
+.luck-plot::before { content: ""; position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--zero); }
+.bar { position: absolute; top: 5px; height: 16px; }
+.bar.pos { left: 50%; background: var(--lucky); border-radius: 0 4px 4px 0; }
+.bar.neg { right: 50%; background: var(--unlucky); border-radius: 4px 0 0 4px; }
+.bar-val { position: absolute; top: 50%; transform: translateY(-50%); font-family: var(--display); font-weight: 700; font-size: 1.05rem; color: var(--ink); white-space: nowrap; }
+.luck-axis { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); gap: 16px; margin-top: 8px; }
+.luck-axis div { position: relative; height: 20px; grid-column: 2; }
+.luck-axis span { position: absolute; transform: translateX(-50%); font-size: 0.85rem; color: var(--ink-2); }
+
+footer { border-top: 2px solid var(--ink); padding-block: 18px 40px; color: var(--ink-2); font-size: 0.9rem; display: grid; gap: 4px; }
+
+.tip {
+  position: fixed; z-index: 20; max-width: 280px; padding: 8px 10px; border-radius: 6px;
+  background: var(--tip-bg); color: var(--tip-fg); font-size: 0.9rem; line-height: 1.35; pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .week { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .hero { grid-template-columns: minmax(0, 1fr); padding-block: 24px 32px; }
+  .hero svg { width: 76px; }
+  .field, .axis { grid-template-columns: minmax(0, 4.25rem) minmax(0, 1fr) 2.1rem; }
+  .lane-name { padding: 0 8px; }
+  .lane-name .full, .luck-name .full { display: none; }
+  .lane-name .abbr, .luck-name .abbr { display: inline; }
+  .ez-label span { font-size: 1.05rem; }
+  .luck-row, .luck-axis { grid-template-columns: minmax(0, 4rem) minmax(0, 1fr); gap: 10px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <h1 class="wordmark">Yowza League</h1>
+      <p class="season" id="season"></p>
+    </div>
+    <div class="picker" id="picker-wrap">
+      <label for="week">Week</label>
+      <select id="week"></select>
+    </div>
+  </header>
+  <p class="sample-note" id="sample-note" hidden>These are made-up teams and scores for previewing the site. Real Yowza League scores replace them after the first ESPN sync.</p>
+
+  <section class="hero" id="hero" aria-live="polite"></section>
+
+  <div class="week">
+    <section>
+      <div class="section-head"><h2 id="awards-title">Awards</h2></div>
+      <dl class="awards" id="awards"></dl>
+    </section>
+    <section>
+      <div class="section-head"><h2>Scoreboard</h2></div>
+      <div class="games" id="games"></div>
+    </section>
+  </div>
+
+  <section class="standings">
+    <div class="section-head">
+      <h2>Standings</h2>
+      <p id="standings-note"></p>
+    </div>
+    <div class="table-scroll"><table id="standings"></table></div>
+  </section>
+</div>
+
+<section class="field-band">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Coach efficiency</h2>
+      <p>Each team's season points as a share of the best lineup it could have started from its own roster. A ball in the end zone means a perfect lineup every week.</p>
+    </div>
+    <div class="field" id="field" role="list"></div>
+    <div class="axis"><div class="axis-track" id="field-axis"></div><p class="axis-note">Share of best possible points. Each yard line is 5 percentage points.</p></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="luck">
+    <div class="section-head">
+      <h2>Luck index</h2>
+      <p>Actual wins compared with the wins each team's scores would have earned against the whole league every week. Positive means the schedule handed them wins their scores didn't earn.</p>
+    </div>
+    <div class="legend"><span><i style="background: var(--lucky)"></i>More wins than their scores earned</span><span><i style="background: var(--unlucky)"></i>Fewer wins than their scores earned</span></div>
+    <div class="luck-rows" id="luck" role="list"></div>
+    <div class="luck-axis"><div id="luck-axis"></div></div>
+  </section>
+
+  <footer>
+    <p id="updated"></p>
+    <p>Scores come from ESPN. Awards, luck and coach efficiency are calculated here.</p>
+  </footer>
+</div>
+
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script id="yowza-data" type="application/json">__YOWZA_DATA__</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById("yowza-data").textContent);
+  const T = Object.fromEntries(D.teams.map(t => [t.id, t]));
+  const $ = id => document.getElementById(id);
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const pts = n => (Math.round(n * 10) === n * 10 ? n.toFixed(1) : n.toFixed(2));
+  const name = id => esc(T[id] ? T[id].name : "Unknown team");
+  const signed = n => (n > 0 ? "+" : n < 0 ? "−" : "") + Math.abs(n).toFixed(1);
+  const record = (w, l, t) => w + "–" + l + (t ? "–" + t : "");
+
+  const flagSvg = '<svg viewBox="0 0 120 120" aria-hidden="true">' +
+    '<path d="M26 28 C46 16 70 40 100 24 L106 82 C80 98 54 72 30 86 Z" style="fill: var(--flag); stroke: var(--flag-edge)" stroke-width="3" stroke-linejoin="round"/>' +
+    '<path d="M44 46 C58 40 72 56 90 46" style="fill: none; stroke: var(--flag-edge)" stroke-width="2" stroke-linecap="round" opacity="0.6"/>' +
+    '<circle cx="24" cy="30" r="10" style="fill: var(--flag); stroke: var(--flag-edge)" stroke-width="3"/>' +
+    '<path d="M18 38 L10 58 M26 40 L24 62" style="fill: none; stroke: var(--flag-edge)" stroke-width="3" stroke-linecap="round"/></svg>';
+
+  // ----- header -----
+  const L = D.league;
+  $("season").textContent = D.weeks.length
+    ? L.season + " season, through Week " + D.weeks[D.weeks.length - 1].week
+    : L.season + " season";
+  $("sample-note").hidden = !L.isSample;
+  try {
+    const when = new Date(L.updatedAt);
+    if (!isNaN(when)) {
+      $("updated").textContent = "Last updated " + when.toLocaleString("en-US", {
+        weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/New_York", timeZoneName: "short"
+      }) + ".";
+    }
+  } catch (e) { /* leave blank */ }
+
+  const select = $("week");
+  D.weeks.slice().reverse().forEach(w => {
+    const o = document.createElement("option");
+    o.value = w.week;
+    o.textContent = w.week + (w.playoff ? " (playoffs)" : "");
+    select.appendChild(o);
+  });
+  $("picker-wrap").hidden = !D.weeks.length;
+
+  // ----- one week -----
+  function renderWeek(w) {
+    const a = w.awards;
+    const y = a.yowza;
+    if (y) {
+      const t = T[y.team] || {};
+      const result = y.result === "W"
+        ? "Won anyway, " + pts(y.score) + " to " + pts(y.oppScore) + ", against " + name(y.opp) + "."
+        : y.result === "L"
+          ? "Lost " + pts(y.score) + " to " + pts(y.oppScore) + " against " + name(y.opp) + "."
+          : "Tied " + name(y.opp) + " at " + pts(y.score) + ".";
+      const call = y.worstCall
+        ? "Started " + esc(y.worstCall.started.name) + " at " + esc(y.worstCall.started.slot) + " (" + pts(y.worstCall.started.points) + " points) while " +
+          esc(y.worstCall.benched.name) + " scored " + pts(y.worstCall.benched.points) + " on the bench. "
+        : "";
+      $("hero").innerHTML = flagSvg +
+        '<div class="hero-body">' +
+          '<h2 class="hero-kicker">Yowza of the Week ' + w.week + '</h2>' +
+          '<p class="hero-team">' + name(y.team) + '</p>' +
+          (t.manager ? '<p class="hero-manager">Managed by ' + esc(t.manager) + '</p>' : "") +
+          (y.left > 0.005
+            ? '<p class="hero-line">Left <strong class="num">' + pts(y.left) + '</strong> points on the bench.</p>'
+            : '<p class="hero-line">Every manager set a perfect lineup. Nobody gets the flag.</p>') +
+          '<p class="hero-detail">' + call + result + '</p>' +
+          (y.costGame ? '<p class="hero-sting">The best lineup would have won the game.</p>' : "") +
+        '</div>';
+    } else {
+      $("hero").innerHTML = flagSvg +
+        '<div class="hero-body"><h2 class="hero-kicker">Week ' + w.week + '</h2>' +
+        '<p class="hero-team">' + name(a.top.team) + '</p>' +
+        '<p class="hero-line">Top score of the week: <strong class="num">' + pts(a.top.score) + '</strong>.</p>' +
+        '<p class="hero-detail">Lineup details aren’t available for this week, so there’s no Yowza of the Week.</p></div>';
+    }
+
+    $("awards-title").textContent = "Week " + w.week + " awards";
+    const rows = [];
+    const n = w.matchups.length * 2 - 1;
+    if (a.top) rows.push(["Top score", "<b>" + name(a.top.team) + "</b>", pts(a.top.score)]);
+    if (a.mvp) rows.push(["Best player", "<b>" + esc(a.mvp.name) + "</b> (" + esc(a.mvp.pos) + ") for " + name(a.mvp.team), pts(a.mvp.points)]);
+    if (a.blowout) rows.push(["Biggest blowout", "<b>" + name(a.blowout.winner) + "</b> over " + name(a.blowout.loser), "+" + pts(a.blowout.margin)]);
+    if (a.nailbiter) rows.push(["Closest game", "<b>" + name(a.nailbiter.winner) + "</b> over " + name(a.nailbiter.loser), "+" + pts(a.nailbiter.margin)]);
+    if (a.robbed) rows.push(["Unluckiest loss", "<b>" + name(a.robbed.team) + "</b> lost with a score that beats " + a.robbed.wouldBeat + " of " + n + " teams", pts(a.robbed.score)]);
+    if (a.lucky) rows.push(["Luckiest win", "<b>" + name(a.lucky.team) + "</b> won with a score that beats " + a.lucky.wouldBeat + " of " + n + " teams", pts(a.lucky.score)]);
+    if (a.perfect && a.perfect.length) rows.push(["Perfect lineup", a.perfect.map(id => "<b>" + name(id) + "</b>").join(", ") + " started the best possible lineup", "100%"]);
+    $("awards").innerHTML = rows.map(r =>
+      '<div class="award"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd><span class="stat num">' + r[2] + '</span></div>').join("");
+
+    $("games").innerHTML = w.matchups.map(m => {
+      const hw = m.homeScore > m.awayScore, aw = m.awayScore > m.homeScore;
+      return '<div class="game">' +
+        '<div class="side' + (hw ? " won" : "") + '"><span>' + name(m.home) + '</span><span class="score num">' + pts(m.homeScore) + '</span></div>' +
+        '<div class="side' + (aw ? " won" : "") + '"><span>' + name(m.away) + '</span><span class="score num">' + pts(m.awayScore) + '</span></div></div>';
+    }).join("");
+  }
+
+  function emptyState() {
+    $("hero").innerHTML = flagSvg + '<div class="hero-body"><h2 class="hero-kicker">Yowza of the Week</h2>' +
+      '<p class="hero-team">Coming soon</p><p class="hero-detail">The first flag gets thrown once Week 1 is final.</p></div>';
+    document.querySelector(".week").hidden = true;
+  }
+
+  // ----- season -----
+  function renderStandings() {
+    const S = D.standings;
+    $("standings-note").textContent = L.weeksPlayed
+      ? "Regular season through " + L.weeksPlayed + (L.weeksPlayed === 1 ? " week" : " weeks") + ". All-play is the record each team would have against every other team, every week."
+      : "No games played yet.";
+    $("standings").innerHTML = '<thead><tr><th scope="col">#</th><th scope="col">Team</th><th scope="col">Record</th><th scope="col">Points for</th><th scope="col">Points against</th><th scope="col">All-play</th><th scope="col">Luck</th></tr></thead><tbody>' +
+      S.map((r, i) => {
+        const t = T[r.team] || {};
+        const color = r.luck > 0.005 ? "var(--lucky)" : r.luck < -0.005 ? "var(--unlucky)" : "var(--zero)";
+        return '<tr><td class="num">' + (i + 1) + '</td>' +
+          '<td class="team-cell"><b>' + name(r.team) + '</b>' + (t.manager ? '<small>' + esc(t.manager) + '</small>' : "") + '</td>' +
+          '<td class="num">' + record(r.w, r.l, r.t) + '</td>' +
+          '<td class="num">' + pts(r.pf) + '</td>' +
+          '<td class="num">' + pts(r.pa) + '</td>' +
+          '<td class="num">' + record(r.apW, r.apL, r.apT) + '</td>' +
+          '<td class="num luck-val"><span class="luck-mark" style="background:' + color + '"></span>' + signed(r.luck) + '</td></tr>';
+      }).join("") + '</tbody>';
+  }
+
+  function renderField() {
+    const rows = D.standings.filter(r => r.efficiency !== null).sort((a, b) => b.efficiency - a.efficiency);
+    if (!rows.length) { document.querySelector(".field-band").hidden = true; return; }
+    const lo = Math.min(70, Math.floor((Math.min(...rows.map(r => r.efficiency)) - 2) / 10) * 10);
+    const steps = (100 - lo) / 5;
+    const x = v => Math.max(0, Math.min(100, ((v - lo) / (100 - lo)) * 100));
+    const field = $("field");
+    field.style.setProperty("--steps", steps);
+    field.style.setProperty("--rows", rows.length);
+    field.innerHTML = rows.map((r, i) => {
+      const t = T[r.team] || {};
+      const xv = x(r.efficiency);
+      const tip = esc(t.name || "") + ": started " + pts(r.startedPts) + " of a possible " + pts(r.bestPts) + " points, leaving " + pts(r.benchLeft) + " on the bench.";
+      return '<div class="lane" role="listitem">' +
+        '<div class="lane-name" style="grid-row:' + (i + 1) + '"><span class="full">' + name(r.team) + '</span><span class="abbr">' + esc(t.abbrev || "") + '</span></div>' +
+        '<div class="lane-track" tabindex="0" data-tip="' + tip + '" style="grid-row:' + (i + 1) + ';--x:' + xv.toFixed(2) + '%" aria-label="' + tip + '">' +
+          '<span class="lane-val num' + (xv < 36 ? " after" : "") + '">' + r.efficiency.toFixed(1) + '%</span><span class="ball"></span></div>' +
+        '<div class="lane-ez" style="grid-row:' + (i + 1) + '"></div></div>';
+    }).join("") + '<div class="ez-label"><span>Perfect</span></div>';
+    const ticks = [];
+    for (let v = lo; v <= 100; v += 10) ticks.push('<span style="left:' + x(v) + '%">' + v + '%</span>');
+    $("field-axis").innerHTML = ticks.join("");
+  }
+
+  function renderLuck() {
+    const rows = D.standings.slice().sort((a, b) => b.luck - a.luck);
+    if (!L.weeksPlayed) { document.querySelector(".luck").hidden = true; return; }
+    // leave room past the longest bar for its label
+    const max = Math.max(1, Math.ceil(Math.max(...rows.map(r => Math.abs(r.luck))) + 0.6));
+    const half = v => (Math.abs(v) / max) * 50;
+    $("luck").innerHTML = rows.map(r => {
+      const t = T[r.team] || {};
+      const pos = r.luck >= 0;
+      const w = half(r.luck);
+      const tip = esc(t.name || "") + " went " + record(r.w, r.l, r.t) + ". Against everyone, their scores went " + record(r.apW, r.apL, r.apT) +
+        ", worth " + r.xWins.toFixed(1) + " wins.";
+      const valPos = pos ? "left: calc(50% + " + w + "% + 6px)" : "right: calc(50% + " + w + "% + 6px)";
+      return '<div class="luck-row" role="listitem" tabindex="0" data-tip="' + tip + '" aria-label="' + tip + ' Luck ' + signed(r.luck) + '.">' +
+        '<span class="luck-name"><span class="full">' + name(r.team) + '</span><span class="abbr">' + esc(t.abbrev || "") + '</span></span>' +
+        '<span class="luck-plot">' + (w > 0.2 ? '<span class="bar ' + (pos ? "pos" : "neg") + '" style="width:' + w + '%"></span>' : "") +
+        '<span class="bar-val num" style="' + valPos + '">' + signed(r.luck) + '</span></span></div>';
+    }).join("");
+    const ticks = [];
+    for (let v = -max; v <= max; v++) ticks.push('<span style="left:' + (50 + (v / max) * 50) + '%">' + (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v) + '</span>');
+    $("luck-axis").innerHTML = ticks.join("");
+  }
+
+  // ----- tooltip -----
+  const tip = $("tip");
+  function showTip(el, cx, cy) {
+    tip.textContent = el.getAttribute("data-tip");
+    tip.hidden = false;
+    const r = el.getBoundingClientRect();
+    const tw = tip.offsetWidth, th = tip.offsetHeight;
+    let left = (cx != null ? cx : r.left + r.width / 2) - tw / 2;
+    let top = (cy != null ? cy : r.top) - th - 12;
+    if (top < 8) top = r.bottom + 8;
+    left = Math.max(8, Math.min(window.innerWidth - tw - 8, left));
+    tip.style.left = left + "px";
+    tip.style.top = top + "px";
+  }
+  document.addEventListener("pointermove", e => {
+    const el = e.target.closest && e.target.closest("[data-tip]");
+    if (el) showTip(el, e.clientX, e.clientY); else tip.hidden = true;
+  });
+  document.addEventListener("focusin", e => { const el = e.target.closest("[data-tip]"); if (el) showTip(el); });
+  document.addEventListener("focusout", () => { tip.hidden = true; });
+  window.addEventListener("scroll", () => { tip.hidden = true; }, { passive: true });
+
+  // ----- week picker + #week-N links -----
+  function weekFromHash() {
+    const m = /^#week-(\d+)$/.exec(location.hash);
+    return m && D.weeks.find(w => w.week === Number(m[1]));
+  }
+  function show(w) { select.value = w.week; renderWeek(w); }
+  select.addEventListener("change", () => {
+    const w = D.weeks.find(x => x.week === Number(select.value));
+    if (w) { show(w); try { history.replaceState(null, "", "#week-" + w.week); } catch (e) { location.hash = "week-" + w.week; } }
+  });
+  window.addEventListener("hashchange", () => { const w = weekFromHash(); if (w) show(w); });
+
+  if (D.weeks.length) show(weekFromHash() || D.weeks[D.weeks.length - 1]); else emptyState();
+  renderStandings();
+  renderField();
+  renderLuck();
+})();
+</script>
