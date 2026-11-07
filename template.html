@@ -368,6 +368,27 @@ select.retro {
   .jukebox { width: min(270px, calc(100vw - 20px)); }
 }
 
+/* Glorbo, the lounge alien: a desktop buddy standing on the taskbar */
+.glorbo { --s: 2; position: fixed; z-index: 31; left: max(8px, env(safe-area-inset-left, 0px)); bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px) - 2px * var(--s)); pointer-events: none; }
+.glorbo-btn { pointer-events: auto; display: block; padding: 0; border: 0; background: none; cursor: pointer; }
+.glorbo-btn:focus-visible { outline: 1px dotted #fff; outline-offset: -4px; }
+.glorbo-sprite { display: block; width: calc(84px * var(--s)); height: calc(104px * var(--s)); background: url("art/glorbo.png") no-repeat;
+  background-size: calc(1008px * var(--s)) calc(104px * var(--s)); background-position: calc(var(--f, 0) * -84px * var(--s)) 0; image-rendering: pixelated; }
+.glorbo-say { pointer-events: auto; position: absolute; left: calc(12px * var(--s)); bottom: calc(100% - 4px * var(--s)); width: max-content; max-width: min(260px, calc(100vw - 32px));
+  display: grid; gap: 8px; padding: 10px 12px; background: var(--tip); color: var(--ink); border: 1px solid #000; border-radius: 10px; box-shadow: 2px 2px 0 rgba(0, 0, 0, .4); font-size: 13px; line-height: 1.4; }
+.glorbo-say::before, .glorbo-say::after { content: ""; position: absolute; border-style: solid; border-color: transparent; }
+.glorbo-say::before { top: 100%; left: 26px; border-width: 12px 9px 0 0; border-top-color: #000; }
+.glorbo-say::after { top: calc(100% - 1px); left: 27px; border-width: 10px 7px 0 0; border-top-color: var(--tip); }
+.glorbo-say p { margin: 0; }
+.glorbo-say b { font: 700 13px var(--pixel); }
+.glorbo-acts { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.glorbo-acts .btn { padding: 3px 10px; font-size: 12px; }
+@media (max-width: 760px) {
+  .glorbo { --s: 1; }
+  /* on a phone he stands over the page, so leave room to scroll the last lines out from under him */
+  body:has(.glorbo:not([hidden])) { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px) + 110px); }
+}
+
 /* Members-only gate */
 .gate-text { display: grid; gap: 6px; min-width: 0; }
 .gate-q { font-weight: 700; font-size: 14px; margin-top: 6px; }
@@ -508,6 +529,17 @@ __LOCK_STYLE__
   </div>
 </div>
 
+<div class="glorbo" id="glorbo" hidden>
+  <div class="glorbo-say" id="glorbo-say" hidden>
+    <p><b>Glorbo:</b> <span id="glorbo-text" role="status"></span></p>
+    <div class="glorbo-acts">
+      <button class="btn" type="button" id="glorbo-more">More gossip</button>
+      <button class="btn" type="button" id="glorbo-hide">Hide Glorbo</button>
+    </div>
+  </div>
+  <button class="glorbo-btn" type="button" id="glorbo-btn" aria-label="Glorbo, the lounge alien. Click for league gossip."><span class="glorbo-sprite" id="glorbo-sprite"></span></button>
+</div>
+
 <nav class="start-menu win raised" id="start-menu" hidden aria-label="Start menu">
   <div class="start-side"><span>Yowza 98</span></div>
   <ul id="start-items"></ul>
@@ -581,7 +613,7 @@ function yowzaApp(D) {
   };
 
   // ----- pixel sprites -----
-  const PAL = { K: "#000000", W: "#ffffff", Y: "#ffd200", O: "#b08800", B: "#8a4b2a", G: "#808080" };
+  const PAL = { K: "#000000", W: "#ffffff", Y: "#ffd200", O: "#b08800", B: "#8a4b2a", G: "#808080", A: "#7a9a3e", L: "#a8c45c", R: "#e0602a" };
   const SPRITES = {
     flag: ["KK..............", "KWK.............", "KWKKKKKK.....KK.", "KWKYYYYYKK..KYK.", "KWKYYYYYYYKKYYK.", "KWKYYYYYYYYYYYK.",
       "KWKYYYYYYYYYYYK.", "KWKYYOOYYYYYYYK.", "KWKYYYYOOYYYYYK.", "KWKKKYYYYYKKYYK.", "KWK..KKYYK..KKK.", "KWK....KK.......",
@@ -594,7 +626,10 @@ function yowzaApp(D) {
       ".KBBBBBKK.......", "..KKKKK.........", "................", "................"],
     note: ["................", ".......KKKKKKKK.", ".......KKKKKKKK.", ".......K......K.", ".......K......K.", ".......K......K.",
       ".......K......K.", ".......K......K.", ".......K......K.", ".......K......K.", "....KKKK...KKKK.", "...KKKKK..KKKKK.",
-      "...KKKKK..KKKKK.", "....KKK....KKK..", "................", "................"]
+      "...KKKKK..KKKKK.", "....KKK....KKK..", "................", "................"],
+    alien: [".KKK......KKK...", "KWWWK....KWWWK..", "KWKYK....KYKWK..", ".KKK.K..K.KKK...", "....KAK.KAK.....", ".....KAKAK......",
+      "....KKALAAKK....", "...KALLAAAAAK...", "..KALAAAAAAAAK..", "..KAAAAAAAAAAK..", "..KAAKAAAAKAAK..", "..KAAAKKKKAAAK..",
+      "...KRRKYYKRRK...", "...KAAKYYKAAK...", "....KKAAAAKK....", "......KKKK......"]
   };
   function sprite(key) {
     const rows = SPRITES[key];
@@ -981,7 +1016,8 @@ function yowzaApp(D) {
     ["coaching", "ball", "Coach Efficiency"], ["luck", "ball", "Luck Index"], ["schedules", "ball", "Schedule Swap"], ["records", "trophy", "Record Book"]]
     .filter(([id]) => !$(id).hidden);
   $("start-items").innerHTML = items.map(([id, icon, label]) => '<li><a href="#' + id + '">' + sprite(icon) + label + '</a></li>').join("") +
-    '<li><hr></li><li><a href="#jukebox" id="menu-jukebox">' + sprite("note") + 'Jukebox</a></li>';
+    '<li><hr></li><li><a href="#jukebox" id="menu-jukebox">' + sprite("note") + 'Jukebox</a></li>' +
+    '<li><a href="#glorbo" id="menu-glorbo">' + sprite("alien") + 'Glorbo</a></li>';
   function closeMenu() { menu.hidden = true; startBtn.setAttribute("aria-expanded", "false"); }
   startBtn.addEventListener("click", e => {
     e.stopPropagation();
@@ -994,6 +1030,7 @@ function yowzaApp(D) {
     const a = e.target.closest("a");
     if (!a) return;
     if (a.id === "menu-jukebox") { e.preventDefault(); showJukebox(); }
+    if (a.id === "menu-glorbo") { e.preventDefault(); summonGlorbo(); }
     closeMenu();
   });
   document.addEventListener("click", e => { if (!menu.hidden && !menu.contains(e.target)) closeMenu(); });
@@ -1160,6 +1197,88 @@ function yowzaApp(D) {
   draw();
   trayIcon();
 
+  // ----- Glorbo, the lounge alien: dances while the jukebox plays, gossips when clicked -----
+  const glorbo = $("glorbo"), gSprite = $("glorbo-sprite"), gSay = $("glorbo-say"), gText = $("glorbo-text");
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const gPref = {
+    off() { try { return localStorage.getItem("yowza-glorbo") === "off"; } catch (e) { return false; } },
+    set(off) { try { if (off) localStorage.setItem("yowza-glorbo", "off"); else localStorage.removeItem("yowza-glorbo"); } catch (e) { /* private mode */ } }
+  };
+  const FRAMES = 12, BLOW_KISS = [5, 5, 6, 6, 7, 7, 8, 8, 8, 8, 7, 7, 0];
+  let gFrame = 0, gBurst = 0, gIdle = 0, gQueue = [], gHideTimer = null, gLastLine = "";
+  function gShow(f) { if (f !== gFrame) { gFrame = f; gSprite.style.setProperty("--f", f); } }
+  setInterval(() => {
+    if (glorbo.hidden || document.hidden) return;
+    if (calm.matches) { gShow(0); return; }
+    if (!audio.paused || gBurst > 0) { if (gBurst > 0) gBurst--; gQueue = []; gIdle = 0; gShow((gFrame + 1) % FRAMES); return; }
+    if (gQueue.length) { gShow(gQueue.shift()); return; }
+    gShow(0);
+    if (++gIdle >= 70) { gIdle = 0; gQueue = BLOW_KISS.slice(); }  // blows a kiss every ~8 seconds
+  }, 120);
+
+  function gossip() {
+    const lines = [];
+    const w = D.weeks[D.weeks.length - 1], a = (w && w.awards) || {};
+    if (a.yowza) lines.push("Yowza! " + plain(a.yowza.team) + " left " + pts(a.yowza.left) + " points on the bench in Week " + w.week + ". I had to look away with both eyes.");
+    if (a.top) lines.push(plain(a.top.team) + " put up " + pts(a.top.score) + " in Week " + w.week + ". My eyestalks are still spinning.");
+    if (a.mvp) lines.push(a.mvp.name + " scored " + pts(a.mvp.points) + " for " + plain(a.mvp.team) + ". Next round’s on me.");
+    if (a.blowout) lines.push(plain(a.blowout.winner) + " beat " + plain(a.blowout.loser) + " by " + pts(a.blowout.margin) + ". Somebody dim the lights.");
+    if (a.nailbiter) lines.push(plain(a.nailbiter.winner) + " beat " + plain(a.nailbiter.loser) + " by " + pts(a.nailbiter.margin) + ". I spilled my drink.");
+    if (a.robbed) lines.push(plain(a.robbed.team) + " scored " + pts(a.robbed.score) + " and still lost. This next song goes out to them.");
+    const byLuck = (D.standings || []).slice().sort((x, y) => y.luck - x.luck);
+    if (byLuck.length && byLuck[0].luck >= 0.5) lines.push(plain(byLuck[0].team) + " has " + byLuck[0].luck.toFixed(1) + " more wins than their scores earned. Luckiest table in the lounge.");
+    const sad = byLuck[byLuck.length - 1];
+    if (sad && sad.luck <= -0.5) lines.push(plain(sad.team) + " is " + Math.abs(sad.luck).toFixed(1) + " wins short of what their scores earned. Their drinks are on the house.");
+    if (D.race && D.race.teams) {
+      const odds = Object.entries(D.race.teams).map(([id, r]) => [Number(id), r.playoffs]);
+      const bubble = odds.filter(([, p]) => p > 0.2 && p < 0.8).sort((x, y) => Math.abs(x[1] - 0.5) - Math.abs(y[1] - 0.5))[0];
+      if (bubble) lines.push(plain(bubble[0]) + " is at " + pct(bubble[1]) + " to make the playoffs. Big week. Glorbo is nervous.");
+      const top = odds.slice().sort((x, y) => y[1] - x[1])[0];
+      if (top && top[1] >= 0.9) lines.push(plain(top[0]) + " is " + pct(top[1]) + " to make the playoffs. Save them a booth.");
+    }
+    const rec = D.records && D.records.records;
+    if (rec && rec.high) lines.push("Season high: " + pts(rec.high.score) + " by " + plain(rec.high.team) + " in Week " + rec.high.week + ". I framed it and hung it behind the bar.");
+    lines.push("Welcome to the lounge. Two-drink minimum, zero-points-on-the-bench maximum.");
+    lines.push("Set your lineup before Sunday. Glorbo is begging you.");
+    if (audio.paused) lines.push("Press Play on the jukebox. Glorbo needs a beat.");
+    return lines;
+  }
+  function hideSoon(ms) {
+    clearTimeout(gHideTimer);
+    gHideTimer = setTimeout(() => {
+      if (gSay.matches(":hover") || gSay.contains(document.activeElement)) hideSoon(3000); else gSay.hidden = true;
+    }, ms);
+  }
+  function say(text, ms) {
+    gSay.hidden = false;
+    gText.textContent = text;
+    gLastLine = text;
+    hideSoon(ms || 10000);
+  }
+  function gab() {
+    const lines = gossip().filter(l => l !== gLastLine);
+    say(lines[Math.floor(Math.random() * lines.length)]);
+  }
+  function glorboHello() {
+    if (!glorbo.hidden) say("Hi, I’m Glorbo, your lounge host. Click me any time for league gossip.", 8000);
+  }
+  function summonGlorbo() {
+    gPref.set(false);
+    const was = glorbo.hidden;
+    glorbo.hidden = false;
+    gBurst = FRAMES;
+    say(was ? "I’m back. Did you miss me?" : "You rang?", 6000);
+  }
+  $("glorbo-btn").addEventListener("click", () => { gBurst = FRAMES; gab(); });
+  $("glorbo-more").addEventListener("click", gab);
+  $("glorbo-hide").addEventListener("click", () => {
+    gSay.hidden = true;
+    glorbo.hidden = true;
+    gPref.set(true);
+  });
+  glorbo.addEventListener("keydown", e => { if (e.key === "Escape" && !gSay.hidden) { gSay.hidden = true; $("glorbo-btn").focus(); } });
+  glorbo.hidden = gPref.off();
+
   // ----- welcome dialog -----
   const welcome = $("welcome");
   $("welcome-icon").innerHTML = sprite("note");
@@ -1172,6 +1291,8 @@ function yowzaApp(D) {
       // on a phone, tuck the player into the taskbar so it doesn't cover the page
       if (window.matchMedia("(max-width: 760px)").matches) setTimeout(() => { jb.hidden = true; trayIcon(); }, 4000);
     }
+    // wait for the jukebox to tuck away on a phone so it doesn't cover his speech bubble
+    setTimeout(glorboHello, withMusic && window.matchMedia("(max-width: 760px)").matches ? 4300 : 1200);
   }
   if (!store.get("yowza-entered")) {
     welcome.hidden = false;

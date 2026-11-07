@@ -101,6 +101,15 @@ def add_music(out):
     return {"file": dest.name, "type": AUDIO_TYPES[src.suffix.lower()], "title": title}
 
 
+def add_art(out):
+    """Publish the art/ folder (Glorbo's sprite sheet and any other pictures) next to the page."""
+    dest = out / "art"
+    if dest.exists():
+        shutil.rmtree(dest)
+    if (HERE / "art").is_dir():
+        shutil.copytree(HERE / "art", dest)
+
+
 def current_season(today):
     return today.year if today.month >= 3 else today.year - 1
 
@@ -156,6 +165,7 @@ def main():
     out = HERE / args.out
     out.mkdir(parents=True, exist_ok=True)
     payload["music"] = add_music(out)
+    add_art(out)
     card = None
     try:
         import share

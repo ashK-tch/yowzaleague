@@ -109,6 +109,14 @@ The built-in theme is composed in code in `template.html` (search for "jukebox: 
 original theme"): `BPM` is the tempo, the `A`, `B` and `C` lists are the melody as MIDI
 note numbers (60 is middle C), and `roots` is the bass line.
 
+## Glorbo
+
+Glorbo the lounge alien stands on the taskbar in the bottom-left corner. He dances while
+the jukebox plays, blows a kiss now and then, and clicking him pops up a speech bubble with
+gossip pulled from that week's numbers. Visitors can hide him from his bubble and bring
+him back from **Start > Glorbo**. His sprite sheet is `art/glorbo.png` (12 frames of 84 x 104
+pixels, side by side). Replace that file with a new sheet of the same layout to redraw him.
+
 ## Running it on your own computer
 
 ```
@@ -148,6 +156,8 @@ Then open `site/index.html`.
 | `build.py` | Puts it together into `site/index.html` |
 | `season.py` | Playoff odds, schedule swap grid, record book |
 | `share.py` | The link preview picture and app icon |
+| `art/` | Pictures published with the page (Glorbo's sprite sheet) |
+| `music/` | Drop the theme song here |
 | `sample.py` | Made-up league for previews |
 | `test_season.py` | Checks the playoff odds and schedule swap math |
 | `.github/workflows/update-site.yml` | The daily rebuild and publish |
