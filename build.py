@@ -10,7 +10,9 @@ Writes site/index.html. Settings come from environment variables:
 """
 
 import argparse
+import base64
 import datetime as dt
+import hashlib
 import html
 import json
 import os
@@ -34,6 +36,46 @@ SKELETON = """<!doctype html>
 {page}
 </html>
 """
+
+
+DEFAULT_QUESTION = "Who is the most dominant sith lord in the air?"
+LOCK_ROUNDS = 200_000
+LOCK_STYLE = ("<style>html:not(.unlocked) .ticker, html:not(.unlocked) main, html:not(.unlocked) .odometer, "
+              "html:not(.unlocked) .taskbar, html:not(.unlocked) .jukebox, html:not(.unlocked) .sample-note, "
+              "html:not(.unlocked) .footer p { display: none !important; } "
+              "html:not(.unlocked) .tagline { visibility: hidden; }</style>")
+
+
+def normalize_answer(text):
+    """Answers match ignoring case, spaces and punctuation: 'Darth Vexar' == 'darthvexar!'."""
+    return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def make_lock(data_json):
+    """Encrypt the league data so only someone who knows an answer can read it.
+
+    SITE_PASSWORDS holds the accepted answers, separated by | or new lines. It lives in
+    the repo's Actions secrets, never in this public code. Without it the site is open."""
+    answers = [a for a in re.split(r"[|\n]", os.environ.get("SITE_PASSWORDS", "")) if normalize_answer(a)]
+    if not answers:
+        return None
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+
+    b64 = lambda b: base64.b64encode(b).decode()
+    data_key, iv, salt = os.urandom(32), os.urandom(12), os.urandom(16)
+    keys = []
+    for answer in answers:
+        kek = hashlib.pbkdf2_hmac("sha256", normalize_answer(answer).encode(), salt, LOCK_ROUNDS, 32)
+        wrap_iv = os.urandom(12)
+        keys.append({"iv": b64(wrap_iv), "key": b64(AESGCM(kek).encrypt(wrap_iv, data_key, None))})
+    return {
+        "q": (os.environ.get("SITE_QUESTION") or DEFAULT_QUESTION).strip(),
+        "iter": LOCK_ROUNDS,
+        "salt": b64(salt),
+        "keys": keys,
+        "iv": b64(iv),
+        "ct": b64(AESGCM(data_key).encrypt(iv, data_json.encode(), None)),
+    }
 
 
 AUDIO_TYPES = {".mp3": "audio/mpeg", ".m4a": "audio/mp4", ".aac": "audio/aac", ".ogg": "audio/ogg", ".wav": "audio/wav"}
@@ -63,9 +105,11 @@ def current_season(today):
     return today.year if today.month >= 3 else today.year - 1
 
 
-def render(payload, full_document=True, card=None, site_url=SITE_URL):
+def render(payload, full_document=True, card=None, site_url=SITE_URL, lock=None):
     template = (HERE / "template.html").read_text(encoding="utf-8")
-    data = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
+    data = "null" if lock else json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
+    template = template.replace("__LOCK_STYLE__", LOCK_STYLE if lock else "")
+    template = template.replace("__YOWZA_LOCK__", json.dumps(lock, separators=(",", ":")) if lock else "null")
     card = card or {"title": "Yowza League", "line": ""}
     last = payload["weeks"][-1]["week"] if payload["weeks"] else 0
     desc = (card["line"] + " Standings, playoff odds and the Yowza of the Week.").strip()
@@ -118,8 +162,13 @@ def main():
         card = share.make_card(payload, out, HERE / ".fonts", SITE_URL.split("//")[-1])
     except Exception as e:  # the site still builds without its link preview picture
         print(f"Skipped the share picture: {e}")
-    (out / "index.html").write_text(render(payload, card=card), encoding="utf-8")
-    (out / "data.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
+    lock = make_lock(json.dumps(payload, separators=(",", ":")))
+    (out / "index.html").write_text(render(payload, card=card, lock=lock), encoding="utf-8")
+    if lock:
+        (out / "data.json").unlink(missing_ok=True)  # never publish the league data unencrypted
+        print("Site is members-only: league data is encrypted behind the question.")
+    else:
+        (out / "data.json").write_text(json.dumps(payload, indent=1), encoding="utf-8")
     if args.fragment:
         Path(args.fragment).write_text(render(payload, full_document=False, card=card), encoding="utf-8")
     print(f"Built {out / 'index.html'}: {len(league['teams'])} teams, {len(league['weeks'])} weeks.")

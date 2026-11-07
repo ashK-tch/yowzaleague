@@ -82,6 +82,22 @@ claiming yowzaleague.com on GitHub.
   site stops updating in the offseason, click Run workflow once to wake it up.
 - Shareable links to a specific week look like `yowzaleague.com/#week-6`.
 
+## Members-only question
+
+The site can ask visitors a question before showing anything. The league data is
+encrypted at build time, and the right answer is the key, so the page source shows
+nothing without it.
+
+- Accepted answers live in the Actions secret `SITE_PASSWORDS`, separated by `|`
+  (for example `First answer|Second answer`). Case, spaces and punctuation don't matter.
+- The question defaults to "Who is the most dominant sith lord in the air?". To change it,
+  add a repository variable `SITE_QUESTION`.
+- Delete the secret to open the site to everyone again. After changing either one, run
+  **Actions > Update site > Run workflow**.
+- Visitors can tick "Remember me" so they only answer once per device.
+- The iMessage link preview (title and `og.png`) stays public on purpose, so the Yowza of
+  the Week still shows up in the group chat.
+
 ## Changing the theme song
 
 Upload an audio file (`.mp3` works best) into the `music` folder on GitHub: open the

@@ -41,6 +41,8 @@ jobs:
           SEASON: ${{ vars.SEASON }}
           ESPN_S2: ${{ secrets.ESPN_S2 }}
           ESPN_SWID: ${{ secrets.ESPN_SWID }}
+          SITE_PASSWORDS: ${{ secrets.SITE_PASSWORDS }}
+          SITE_QUESTION: ${{ vars.SITE_QUESTION }}
         run: |
           if [ -n "$LEAGUE_ID" ]; then
             python build.py

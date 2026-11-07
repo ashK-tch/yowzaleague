@@ -367,7 +367,15 @@ select.retro {
   .taskbar { justify-content: space-between; }
   .jukebox { width: min(270px, calc(100vw - 20px)); }
 }
+
+/* Members-only gate */
+.gate-text { display: grid; gap: 6px; min-width: 0; }
+.gate-q { font-weight: 700; font-size: 14px; margin-top: 6px; }
+.gate-input { width: 100%; font: 400 16px var(--body); color: var(--ink); padding: 6px 8px; border: 0; border-radius: 0; }
+.gate-remember { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.gate-msg { font-size: 12px; color: var(--red); min-height: 1.3em; }
 </style>
+__LOCK_STYLE__
 
 <div class="ticker" id="ticker" aria-label="Latest scores"><div class="ticker-track" id="ticker-track"></div></div>
 
@@ -533,10 +541,28 @@ select.retro {
 
 <div class="tip" id="tip" role="tooltip" hidden></div>
 
+<div class="overlay" id="gate" hidden>
+  <div class="win raised welcome" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <div class="title-bar"><span class="t" id="gate-title">Enter League Password</span></div>
+    <form class="win-body" id="gate-form" autocomplete="off">
+      <div class="dialog-icon" id="gate-icon"></div>
+      <div class="gate-text">
+        <h3>Members only.</h3>
+        <p>Answer the question to enter the Yowza League.</p>
+        <label class="gate-q" for="gate-answer" id="gate-question"></label>
+        <input class="sunken gate-input" id="gate-answer" name="answer" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+        <label class="gate-remember"><input type="checkbox" id="gate-remember" checked> Remember me on this device</label>
+        <p class="gate-msg" id="gate-msg" role="status"></p>
+      </div>
+      <div class="row"><button class="btn default" type="submit" id="gate-ok">OK</button></div>
+    </form>
+  </div>
+</div>
+
 <script id="yowza-data" type="application/json">__YOWZA_DATA__</script>
+<script id="yowza-lock" type="application/json">__YOWZA_LOCK__</script>
 <script>
-(function () {
-  const D = JSON.parse(document.getElementById("yowza-data").textContent);
+function yowzaApp(D) {
   const T = Object.fromEntries(D.teams.map(t => [t.id, t]));
   const $ = id => document.getElementById(id);
 
@@ -1172,5 +1198,80 @@ select.retro {
   renderLuck();
   renderSwap();
   renderRecords();
+}
+
+// ----- members-only gate: the league data is encrypted, and the right answer is the key -----
+(function () {
+  const lockEl = document.getElementById("yowza-lock");
+  let lock = null;
+  try { lock = JSON.parse(lockEl.textContent); } catch (e) { lock = null; }
+  if (!lock) { yowzaApp(JSON.parse(document.getElementById("yowza-data").textContent)); return; }
+
+  const $ = id => document.getElementById(id);
+  const gate = $("gate"), form = $("gate-form"), input = $("gate-answer"), msg = $("gate-msg"), ok = $("gate-ok"), remember = $("gate-remember");
+  const KEY = ["................", "................", "..KKKK..........", ".KYYYYK.........", "KYYKKYYK........", "KYK..KYKKKKKKKKK",
+    "KYK..KYYYYYYYYYK", "KYYKKYYKKKKYKKYK", ".KYYYYK....KK.KK", "..KKKK..........", "................", "................",
+    "................", "................", "................", "................"];
+  $("gate-icon").innerHTML = '<svg viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">' +
+    KEY.map((row, y) => row.split("").map((c, x) => c === "." ? "" : '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="' + (c === "K" ? "#000" : "#ffd200") + '"/>').join("")).join("") + '</svg>';
+  $("gate-question").textContent = lock.q;
+
+  const norm = s => String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
+  const bytes = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const saved = {
+    get() { try { return localStorage.getItem("yowza-pass"); } catch (e) { return null; } },
+    set(v) { try { localStorage.setItem("yowza-pass", v); } catch (e) { /* private mode */ } },
+    clear() { try { localStorage.removeItem("yowza-pass"); } catch (e) { /* private mode */ } }
+  };
+
+  async function open(answer) {
+    const subtle = window.crypto && window.crypto.subtle;
+    if (!subtle) throw new Error("no crypto");
+    const base = await subtle.importKey("raw", new TextEncoder().encode(norm(answer)), "PBKDF2", false, ["deriveKey"]);
+    const kek = await subtle.deriveKey({ name: "PBKDF2", salt: bytes(lock.salt), iterations: lock.iter, hash: "SHA-256" },
+      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    for (const k of lock.keys) {
+      let raw;
+      try { raw = await subtle.decrypt({ name: "AES-GCM", iv: bytes(k.iv) }, kek, bytes(k.key)); } catch (e) { continue; }
+      const dataKey = await subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+      const plain = await subtle.decrypt({ name: "AES-GCM", iv: bytes(lock.iv) }, dataKey, bytes(lock.ct));
+      return JSON.parse(new TextDecoder().decode(plain));
+    }
+    return null;
+  }
+
+  async function attempt(answer, auto) {
+    ok.disabled = true;
+    msg.style.color = "var(--ink-2)";
+    msg.textContent = auto ? "Checking your pass…" : "Checking…";
+    try {
+      const D = await open(answer);
+      if (D) {
+        if (!auto) { if (remember.checked) saved.set(norm(answer)); else saved.clear(); }
+        gate.hidden = true;
+        document.documentElement.classList.add("unlocked");
+        yowzaApp(D);
+        return true;
+      }
+      if (auto) saved.clear();
+      msg.style.color = "";
+      msg.textContent = auto ? "" : "Access denied. That’s not who rules the skies.";
+    } catch (e) {
+      msg.style.color = "";
+      msg.textContent = "This browser can’t open the site. Try the latest Safari or Chrome.";
+    }
+    ok.disabled = false;
+    return false;
+  }
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    if (!input.value.trim()) { msg.textContent = "Type an answer first."; input.focus(); return; }
+    attempt(input.value, false).then(done => { if (!done) { input.select(); input.focus(); } });
+  });
+  gate.hidden = false;
+  const pass = saved.get();
+  if (pass) attempt(pass, true).then(done => { if (!done) input.focus(); });
+  else input.focus();
 })();
 </script>
