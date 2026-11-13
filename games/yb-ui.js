@@ -16,7 +16,17 @@
 .yb h3, .yb h4, .yb p { margin: 0; }
 .yb-title { font: 400 30px/1 "Luckiest Guy", Impact, sans-serif; color: var(--gold); letter-spacing: 0.03em; text-shadow: 3px 3px 0 var(--ink), -1px -1px 0 var(--ink), 1px -1px 0 var(--ink), -1px 1px 0 var(--ink); }
 .yb-title small { display: block; font: 600 12px Fredoka, sans-serif; color: #cfe3f5; text-shadow: none; letter-spacing: 0.02em; margin-top: 4px; }
-.yb-top { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; justify-content: space-between; }
+.yb-hero { width: 100%; height: 124px; display: block; border: 3px solid var(--ink); border-radius: 14px; box-shadow: 5px 5px 0 rgba(0,0,0,0.35); background: #22407a; }
+.yb-top { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; justify-content: flex-end; }
+.yb-b:hover:not(:disabled) { filter: brightness(1.06); transform: translateY(-1px) rotate(-0.6deg); }
+.yb-alleys { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.yb-alley { font: inherit; color: var(--ink); text-align: left; background: #fff; border: 3px solid var(--ink); border-radius: 12px; padding: 6px; cursor: pointer; display: grid; gap: 4px; box-shadow: 0 4px 0 var(--ink); min-width: 0; }
+.yb-alley canvas { width: 100%; height: auto; border-radius: 7px; border: 2px solid var(--ink); display: block; }
+.yb-alley b { font: 400 16px "Luckiest Guy", Impact, sans-serif; letter-spacing: 0.03em; color: var(--navy); }
+.yb-alley small { font-size: 12px; color: #4b5366; }
+.yb-alley[aria-pressed="true"] { background: var(--gold); transform: translateY(3px) rotate(-0.8deg); box-shadow: 0 1px 0 var(--ink); }
+.yb-alley:hover { filter: brightness(1.04); }
+.yb-wide { grid-column: 1 / -1; }
 .yb-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .yb-b { font: 600 14px Fredoka, sans-serif; color: var(--ink); background: var(--gold); border: 3px solid var(--ink); border-radius: 12px; padding: 7px 14px; min-height: 40px;
   box-shadow: 0 4px 0 var(--ink); cursor: pointer; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
@@ -93,7 +103,9 @@ html.yb-playing #glorbo { display: none !important; }
   .yb { padding: 8px; border-radius: 12px; }
   .yb-lobby, .yb-dress, .yb-game { grid-template-columns: minmax(0, 1fr); }
   .yb-lobby > .yb-col:last-child { grid-column: auto; }
-  .yb-title { font-size: 24px; }
+  .yb-hero { height: 96px; }
+  .yb-alley small { display: none; }
+  .yb-alleys { gap: 6px; }
   .yb-chat { height: 130px; }
 }`;
 
@@ -136,7 +148,8 @@ html.yb-playing #glorbo { display: none !important; }
 
     el.innerHTML =
       '<div class="yb">' +
-        '<div class="yb-top"><div class="yb-title">YOWZA BOWL<small>Oddball ten-pin for the Yowza League</small></div>' +
+        '<canvas class="yb-hero" width="900" height="130" role="img" aria-label="Yowza Bowl: oddball ten-pin for the Yowza League"></canvas>' +
+        '<div class="yb-top">' +
           '<div class="yb-nav"><span class="yb-me"><canvas width="72" height="72" style="width:36px;height:36px"></canvas><span class="yb-me-name"></span><canvas class="yb-star yb-me-star" width="36" height="36"></canvas><span class="yb-cash"></span></span>' +
           '<button class="yb-b alt" type="button" data-act="nav" data-to="lobby">Lobby</button><button class="yb-b alt" type="button" data-act="nav" data-to="dress">Dressing room</button><button class="yb-b alt" type="button" data-act="nav" data-to="hall">Hall of Fame</button></div></div>' +
         '<div class="yb-lobby" data-screen="lobby"></div>' +
@@ -168,45 +181,20 @@ html.yb-playing #glorbo { display: none !important; }
       Object.keys(screens).forEach(k => { screens[k].hidden = k !== name; });
       qa('[data-act="nav"]').forEach(b => { b.setAttribute("aria-pressed", String(b.dataset.to === name)); b.disabled = name === "game"; });
       document.documentElement.classList.toggle("yb-playing", name === "game");
-      if (name === "dress") renderDress();
+      if (name === "dress") { renderDress(); S.voice("choose"); S.play("j_shop", { vol: 0.5, delay: 1.1 }); }
       if (name === "hall") renderHall();
       if (name === "lobby") { renderLobby(); pushPresence(); }
     }
 
-    // ----- sound: all synthesized, nothing to download -----
-    let ac = null, rumble = null;
-    function audio() {
-      if (!mem.sound) return null;
-      try { if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)(); if (ac.state === "suspended") ac.resume(); } catch (e) { ac = null; }
-      return ac;
-    }
-    function noise(dur, freq, vol, type) {
-      const a = audio();
-      if (!a) return null;
-      const buf = a.createBuffer(1, Math.max(1, Math.floor(a.sampleRate * dur)), a.sampleRate), d = buf.getChannelData(0);
-      for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-      const src = a.createBufferSource(), f = a.createBiquadFilter(), v = a.createGain();
-      src.buffer = buf; f.type = type || "lowpass"; f.frequency.value = freq; v.gain.value = vol;
-      src.connect(f); f.connect(v); v.connect(a.destination);
-      return { src, v, a };
-    }
-    function crash(n) { const k = noise(0.3, 1800, Math.min(0.5, 0.12 + n * 0.05), "bandpass"); if (!k) return; k.v.gain.exponentialRampToValueAtTime(0.001, k.a.currentTime + 0.3); k.src.start(); }
-    function stopRumble() { if (rumble) { try { rumble.src.stop(); } catch (e) { /* already stopped */ } rumble = null; } }
-    function startRumble() { stopRumble(); const k = noise(3, 140, 0.16); if (!k) return; k.src.loop = true; k.src.start(); rumble = k; }
-    function tune(notes, wave) {
-      const a = audio();
-      if (!a) return;
-      notes.forEach(([freq, at, len]) => {
-        const o = a.createOscillator(), v = a.createGain();
-        o.type = wave || "square"; o.frequency.value = freq;
-        v.gain.setValueAtTime(0.07, a.currentTime + at); v.gain.exponentialRampToValueAtTime(0.001, a.currentTime + at + len);
-        o.connect(v); v.connect(a.destination); o.start(a.currentTime + at); o.stop(a.currentTime + at + len + 0.02);
-      });
-    }
-    const blip = () => tune([[660, 0, 0.06]]);
-    const fanfare = () => tune([[523, 0, 0.1], [659, 0.1, 0.1], [784, 0.2, 0.1], [1047, 0.3, 0.3]]);
-    const ding = () => tune([[784, 0, 0.1], [988, 0.1, 0.22]]);
-    const womp = () => tune([[220, 0, 0.18], [196, 0.18, 0.18], [165, 0.36, 0.4]], "sawtooth");
+    // ----- sound: real recordings, see games/yb-sound.js -----
+    const S = YB.sound;
+    S.setBase(ctx.sounds || "sounds/");
+    S.setOn(mem.sound);
+    let rollLoop = null, ambience = null;
+    const stopRoll = () => { if (rollLoop) { rollLoop.stop(0.2); rollLoop = null; } };
+    const fam = () => ["sax", "brass", "nes"][G ? G.alley : 0];
+    const jingle = (ev, o) => S.play("j_" + fam() + "_" + ev, Object.assign({ vol: 0.7 }, o));
+    const glorboSays = (line, o) => { if (S.voice(line, o) && G) G.talk = G.t + 1.3; };
 
     // ----- online -----
     let net = null, netState = ctx.firebase ? "idle" : "off", rooms = {}, here = {}, myRoom = null, lobbyUnsubs = [], chatUnsub = null;
@@ -248,7 +236,8 @@ html.yb-playing #glorbo { display: none !important; }
       if (chatUnsub) chatUnsub();
       chatUnsub = null;
       if (!net || !box) return;
-      chatUnsub = net.added(path, m => { if (m && typeof m.m === "string") chatLine(box, String(m.n || "?").slice(0, 16), m.m.slice(0, 200)); }, 40);
+      const since = Date.now();
+      chatUnsub = net.added(path, m => { if (m && typeof m.m === "string") { chatLine(box, String(m.n || "?").slice(0, 16), m.m.slice(0, 200)); if (Date.now() - since > 1500) S.play("drop", { vol: 0.5 }); } }, 40);
     }
     let lastSaid = 0;
     function say(path, input) {
@@ -266,21 +255,22 @@ html.yb-playing #glorbo { display: none !important; }
       const opp = n => '<label>Lane ' + n + '<select class="yb-opp" data-n="' + n + '"><option value="">Nobody</option><option value="human">Another person (pass and play)</option>' +
         '<optgroup label="House bowlers">' + HOUSE.map(h => '<option value="cpu:' + h.id + '">' + esc(h.name) + " (" + h.blurb + ")</option>").join("") + "</optgroup>" +
         (cpuList.length ? '<optgroup label="League managers">' + cpuList.map(c => '<option value="cpu:' + c.id + '">' + esc(c.name) + (c.team.manager ? " (" + esc(c.team.name) + ")" : "") + "</option>").join("") + "</optgroup>" : "") + "</select></label>";
-      const alleys = A.ALLEYS.map((a, i) => '<option value="' + i + '">' + esc(a.name) + "</option>").join("");
+      if (!(mem.alley >= 0 && mem.alley < A.ALLEYS.length)) mem.alley = 0;
       const types = '<option value="std">Standard game</option><option value="frame">Team game: partners swap each frame</option><option value="ball">Team game: partners swap each ball</option>';
       screens.lobby.innerHTML =
+        '<div class="yb-card yb-wide"><h3>Pick an alley</h3><div class="yb-alleys">' + A.ALLEYS.map((a, i) => '<button class="yb-alley" type="button" data-act="alley" data-i="' + i + '" aria-pressed="' + (mem.alley === i) + '"><canvas width="320" height="240" data-thumb="' + i + '"></canvas><b>' + esc(a.name) + "</b><small>" + esc(a.blurb) + "</small></button>").join("") + "</div></div>" +
         '<div class="yb-col">' +
           '<div class="yb-card"><h3>Bowl right now</h3><p class="yb-note">Against the computer, or pass the phone around. Lane 1 is you. Bowling alone is practice and doesn\'t touch your average.</p>' +
             opp(2) + opp(3) + opp(4) +
-            '<div class="yb-grid2"><label>Game<select class="yb-ltype">' + types + '</select></label><label>Alley<select class="yb-lalley">' + alleys + '</select></label></div>' +
+            '<label>Game<select class="yb-ltype">' + types + '</select></label>' +
             '<button class="yb-b hot" type="button" data-act="local">Bowl!</button></div>' +
         '</div>' +
         '<div class="yb-col">' +
           '<div class="yb-card yb-room" hidden></div>' +
           '<div class="yb-card"><h3>Online lanes</h3><div class="yb-net"></div>' +
             '<h4>Waiting for players</h4><ul class="yb-list yb-waiting"></ul><h4>Playing now</h4><ul class="yb-list yb-playing-list"></ul></div>' +
-          '<div class="yb-card yb-open"><h3>Open a lane</h3><div class="yb-grid2"><label>Game<select class="yb-otype">' + types + '</select></label><label>Alley<select class="yb-oalley">' + alleys + '</select></label></div>' +
-            '<label>Bowlers<select class="yb-osize"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>' +
+          '<div class="yb-card yb-open"><h3>Open a lane</h3><div class="yb-grid2"><label>Game<select class="yb-otype">' + types + '</select></label>' +
+            '<label>Bowlers<select class="yb-osize"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label></div>' +
             '<button class="yb-b teal" type="button" data-act="open">Open the lane</button></div>' +
         '</div>' +
         '<div class="yb-col">' +
@@ -299,6 +289,7 @@ html.yb-playing #glorbo { display: none !important; }
       };
       qa(".yb-opp, .yb-otype").forEach(s => s.addEventListener("change", sync));
       sync();
+      qa("canvas[data-thumb]", screens.lobby).forEach(c => A.thumb(c, Number(c.dataset.thumb)));
       if (net) watchChat("chat/lobby", q(".yb-lobby-chat"));
       renderOnline();
     }
@@ -334,7 +325,9 @@ html.yb-playing #glorbo { display: none !important; }
     }
     function roomsChanged() {
       if (myRoom) {
-        const r = rooms[myRoom.id];
+        const r = rooms[myRoom.id], count = r ? seatsOf(r).length : 0;
+        if (count > (myRoom.count || 1)) S.play("ding", { vol: 0.5 });
+        myRoom.count = count;
         if (!r) { myRoom = null; pushPresence(); }
         else if (r.state === "playing" && !G) {
           const ss = seatsOf(r), mine = ss.findIndex(s => s.u === net.uid);
@@ -349,7 +342,7 @@ html.yb-playing #glorbo { display: none !important; }
     function openRoom() {
       if (!net || myRoom) return;
       const type = q(".yb-otype").value, team = type !== "std";
-      const room = { t: net.now(), alley: Number(q(".yb-oalley").value), mode: team ? "team" : "std", alt: type === "ball" ? "ball" : "frame", max: team ? 4 : Number(q(".yb-osize").value), host: net.uid, state: "waiting", seats: { 0: card() } };
+      const room = { t: net.now(), alley: mem.alley || 0, mode: team ? "team" : "std", alt: type === "ball" ? "ball" : "frame", max: team ? 4 : Number(q(".yb-osize").value), host: net.uid, state: "waiting", seats: { 0: card() } };
       const id = net.push("rooms", room);
       myRoom = { id, seat: 0 };
       net.onDrop("rooms/" + id, null);
@@ -474,7 +467,10 @@ html.yb-playing #glorbo { display: none !important; }
       G.canvas = q(".yb-screen canvas"); G.g = G.canvas.getContext("2d"); G.dpr = dpr; G.chat = q(".yb-game-chat");
       q('[data-act="sound"]').textContent = mem.sound ? "Sound: on" : "Sound: off";
       show("game");
-      audio();
+      S.wake();
+      if (ambience) ambience.stop(0.3);
+      ambience = S.loop("ambience", { vol: 0.2, fade: 1.5 });
+      setTimeout(() => { if (G && !G.over) { glorboSays("prepare"); if (G.alley === 1) S.play("whistle", { vol: 0.5, delay: 1.1 }); } }, 350);
       const names = G.seats.map(s => s.name);
       chatLine(G.chat, "", names.join(", ") + (names.length > 1 ? " are" : " is") + " on the lane.", "sys");
       glorbo(G.online && G.online.spectator ? "You're watching from the bar. Keep the heckling classy." : names.length > 1 ? "Welcome to " + A.ALLEYS[G.alley].name + ". Ten frames. Keep it clean. Or don't." : "Practice lane. Nothing counts. I'm still judging.");
@@ -522,7 +518,11 @@ html.yb-playing #glorbo { display: none !important; }
       G.sim = null; G.pos = 0; G.dir = 0; G.power = 0; G.clock = 0; G.word = null; G.mask = null; G.steer = []; G.shot = null;
       const where = "Frame " + (tn.frame + 1) + ", ball " + (tn.ball + 1) + ": " + seat.name;
       drawSheets();
+      G.rack = tn.fresh ? 0 : null; G.tvMood = "idle"; G.hurried = false;
+      if (tn.fresh && G.match.throws) S.play("machine", { vol: 0.22, rate: 1.25 });
+      if (tn.frame === 9 && !G.finalCalled) { G.finalCalled = true; glorboSays("final"); }
       if (isMine(seat)) {
+        if (G.online || G.seats.filter(s2 => s2.kind === "me" || s2.kind === "local").length > 1) S.play("bong", { vol: 0.6 });
         G.phase = "place"; G.live = true; G.deadline = G.online ? Date.now() + 45000 : 0;
         banner(where + (G.seats.filter(s => s.kind === "me" || s.kind === "local").length > 1 || G.online ? ", you're up" : ""), "Pick your spot with the arrows, then press Bowl.");
         pad(true, "BOWL");
@@ -562,51 +562,67 @@ html.yb-playing #glorbo { display: none !important; }
     }
     function act() {
       if (!G || !G.cur || !isMine(G.cur)) return;
-      if (G.phase === "place") { G.phase = "dir"; G.clock = 0; blip(); banner(q(".yb-turn").textContent, "Stop the arrow where you want the ball to go."); pad(true, "AIM"); }
-      else if (G.phase === "dir") { G.phase = "power"; G.clock = 0; blip(); banner(q(".yb-turn").textContent, "Stop the power bar. More power, more pin action, less spin."); pad(true, "POWER"); }
-      else if (G.phase === "power") { blip(); release(YB.toBytes(G.pos, G.dir, G.power)); }
+      if (G.phase === "place") { G.phase = "dir"; G.clock = 0; S.play("select", { vol: 0.7 }); banner(q(".yb-turn").textContent, "Stop the arrow where you want the ball to go."); pad(true, "AIM"); }
+      else if (G.phase === "dir") { G.phase = "power"; G.clock = 0; S.play("zap", { vol: 0.5 }); banner(q(".yb-turn").textContent, "Stop the power bar. More power, more pin action, less spin."); pad(true, "POWER"); }
+      else if (G.phase === "power") { S.play("confirm", { vol: 0.7 }); release(YB.toBytes(G.pos, G.dir, G.power)); }
     }
     function release(bytes) {
       const v = YB.fromBytes(bytes);
       G.bytes = bytes; G.pos = v.pos; G.dir = v.dir; G.power = v.power;
       G.phase = "approach"; G.clock = 0;
+      ["step1", "step2", "step3"].forEach((n, i) => S.play(n, { vol: 0.55, delay: 0.06 + i * 0.2, vary: 0.2 }));
       pad(false, "...");
       if (G.live) banner(q(".yb-turn").textContent, "Hold left or right while it rolls to spin the ball.");
     }
     function settle() {
-      stopRumble();
+      stopRoll();
       const res = YB.result(G.sim), tn = G.turn, sh = G.match.sheets[tn.sheet], seat = G.cur;
       const after = G.mask != null ? YB.fromMask(G.mask) : res.standing;
       const firstBall = G.standing.every(Boolean);
       if (G.online && G.live) net.push("games/" + G.online.id + "/throws", { n: G.match.throws, s: tn.seat, b: G.bytes, k: YB.steerText(G.sim.steer), m: YB.toMask(after) });
       const fell = YB.applyThrow(G.match, tn.sheet, after), left = after.filter(Boolean).length;
-      let word, kind = null, st = G.streak[tn.sheet] || 0;
+      let word, kind = null, st = G.streak[tn.sheet] || 0, mine = "idle", theirs = "idle";
       if (firstBall && left === 0) {
         st++;
         word = st === 2 ? "DOUBLE!" : st === 3 ? "TURKEY!" : st > 3 ? st + " IN A ROW!" : "STRIKE!";
-        glorbo(st === 3 ? "TURKEY for " + seat.name + "! Gobble gobble." : st > 3 ? seat.name + " has " + st + " in a row. Somebody check that ball." : pick(["STRIKE! " + seat.name + " clears the deck.", "Strike. All ten. Yowza.", "X marks the spot for " + seat.name + "."]));
-        fanfare(); kind = "good";
-        for (let i = 0; i < 60; i++) G.confetti.push({ x: G.view.W / 2 + (Math.random() - 0.5) * 120, y: G.view.H * 0.36, vx: (Math.random() - 0.5) * 520, vy: -Math.random() * 420 - 60, r: Math.random() * 6, vr: (Math.random() - 0.5) * 12, c: pick(["#ff3d5a", "#ffc93c", "#35e0d0", "#ffffff", "#b388ff"]) });
+        glorbo(st === 3 ? "TURKEY for " + seat.name + "! Gobble gobble." : st > 3 ? seat.name + " has " + st + " in a row. Somebody check that ball." : pick(["STRIKE! " + seat.name + " clears the deck.", "Strike. All ten. Yowza.", "X marks the spot for " + seat.name + ".", "Ten pins, ten regrets. Strike for " + seat.name + "."]));
+        kind = "good"; mine = "cheer"; theirs = st > 1 ? "shock" : "clap";
+        S.play("cheer", { vol: 0.6 }); jingle(st > 1 ? "double" : "strike", { delay: 0.15 });
+        if (st === 2) glorboSays("combo", { delay: 0.5 }); else if (st >= 3) glorboSays("flawless", { delay: 0.5 }); else if (Math.random() < 0.35) glorboSays("congrats", { delay: 0.6 });
+        if (G.alley === 1) S.play("whistle", { vol: 0.35, delay: 0.3 });
+        if (G.alley === 2) S.play("phaser", { vol: 0.4, delay: 0.1 });
+        for (let i = 0; i < 70; i++) G.confetti.push({ x: G.view.W / 2 + (Math.random() - 0.5) * 120, y: G.view.H * 0.36, vx: (Math.random() - 0.5) * 520, vy: -Math.random() * 420 - 60, r: Math.random() * 6, vr: (Math.random() - 0.5) * 12, c: pick(["#ff3d5a", "#ffc93c", "#35e0d0", "#ffffff", "#b388ff"]) });
       } else {
+        if (st >= 2) glorboSays("breaker", { delay: 0.4 });
         st = 0;
-        if (left === 0) { word = "SPARE!"; kind = "ok"; glorbo(pick(["Spare for " + seat.name + ". Clean living.", seat.name + " picks it up.", "Spare. Tidy."])); ding(); }
-        else if (fell === 0) {
-          word = res.gutter ? "GUTTER!" : "MISS!"; kind = "bad";
+        if (left === 0) {
+          word = "SPARE!"; kind = "ok"; mine = "cheer"; theirs = "clap";
+          glorbo(pick(["Spare for " + seat.name + ". Clean living.", seat.name + " picks it up.", "Spare. Tidy.", seat.name + " cleans up the mess they made."]));
+          S.play("applause", { vol: 0.55 }); jingle("spare", { delay: 0.1 });
+        } else if (fell === 0) {
+          word = res.gutter ? "GUTTER!" : "MISS!"; kind = "bad"; mine = res.gutter ? "facepalm" : "slump"; theirs = "laugh";
           if (res.gutter && seat.kind === "me") G.myGutters++;
-          glorbo(res.gutter ? pick(["Gutterball. Yowza.", seat.name + " finds the gutter. It was right there the whole time.", "Straight into the gutter."]) : seat.name + " hits nothing but air.");
-          womp();
-        } else if (firstBall && YB.isSplit(after)) { word = "SPLIT!"; kind = "bad"; glorbo("Split! " + seat.name + " needs a miracle or a very bouncy pin."); }
-        else {
+          glorbo(res.gutter ? pick(["Gutterball. Yowza.", seat.name + " finds the gutter. It was right there the whole time.", "Straight into the gutter.", "The gutter thanks " + seat.name + " for the visit."]) : seat.name + " hits nothing but air.");
+          if (res.gutter) { S.play("trombone", { vol: 0.6 }); if (Math.random() < 0.3) glorboSays("loser", { delay: 1.2 }); } else { S.play("beeps", { vol: 0.6 }); jingle("gutter", { delay: 0.5 }); }
+        } else if (firstBall && YB.isSplit(after)) {
+          word = "SPLIT!"; kind = "bad"; mine = "shock"; theirs = "laugh";
+          glorbo("Split! " + seat.name + " needs a miracle or a very bouncy pin.");
+          S.play("gasp", { vol: 0.7 }); jingle("split", { delay: 0.35 });
+        } else {
           word = String(fell);
-          if (firstBall && fell === 9) glorbo("Nine for " + seat.name + ". One pin had other plans.");
-          else if (!firstBall && tn.frame < 9) glorbo(seat.name + " leaves " + left + ". Open frame.");
+          mine = fell >= 8 ? "idle" : "slump"; theirs = "idle";
+          if (firstBall && fell === 9) { glorbo("Nine for " + seat.name + ". One pin had other plans."); S.play("meow", { vol: 0.5, delay: 0.5, rate: 1.15 }); mine = "facepalm"; }
+          else if (!firstBall && tn.frame < 9) { glorbo(seat.name + " leaves " + left + ". Open frame."); S.play("drop", { vol: 0.5 }); }
+          else if (fell >= 7) S.play("applause", { vol: 0.25, rate: 1.1 });
         }
       }
       G.streak[tn.sheet] = st;
       G.word = { text: word, t: 0, kind: kind === "ok" ? null : kind };
-      G.mood = kind === "good" || kind === "ok" ? 1 : kind === "bad" ? -1 : 0;
+      G.tvMood = kind === "good" || kind === "ok" ? "cheer" : kind === "bad" ? "groan" : "idle";
+      G.reacts = [{ look: seat.look, act: mine, big: true, tag: seat.tag }].concat(G.seats.filter(s2 => s2 !== seat).slice(0, 3).map(s2 => ({ look: s2.look, act: theirs })));
+      G.swept = false;
       if ((kind === "good" || kind === "bad") && !G.online && Math.random() < 0.5) {
-        const others = G.seats.filter(s => s.kind === "cpu" && s !== seat);
+        const others = G.seats.filter(s2 => s2.kind === "cpu" && s2 !== seat);
         if (seat.kind === "cpu" && Math.random() < 0.6) talk(kind === "good" ? "brag" : "oops", seat);
         else if (others.length) talk(kind === "good" ? "grumble" : "jeer", pick(others), seat);
       }
@@ -615,7 +631,7 @@ html.yb-playing #glorbo { display: none !important; }
     }
     function finishGame(aborted) {
       if (!G || G.over) return;
-      G.over = true; G.phase = "over"; G.cur = null; G.sim = null; G.word = null; stopRumble();
+      G.over = true; G.phase = "over"; G.cur = null; G.sim = null; G.word = null; G.reacts = null; stopRoll();
       pad(false, "GAME OVER");
       banner("Final", "");
       drawSheets();
@@ -636,9 +652,16 @@ html.yb-playing #glorbo { display: none !important; }
         let pay = Math.round(YB.payout(rolls) / (team ? 2 : 1) * (solo ? 0.25 : 1)) + (won && G.online ? 100 : 0);
         if (!done) pay = Math.round(pay / 2);
         mem.cash += pay;
-        if (total >= 200) fanfare();
+        const before = starOf(mem.st.g, mem.st.sum);
+        if (pay > 0) S.play("coins", { vol: 0.6, delay: 1.2 });
+        if (sheets.length === 1) glorboSays("gameover", { force: true });
+        else if (winners.length > 1) glorboSays("tie", { force: true });
+        else if (won) { glorboSays(pick(["youwin", "winner"]), { force: true }); S.play(pick(["j_win", "j_win2"]), { vol: 0.7, delay: 0.5 }); S.play("cheer", { vol: 0.5, delay: 0.3 }); }
+        else { glorboSays("youlose", { force: true }); S.play("j_lose", { vol: 0.7, delay: 0.6 }); }
+        setTimeout(() => { const now = starOf(mem.st.g, mem.st.sum); if (now.color !== before.color && now.avg != null) { S.play("powerup", { vol: 0.6 }); glorboSays("levelup", { force: true, delay: 0.3 }); } else if (G && G.newBest) glorboSays("highscore", { force: true }); }, 2200);
         if (G.counts && !team && !solo && done) {
           const s = mem.st, best = total > s.best;
+          G.newBest = best && s.g > 0;
           s.g++; s.sum += total; s.pins += rolls.reduce((a, b) => a + b, 0); s.x += strikes; s.gut += G.myGutters; s.earn += pay; if (total === 300) s.perf++; if (best) s.best = total;
           if (mem.wk.id !== WEEK()) mem.wk = { id: WEEK(), g: 0, sum: 0, x: 0, earn: 0 };
           mem.wk.g++; mem.wk.sum += total; mem.wk.x += strikes; mem.wk.earn += pay;
@@ -660,7 +683,8 @@ html.yb-playing #glorbo { display: none !important; }
     }
     function leaveGame(to) {
       if (!G) return;
-      cancelAnimationFrame(raf); stopRumble();
+      cancelAnimationFrame(raf); stopRoll();
+      if (ambience) { ambience.stop(0.6); ambience = null; }
       G.unsubs.forEach(u => u());
       if (G.online) {
         const id = G.online.id, r = rooms[id];
@@ -695,9 +719,10 @@ html.yb-playing #glorbo { display: none !important; }
       const dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0;
       lastT = now;
       G.t += dt; G.clock += dt;
-      const v = G.view, seat = G.cur, fast = G.live || !seat ? 1 : 1.35;
+      const v = G.view, seat = G.cur, fast = G.live || !seat ? 1 : 1.3;
       let target = v.y0;
       if (G.word) G.word.t += dt;
+      if (G.rack != null) { G.rack += dt / 0.55; if (G.rack >= 1) G.rack = null; }
       G.confetti = G.confetti.filter(c => { c.vy += 900 * dt; c.x += c.vx * dt; c.y += c.vy * dt; c.r += c.vr * dt; return c.y < v.H + 20; });
       if (seat) {
         if (G.phase === "place") { if (held) G.pos = Math.max(-17, Math.min(17, G.pos + held * dt * 15)); }
@@ -708,10 +733,16 @@ html.yb-playing #glorbo { display: none !important; }
           G.pos = sh.pos * a; G.dir = sh.dir * a; G.power = sh.power * a;
           if (G.clock > 1.1) { G.steer = G.shot.steer; release(G.shot.bytes); }
         }
-        if (G.live && G.deadline && (G.phase === "place" || G.phase === "dir" || G.phase === "power") && Date.now() > G.deadline) release(YB.toBytes(G.pos, G.dir, Math.max(0.5, G.power)));
+        if (G.live && G.deadline && (G.phase === "place" || G.phase === "dir" || G.phase === "power")) {
+          const left = G.deadline - Date.now();
+          if (left < 10000 && !G.hurried) { G.hurried = true; glorboSays("hurry", { force: true }); }
+          if (left < 0) { glorboSays("time", { force: true }); release(YB.toBytes(G.pos, G.dir, Math.max(0.5, G.power))); }
+        }
         if (G.phase === "approach" && G.clock > 0.7 / fast) {
           G.sim = YB.createThrow(G.standing, G.bytes, seat.look[10], YB.throwSeed(G.seed, G.match.throws), G.live ? [] : G.steer);
-          G.phase = "roll"; G.acc = 0; G.hits = 0; startRumble();
+          G.phase = "roll"; G.acc = 0; G.hits = 0; G.inGutter = false;
+          S.play("release", { vol: 0.7 });
+          stopRoll(); rollLoop = S.loop("roll", { vol: 0.5, rate: 0.8 + G.power * 0.45, fade: 0.15 });
         } else if (G.phase === "roll") {
           const s = G.sim;
           G.acc += dt * fast;
@@ -719,31 +750,48 @@ html.yb-playing #glorbo { display: none !important; }
             if (G.live && s.n % YB.TICK === 0) s.steer[s.n / YB.TICK] = held;
             YB.step(s); G.acc -= YB.DT;
           }
-          if (s.hits > G.hits) { crash(s.hits - G.hits); G.hits = s.hits; }
-          if (s.ball.gone || (s.ball.gutter && s.ball.y > YB.HEAD)) stopRumble();
+          if (s.ball.gutter && !G.inGutter) { G.inGutter = true; S.play("thud", { vol: 0.7 }); S.play("plank", { vol: 0.4, delay: 0.08 }); if (rollLoop) rollLoop.set(0.3, 0.55); G.tvMood = "groan"; }
+          if (s.hits > G.hits) {
+            const n = s.hits - G.hits;
+            if (!G.hits) { S.play(n >= 2 && Math.random() < 0.5 ? "strike" : "crash", { vol: 0.5 + Math.min(0.4, n * 0.12), vary: 0.12 }); if (rollLoop) rollLoop.set(0.15); G.tvMood = "shock"; }
+            S.pins(n, !G.hits);
+            G.hits = s.hits;
+          }
+          if (s.ball.gone) stopRoll();
           target = v.y0 + Math.max(0, Math.min(v.dolly, ((s.ball.gone ? YB.PIT : s.ball.y) - 30) * 0.75));
           if (s.done) settle();
         } else if (G.phase === "settle") {
           target = v.y0 + v.dolly;
-          if (G.clock > 1.7 / fast) { next(); if (!G) return; }
+          if (G.clock > 1.15 / fast && !G.swept) { G.swept = true; S.play("machine", { vol: 0.3 }); }
+          if (G.clock > 2.45 / fast) { next(); if (!G) return; }
         }
       }
       v.cy += (target - v.cy) * Math.min(1, dt * (target < v.cy ? 5 : 7));
       draw(dt);
     }
     function draw(dt) {
-      const g = G.g, v = G.view, seat = G.cur, ph = G.phase;
+      const g = G.g, v = G.view, seat = G.cur, ph = G.phase, fast = G.live || !seat ? 1 : 1.3;
       g.setTransform(G.dpr, 0, 0, G.dpr, 0, 0);
-      const sc = { alley: G.alley, t: G.t, dt, word: G.word, confetti: G.confetti };
+      const sc = { alley: G.alley, t: G.t, dt, word: G.word, confetti: G.confetti, tv: { mood: G.tvMood || "idle", talk: G.talk > G.t } };
       if (seat) {
-        const rolling = ph === "roll" || ph === "settle";
-        const a = ph === "approach" ? Math.min(1, G.clock / 0.7) : rolling ? 1 : 0;
-        const by = v.portrait ? -11 + a * 7 : -26 + a * 15;
-        const swing = ph === "approach" ? (a < 0.6 ? -a / 0.6 : -1 + (a - 0.6) / 0.4 * 2) : rolling ? 1 : -0.15;
+        const aiming = ph === "place" || ph === "dir" || ph === "power" || ph === "think" || ph === "wait";
+        const a = ph === "approach" ? Math.min(1, G.clock * fast / 0.7) : 0;
+        const y0 = v.portrait ? -11 : -26, by = aiming ? y0 : y0 + (ph === "approach" ? a : 1) * (v.portrait ? 7 : 15);
+        // while you aim the bowler stands clear of the arrow, wherever on the lane it is, then walks in to let go
+        const base = YB.art.P(v, G.pos, 9)[0], clear = Math.max(v.portrait ? 34 : 44, base - (v.portrait ? 128 : 172)), at = YB.art.P(v, G.pos - 7.5, by)[0];
         sc.ballIdx = seat.look[10];
-        sc.bowler = { x: G.pos - 8, y: by, look: seat.look, pose: { swing, step: a * 2, hold: !G.sim, tag: seat.tag, bob: ph === "settle" && G.mood > 0 ? Math.abs(Math.sin(G.clock * 9)) * 1.6 : Math.sin(G.t * 2.4) * 0.12, mood: ph === "settle" ? G.mood : 0 } };
-        if (G.sim) { sc.pins = G.sim.pins; sc.ball = G.sim.ball; sc.up = G.sim.pins.map(p => p.st === 0); if (ph === "roll") sc.spin = G.live ? held : (G.sim.steer[Math.floor(G.sim.n / YB.TICK)] || 0); }
-        else { sc.standing = G.standing; sc.up = G.standing; }
+        if (ph !== "settle") sc.bowler = { sx: aiming ? clear : ph === "approach" ? clear + (at - clear) * a : at, y: by, look: seat.look,
+          pose: { act: aiming ? "idle" : ph === "approach" ? "walk" : "release", a, t: G.t, hold: aiming || ph === "approach", tag: seat.tag } };
+        if (G.sim) {
+          sc.pins = G.sim.pins; sc.ball = G.sim.ball; sc.up = G.sim.pins.map(p => p.st === 0);
+          if (ph === "roll") sc.spin = G.live ? held : (G.sim.steer[Math.floor(G.sim.n / YB.TICK)] || 0);
+          if (ph === "settle") {
+            sc.after = true; sc.reacts = G.reacts; sc.rise = Math.min(1, G.clock * fast / 0.35);
+            const sw = (G.clock * fast - 1.15) / 1.2;
+            if (sw > 0) { sc.sweep = Math.min(1, sw); if (sw > 0.5) sc.rise = Math.max(0, 1 - (sw - 0.5) / 0.4); }
+          }
+        } else { sc.standing = G.standing; sc.up = G.standing; if (G.rack != null) sc.rackIn = G.rack; }
+        if (aiming) { sc.bench = G.seats.filter(s2 => s2 !== seat).map(s2 => ({ look: s2.look })); }
         if (ph === "place" || ph === "dir" || ph === "power" || ph === "think") sc.aim = { pos: G.pos, dir: ph === "place" ? 0 : G.dir, live: ph === "dir" };
         if (ph === "dir" || ph === "power" || ph === "think" || ph === "approach") sc.power = { v: G.power, live: ph === "power" };
       } else { sc.standing = full(); sc.up = full(); }
@@ -762,7 +810,7 @@ html.yb-playing #glorbo { display: none !important; }
         }
       });
       const type = q(".yb-ltype").value, team = type !== "std" && seats.length === 4;
-      lastLocal = { alley: Number(q(".yb-lalley").value), mode: team ? "team" : "std", alt: type === "ball" ? "ball" : "frame", counts: true, seats };
+      lastLocal = { alley: mem.alley || 0, mode: team ? "team" : "std", alt: type === "ball" ? "ball" : "frame", counts: true, seats };
       startGame(Object.assign({}, lastLocal, { seats: seats.map(s => Object.assign({}, s)) }));
     }
     let lastLocal = null;
@@ -770,17 +818,25 @@ html.yb-playing #glorbo { display: none !important; }
       nav: b => { if (screen === "dress") commitLook(); if (!G) show(b.dataset.to); },
       "nav-shop": () => leaveGame("dress"),
       local: localStart,
+      alley: b => { mem.alley = Number(b.dataset.i); save(); qa(".yb-alley").forEach(x => x.setAttribute("aria-pressed", String(x === b))); },
       open: openRoom, join: b => joinRoom(b.dataset.id), watch: b => watchRoom(b.dataset.id), "leave-room": leaveRoom, begin: beginRoom,
       invite: b => copy("🎳 Yowza Bowl: " + myName() + " opened a lane. Come bowl: " + (ctx.url || "") + "#bowl-room-" + myRoom.id, b),
       part: b => { const i = Number(b.dataset.i); draft[i] = (draft[i] + Number(b.dataset.d) + A.SIZES[i]) % A.SIZES[i]; renderDress(); },
-      buy: b => { const i = Number(b.dataset.i), p = A.PARTS[i], price = A.PRICES[p][draft[i]]; if (mem.cash >= price) { mem.cash -= price; (mem.owned[p] = mem.owned[p] || []).push(draft[i]); mem.look[i] = draft[i]; save(); showMe(); tune([[988, 0, 0.08], [1319, 0.08, 0.2]]); renderDress(); } },
+      buy: b => { const i = Number(b.dataset.i), p = A.PARTS[i], price = A.PRICES[p][draft[i]]; if (mem.cash >= price) { mem.cash -= price; (mem.owned[p] = mem.owned[p] || []).push(draft[i]); mem.look[i] = draft[i]; save(); showMe(); S.play("chips", { vol: 0.7 }); S.play("j_buy", { vol: 0.6, delay: 0.15 }); renderDress(); } },
       dice: () => { const r = A.randomLook(Math.random, false); draft = draft.map((v, i) => (A.PRICES[A.PARTS[i]] ? v : r[i])); draft[6] = r[6]; renderDress(); },
       flip: () => { backView = !backView; renderDress(); },
       "hall-tab": b => { hallTab = b.dataset.v; renderHall(); }, "hall-sort": b => { hallSort = b.dataset.v; renderHall(); },
-      act, sound: b => { mem.sound = !mem.sound; if (!mem.sound) stopRumble(); save(); b.textContent = mem.sound ? "Sound: on" : "Sound: off"; },
+      act, sound: b => { mem.sound = !mem.sound; S.setOn(mem.sound); save(); b.textContent = mem.sound ? "Sound: on" : "Sound: off"; },
       quit: () => leaveGame(), again: () => { const o = lastLocal; leaveGame(); if (o) startGame(Object.assign({}, o, { seats: o.seats.map(s => Object.assign({}, s)) })); }
     };
-    rootEl.addEventListener("click", e => { const b = e.target.closest("[data-act]"); if (b && !b.disabled && acts[b.dataset.act]) acts[b.dataset.act](b); });
+    const QUIET = { act: 1, buy: 1, sound: 1 }, SFX = { part: "pluck", dice: "switch", flip: "switch", nav: "open", "nav-shop": "open", local: "maximize", open: "maximize", begin: "maximize", join: "question", quit: "close", "leave-room": "close", again: "maximize" };
+    rootEl.addEventListener("click", e => {
+      const b = e.target.closest("[data-act]");
+      if (!b || b.disabled || !acts[b.dataset.act]) return;
+      if (!QUIET[b.dataset.act]) S.play(SFX[b.dataset.act] || "click", { vol: 0.5 });
+      acts[b.dataset.act](b);
+    });
+    rootEl.addEventListener("change", e => { if (e.target.tagName === "SELECT") S.play("switch", { vol: 0.4 }); });
     rootEl.addEventListener("submit", e => { const f = e.target.closest("form[data-chat]"); if (f) { e.preventDefault(); say(f.dataset.chat, f.querySelector("input")); } });
     rootEl.addEventListener("pointerdown", e => { const b = e.target.closest("[data-hold]"); if (b) { e.preventDefault(); held = Number(b.dataset.hold); } });
     ["pointerup", "pointercancel"].forEach(ev => window.addEventListener(ev, () => { if (!keys.size) held = 0; }));
@@ -795,6 +851,23 @@ html.yb-playing #glorbo { display: none !important; }
     document.addEventListener("keyup", e => { if (keys.delete(e.key)) held = keys.has("ArrowLeft") ? -1 : keys.has("ArrowRight") ? 1 : 0; });
     window.addEventListener("blur", () => { keys.clear(); held = 0; });
 
+    const hero = q(".yb-hero"), heroG = hero.getContext("2d");
+    let heroT = 0, heroLast = 0;
+    (function heroLoop(now) {
+      requestAnimationFrame(heroLoop);
+      if (screen === "game" || document.hidden || now - heroLast < 30) return;
+      const dt = Math.min(0.1, (now - (heroLast || now)) / 1000);
+      heroLast = now; heroT += dt;
+      const box = rootEl.getBoundingClientRect();
+      if (box.bottom < 0 || box.top > window.innerHeight) return;
+      const dpr = Math.min(2, window.devicePixelRatio || 1), w = hero.clientWidth, h = hero.clientHeight;
+      if (!w) return;
+      if (hero.width !== Math.round(w * dpr)) { hero.width = Math.round(w * dpr); hero.height = Math.round(h * dpr); }
+      heroG.setTransform(dpr, 0, 0, dpr, 0, 0);
+      A.drawHero(heroG, w, h, heroT, mem.look, myTag());
+      const mirror = screen === "dress" && draft && q(".yb-mirror");
+      if (mirror) A.portrait(mirror, draft, { tag: myTag(), ball: !backView, back: backView, t: heroT, act: Math.floor(heroT / 4) % 3 === 2 && !backView ? "wave" : "idle" });
+    })(0);
     showMe();
     renderLobby();
     document.fonts && document.fonts.load("20px 'Luckiest Guy'").then(showMe, () => {});

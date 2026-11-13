@@ -863,6 +863,7 @@ function yowzaApp(D) {
     const rowOf = Object.fromEntries((D.standings || []).map(s => [s.team, s]));
     const bowl = window.YowzaBowl.mount($("bowl-root"), {
       url: location.origin + location.pathname,
+      sounds: "sounds/",
       firebase: D.bowl ? D.bowl.firebase : null,
       space: D.bowl ? D.bowl.space : null,
       invite: bowlInvite(),

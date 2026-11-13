@@ -108,6 +108,11 @@ def add_art(out):
         shutil.rmtree(dest)
     if (HERE / "art").is_dir():
         shutil.copytree(HERE / "art", dest)
+    sounds = out / "sounds"          # Yowza Bowl's recordings (credits in games/sounds/CREDITS.md)
+    if sounds.exists():
+        shutil.rmtree(sounds)
+    if (HERE / "games" / "sounds").is_dir():
+        shutil.copytree(HERE / "games" / "sounds", sounds)
 
 
 def bowl_settings():
@@ -144,7 +149,7 @@ def render(payload, full_document=True, card=None, site_url=SITE_URL, lock=None)
     }
     for k, v in swaps.items():
         template = template.replace(k, v)
-    parts = [HERE / "games" / name for name in ("yb-engine.js", "yb-art.js", "yb-net.js", "yb-ui.js")]
+    parts = [HERE / "games" / name for name in ("yb-engine.js", "yb-sound.js", "yb-art.js", "yb-net.js", "yb-ui.js")]
     game = "\n".join(p.read_text(encoding="utf-8") for p in parts) if all(p.exists() for p in parts) else ""
     template = template.replace("__BOWL_JS__", game.replace("</", "<\\/"))
     page = template.replace("__YOWZA_DATA__", data)

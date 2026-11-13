@@ -207,7 +207,15 @@ answers at build time, and that key only reaches browsers inside the encrypted l
 - Free plan limits: 100 devices connected at once and 1 GB stored. A league won't get near either.
 - To turn online play off, delete `games/firebase.json` (or set a repository variable `BOWL_OFFLINE`).
 
-The game is four files in `games/`. To retune the physics, the lane constants and balls are at the top
+### Sounds
+
+The game's sounds are real recordings, all public domain (CC0): bowling balls, pins and an alley's
+background hum, a crowd, a sad trombone, and the Kenney packs for the announcer, jingles and clicks.
+Glorbo's voice is a stock announcer pitched up. Each alley has its own jingles (saxophone in the
+lounge, brass at The Gridiron, 8-bit on Moonbase 12). The files are in `games/sounds/`, with who made
+what in `games/sounds/CREDITS.md`. To swap one, replace the file with one of the same name.
+
+The game is five files in `games/`. To retune the physics, the lane constants and balls are at the top
 of `yb-engine.js`; run `node games/test_bowl.js` afterwards.
 
 ## Files
@@ -225,6 +233,8 @@ of `yb-engine.js`; run `node games/test_bowl.js` afterwards.
 | `history/` | League history before ESPN, and who owned which team |
 | `test_history.py` | Checks the Hall of Fame math |
 | `games/yb-engine.js` | Yowza Bowl: lane physics, scoring, turn order, computer bowlers, ranks |
+| `games/yb-sound.js` | Yowza Bowl: loads and plays the recordings |
+| `games/sounds/` | Yowza Bowl: the recordings, and `CREDITS.md` for where each came from |
 | `games/yb-art.js` | Yowza Bowl: the lane view, alleys, pins, balls and bowlers, all drawn in code |
 | `games/yb-net.js` | Yowza Bowl: the connection to the online lanes |
 | `games/yb-ui.js` | Yowza Bowl: lobby, dressing room, Hall of Fame and the match |
