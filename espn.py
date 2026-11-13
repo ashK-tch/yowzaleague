@@ -127,12 +127,19 @@ def manager_aliases(t, members):
     return [a.strip() for a in out if a and a.strip()]
 
 
+def usable_logo(url):
+    """A logo the cards can show. ESPN's stock helmets all look alike, and logos uploaded to ESPN
+    only load on ESPN's own site, so those teams get a pixel creature instead."""
+    return (url.startswith("https://") and "/default_logos/" not in url
+            and "mystique-api.fantasy.espn.com" not in url)
+
+
 def team_extras(t):
     """Logo, waiver and trade counts, and final rank: what the trading cards and Hall of Fame use."""
     logo = (t.get("logo") or "").strip()
     tc = t.get("transactionCounter") or {}
     return {
-        "logo": logo if logo.startswith("https://") else "",
+        "logo": logo if usable_logo(logo) else "",
         "moves": {"adds": int(tc.get("acquisitions") or 0), "trades": int(tc.get("trades") or 0)} if tc else None,
         "finalRank": int(t.get("rankCalculatedFinal") or 0),
     }
