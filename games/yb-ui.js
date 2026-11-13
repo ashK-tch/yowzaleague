@@ -738,7 +738,7 @@ html.yb-playing #glorbo { display: none !important; }
       if (seat) {
         const rolling = ph === "roll" || ph === "settle";
         const a = ph === "approach" ? Math.min(1, G.clock / 0.7) : rolling ? 1 : 0;
-        const by = (v.portrait ? -24 : -26) + a * 15;
+        const by = v.portrait ? -11 + a * 7 : -26 + a * 15;
         const swing = ph === "approach" ? (a < 0.6 ? -a / 0.6 : -1 + (a - 0.6) / 0.4 * 2) : rolling ? 1 : -0.15;
         sc.ballIdx = seat.look[10];
         sc.bowler = { x: G.pos - 8, y: by, look: seat.look, pose: { swing, step: a * 2, hold: !G.sim, tag: seat.tag, bob: ph === "settle" && G.mood > 0 ? Math.abs(Math.sin(G.clock * 9)) * 1.6 : Math.sin(G.t * 2.4) * 0.12, mood: ph === "settle" ? G.mood : 0 } };
