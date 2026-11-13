@@ -70,6 +70,18 @@
 .yb-part b { text-align: center; background: #fff; border: 2px solid var(--ink); border-radius: 9px; padding: 6px 4px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .yb-part b.locked { background: #ffe9a8; }
 .yb-part .yb-b { padding: 0; min-height: 34px; }
+.yb-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.yb-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 7px; }
+.yb-item { position: relative; font: 600 11px/1.15 Fredoka, sans-serif; color: var(--ink); background: #fff; border: 3px solid var(--ink); border-radius: 12px; padding: 3px 3px 5px; cursor: pointer; display: grid; gap: 2px; justify-items: center; text-align: center; box-shadow: 0 3px 0 var(--ink); min-width: 0; touch-action: manipulation; }
+.yb-item canvas { width: 100%; height: auto; aspect-ratio: 1; border-radius: 8px; background: radial-gradient(circle at 50% 38%, #dff3fa, #9fd3e6); display: block; }
+.yb-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.yb-item em { position: absolute; top: 4px; right: 4px; font-style: normal; font-size: 10px; font-weight: 700; background: var(--gold); border: 2px solid var(--ink); border-radius: 8px; padding: 0 4px; }
+.yb-item em.own { background: #3fd35a; color: #fff; }
+.yb-item[aria-pressed="true"] { background: var(--gold); transform: translateY(2px) rotate(-1.2deg); box-shadow: 0 1px 0 var(--ink); }
+.yb-item:hover { filter: brightness(1.05); }
+.yb-item.sw canvas { display: none; }
+.yb-item.sw i { width: 46px; height: 46px; border-radius: 50%; border: 3px solid var(--ink); background: linear-gradient(135deg, var(--c) 0 62%, var(--c2) 62%); margin: 4px 0 2px; }
+.yb-rack { display: grid; gap: 6px; }
 .yb-buy { background: #fff3c4; border: 3px dashed var(--ink); border-radius: 12px; padding: 9px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; font-weight: 600; }
 .yb-table { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; background: #fff; }
 .yb-table th, .yb-table td { border: 2px solid var(--ink); padding: 4px 6px; text-align: center; }
@@ -110,10 +122,15 @@ html.yb-playing #glorbo { display: none !important; }
 }`;
 
   const HOUSE = [
-    { id: -1, name: "Gutter Gary", blurb: "easy", skill: 0.22, nerves: 1.3, look: [0, 0, 0, 4, 2, 2, 0, 2, 1, 1, 0] },
-    { id: -2, name: "Spare-Me Sam", blurb: "medium", skill: 0.6, nerves: 1.1, look: [1, 2, 3, 2, 1, 1, 5, 1, 0, 2, 2] },
-    { id: -3, name: "Glorbo", blurb: "hard", skill: 0.9, nerves: 0.8, look: [0, 5, 0, 0, 1, 1, 7, 0, 7, 0, 5] }
+    { id: -1, name: "Gutter Gary", blurb: "easy", skill: 0.22, nerves: 1.3, look: [1, 0, 9, 1, 2, 2, 0, 2, 14, 0, 0, 5, 1, 0, 0] },
+    { id: -2, name: "Spare-Me Sam", blurb: "medium", skill: 0.6, nerves: 1.1, look: [2, 2, 3, 0, 0, 1, 5, 1, 0, 1, 2, 0, 2, 2, 4] },
+    { id: -3, name: "Glorbo", blurb: "hard", skill: 0.9, nerves: 0.8, look: [0, 5, 0, 0, 1, 1, 7, 0, 7, 0, 5, 0, 1, 3, 1] }
   ];
+  // the dressing room's racks: [id, label, parts on that rack]
+  const RACKS = [["body", "Body", ["build", "skin"]], ["face", "Face", ["eyes", "mouth", "beard"]], ["hair", "Hair", ["hair", "hairColor"]],
+    ["outfit", "Outfit", ["shirt", "pattern", "pants", "shoes"]], ["head", "Headgear", ["hat", "specs"]], ["extras", "Extras", ["extra"]], ["ball", "Ball", ["ball"]]];
+  const PART_LABEL = { build: "Body shape", skin: "Skin", hair: "Hairstyle", hairColor: "Hair color", eyes: "Eyes", mouth: "Mouth", shirt: "Shirt color", pants: "Pants", hat: "Hat", specs: "Glasses", ball: "Ball", beard: "Facial hair", pattern: "Shirt style", shoes: "Bowling shoes", extra: "Neckwear" };
+  const SWATCH = { skin: 1, hairColor: 1, shirt: 1 };
   const WEEK = () => Math.floor((Date.now() / 86400000 + 4) / 7);      // weeks start on Sunday, like the old tables
   const full = () => Array(10).fill(true);
 
@@ -397,23 +414,34 @@ html.yb-playing #glorbo { display: none !important; }
 
     // ----- dressing room and pro shop -----
     let draft = null, backView = false;
+    let rack = "outfit";
+    const SW = { skin: ["#ffd3b0", "#e9b384", "#b97a4f", "#7a4a2b", "#c9a36b", "#8fc45a", "#ffb9a8", "#b9a2e8"], hairColor: ["#23232c", "#6b3f1f", "#f1c84b", "#c8452c", "#a9abb3", "#3b7ae0", "#ff7ab8", "#f4f1e8"],
+      shirt: ["#9ea4ad", "#22407a", "#d1383f", "#2f7d48", "#e9b320", "#1f9e9a", "#ff5fa2", "#7b4bc4", "#f07a1f", "#22232b", "#6fb8ee", "#8fd13f"],
+      shirt2: ["#5f6672", "#f2c230", "#ffffff", "#f2e9c8", "#22232b", "#ffffff", "#22232b", "#f2c230", "#22407a", "#d1383f", "#ffffff", "#22407a"] };
     function renderDress() {
       if (!draft) draft = mem.look.slice();
       const locked = A.PARTS.map((p, i) => (owns(p, draft[i]) ? null : { p, i, price: A.PRICES[p][draft[i]], name: A.NAMES[p][draft[i]] })).filter(Boolean);
-      const label = { build: "Build", skin: "Skin", hair: "Hair", hairColor: "Hair color", eyes: "Eyes", mouth: "Mouth", shirt: "Shirt", pants: "Pants", hat: "Hat", specs: "Glasses", ball: "Ball" };
+      const parts = RACKS.find(r => r[0] === rack)[2];
+      const item = (p, k) => {
+        const i = A.PARTS.indexOf(p), price = A.PRICES[p] && A.PRICES[p][k], tag = price ? (owns(p, k) ? '<em class="own">&#10003;</em>' : "<em>" + money(price) + "</em>") : "";
+        return '<button class="yb-item' + (SWATCH[p] ? " sw" : "") + '" type="button" data-act="pick" data-i="' + i + '" data-v="' + k + '" aria-pressed="' + (draft[i] === k) + '" title="' + esc(A.NAMES[p][k]) + '">' +
+          (SWATCH[p] ? '<i style="--c:' + SW[p][k] + ";--c2:" + (p === "shirt" ? SW.shirt2[k] : SW[p][k]) + '"></i>' : '<canvas width="120" height="120" data-item="' + p + ":" + k + '"></canvas>') + "<span>" + esc(A.NAMES[p][k]) + "</span>" + tag + "</button>";
+      };
       screens.dress.innerHTML =
-        '<div class="yb-card"><h3>The mirror</h3><canvas class="yb-mirror" width="560" height="620"></canvas>' +
+        '<div class="yb-card"><h3>The mirror</h3><canvas class="yb-mirror" width="560" height="660"></canvas>' +
           '<div class="yb-row"><button class="yb-b alt sm" type="button" data-act="flip">' + (backView ? "Front" : "Back") + ' view</button><button class="yb-b alt sm" type="button" data-act="dice">Surprise me</button></div>' +
           '<label>Name on the scoreboard<input type="text" class="yb-name" maxlength="12" autocomplete="off" placeholder="Your name" value="' + esc(mem.name) + '"></label>' +
           '<label>Your team<select class="yb-team"><option value="0">Free agent</option>' + teams.map(t => '<option value="' + t.id + '"' + (t.id === Number(mem.team) ? " selected" : "") + ">" + esc(t.name) + "</option>").join("") + "</select></label></div>" +
-        '<div class="yb-card"><h3>Dressing room &amp; pro shop</h3><p class="yb-note">Everyone starts as the league grey bowler. Bowling pays: a dollar a pin, $20 a strike, $500 for a 200 game and $2,000 for a perfect one. Spend it here. You have <b class="yb-cash">' + money(mem.cash) + "</b>.</p>" +
-          '<div class="yb-parts">' + A.PARTS.map((p, i) => { const price = A.PRICES[p] && A.PRICES[p][draft[i]], lock = !owns(p, draft[i]); return '<div class="yb-part"><span>' + label[p] + '</span><button class="yb-b alt" type="button" data-act="part" data-i="' + i + '" data-d="-1" aria-label="Previous ' + label[p] + '">&#9664;</button><b class="' + (lock ? "locked" : "") + '">' + esc(A.NAMES[p][draft[i]]) + (lock ? " · " + money(price) : "") + '</b><button class="yb-b alt" type="button" data-act="part" data-i="' + i + '" data-d="1" aria-label="Next ' + label[p] + '">&#9654;</button></div>'; }).join("") + "</div>" +
-          '<p class="yb-note">' + esc(YB.BALLS[draft[10]].name + ": " + YB.BALLS[draft[10]].blurb) + "</p>" +
+        '<div class="yb-card"><h3>Dressing room &amp; pro shop</h3><p class="yb-note">Everyone starts as the league grey bowler in rental shoes. Bowling pays: a dollar a pin, $20 a strike, $500 for a 200 game and $2,000 for a perfect one. You have <b class="yb-cash">' + money(mem.cash) + "</b> to spend.</p>" +
+          '<div class="yb-tabs">' + RACKS.map(r => '<button class="yb-b sm alt" type="button" data-act="rack" data-v="' + r[0] + '" aria-pressed="' + (rack === r[0]) + '">' + r[1] + "</button>").join("") + "</div>" +
           locked.map(l => '<div class="yb-buy"><span>' + esc(l.name) + " is " + money(l.price) + (mem.cash < l.price ? ". You're " + money(l.price - mem.cash) + " short." : ".") + '</span><button class="yb-b hot sm" type="button" data-act="buy" data-i="' + l.i + '"' + (mem.cash < l.price ? " disabled" : "") + ">Buy it</button></div>").join("") +
-          (locked.length ? '<p class="yb-note">Things you haven\'t bought are only tried on. They come off when you leave the dressing room.</p>' : "") + "</div>";
+          (locked.length ? '<p class="yb-note">Things you haven\'t bought are only tried on. They come off when you leave the dressing room.</p>' : "") +
+          parts.map(p => '<div class="yb-rack"><h4>' + PART_LABEL[p] + '</h4><div class="yb-items">' + A.NAMES[p].map((n, k) => item(p, k)).join("") + "</div></div>").join("") +
+          (rack === "ball" ? '<p class="yb-note">' + esc(YB.BALLS[draft[10]].name + ": " + YB.BALLS[draft[10]].blurb) + " Only the first four roll differently; the rest are a House Ball in costume.</p>" : "") + "</div>";
       A.portrait(q(".yb-mirror"), draft, { tag: myTag(), ball: !backView, back: backView });
+      qa("canvas[data-item]", screens.dress).forEach(c => { const [p, k] = c.dataset.item.split(":"); A.itemThumb(c, draft, p, Number(k)); });
       q(".yb-name").addEventListener("input", e => { mem.name = e.target.value.trim().slice(0, 12); save(); showMe(); });
-      q(".yb-team").addEventListener("change", e => { mem.team = Number(e.target.value); save(); A.portrait(q(".yb-mirror"), draft, { tag: myTag(), ball: !backView, back: backView }); });
+      q(".yb-team").addEventListener("change", e => { mem.team = Number(e.target.value); save(); });
     }
     function commitLook() {
       if (!draft) return;
@@ -803,7 +831,7 @@ html.yb-playing #glorbo { display: none !important; }
       const seats = [{ kind: "me", name: myName(), look: mem.look.slice(), tag: myTag(), team: myTeam() }];
       qa(".yb-opp").forEach(sel => {
         const val = sel.value, n = Number(sel.dataset.n);
-        if (val === "human") seats.push({ kind: "local", name: "Player " + n, look: A.randomLook(Math.random, false), tag: "P" + n });
+        if (val === "human") seats.push({ kind: "local", name: "Player " + n, look: A.randomLook(Math.random, true), tag: "P" + n });
         else if (val.indexOf("cpu:") === 0) {
           const id = Number(val.slice(4)), c = HOUSE.find(h => h.id === id) || cpuList.find(x => x.id === id);
           if (c) seats.push({ kind: "cpu", name: c.name, look: c.look.slice(), tag: (c.team && c.team.abbrev) || c.name.slice(0, 3), team: c.team || null, skill: c.skill, nerves: c.nerves });
@@ -821,15 +849,16 @@ html.yb-playing #glorbo { display: none !important; }
       alley: b => { mem.alley = Number(b.dataset.i); save(); qa(".yb-alley").forEach(x => x.setAttribute("aria-pressed", String(x === b))); },
       open: openRoom, join: b => joinRoom(b.dataset.id), watch: b => watchRoom(b.dataset.id), "leave-room": leaveRoom, begin: beginRoom,
       invite: b => copy("🎳 Yowza Bowl: " + myName() + " opened a lane. Come bowl: " + (ctx.url || "") + "#bowl-room-" + myRoom.id, b),
-      part: b => { const i = Number(b.dataset.i); draft[i] = (draft[i] + Number(b.dataset.d) + A.SIZES[i]) % A.SIZES[i]; renderDress(); },
+      pick: b => { draft[Number(b.dataset.i)] = Number(b.dataset.v); renderDress(); },
+      rack: b => { rack = b.dataset.v; renderDress(); },
       buy: b => { const i = Number(b.dataset.i), p = A.PARTS[i], price = A.PRICES[p][draft[i]]; if (mem.cash >= price) { mem.cash -= price; (mem.owned[p] = mem.owned[p] || []).push(draft[i]); mem.look[i] = draft[i]; save(); showMe(); S.play("chips", { vol: 0.7 }); S.play("j_buy", { vol: 0.6, delay: 0.15 }); renderDress(); } },
-      dice: () => { const r = A.randomLook(Math.random, false); draft = draft.map((v, i) => (A.PRICES[A.PARTS[i]] ? v : r[i])); draft[6] = r[6]; renderDress(); },
+      dice: () => { draft = A.PARTS.map((p, i) => { const mine = []; for (let k = 0; k < A.SIZES[i]; k++) if (owns(p, k)) mine.push(k); return (p === "hat" || p === "specs" || p === "extra" || p === "beard") && Math.random() < 0.5 ? (owns(p, draft[i]) ? draft[i] : 0) : pick(mine); }); renderDress(); },
       flip: () => { backView = !backView; renderDress(); },
       "hall-tab": b => { hallTab = b.dataset.v; renderHall(); }, "hall-sort": b => { hallSort = b.dataset.v; renderHall(); },
       act, sound: b => { mem.sound = !mem.sound; S.setOn(mem.sound); save(); b.textContent = mem.sound ? "Sound: on" : "Sound: off"; },
       quit: () => leaveGame(), again: () => { const o = lastLocal; leaveGame(); if (o) startGame(Object.assign({}, o, { seats: o.seats.map(s => Object.assign({}, s)) })); }
     };
-    const QUIET = { act: 1, buy: 1, sound: 1 }, SFX = { part: "pluck", dice: "switch", flip: "switch", nav: "open", "nav-shop": "open", local: "maximize", open: "maximize", begin: "maximize", join: "question", quit: "close", "leave-room": "close", again: "maximize" };
+    const QUIET = { act: 1, buy: 1, sound: 1 }, SFX = { pick: "pluck", rack: "switch", dice: "switch", flip: "switch", nav: "open", "nav-shop": "open", local: "maximize", open: "maximize", begin: "maximize", join: "question", quit: "close", "leave-room": "close", again: "maximize" };
     rootEl.addEventListener("click", e => {
       const b = e.target.closest("[data-act]");
       if (!b || b.disabled || !acts[b.dataset.act]) return;

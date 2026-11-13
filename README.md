@@ -187,8 +187,11 @@ star ranks and prize money. All code, art and sound here is original.
   game in progress. The lobby shows who is waiting, who is playing and who is around, with a chat box.
 - **Offline:** bowl against computer players (every league manager, with skill from their trading card,
   plus three house bowlers) or pass the phone around. Bowling alone is practice.
-- **Dressing room and pro shop:** everyone starts as the league grey bowler. Games pay prize money ($1 a
-  pin, $20 a strike, $500 for a 200 game, $2,000 for a 300) to spend on shirts, hats, glasses and balls.
+- **Dressing room and pro shop:** everyone starts as the league grey bowler in rental shoes. Fifteen
+  things to change, each shown as a picture: four body shapes, skin, twelve hairstyles, eyes, mouths,
+  facial hair, shirt colors and ten shirt styles, pants, bowling shoes, sixteen hats, glasses, neckwear
+  and twelve balls. Games pay prize money ($1 a pin, $20 a strike, $500 for a 200 game, $2,000 for a
+  300) for the premium ones. The catalog and prices are at the top of `games/yb-art.js`.
 - **Stars and the Hall of Fame:** your star is your average (green under 100, yellow, blue, red, black
   at 250 and up), shown after 3 counting games. The Hall of Fame has all-time and weekly tables sorted
   by average, strikes or earnings. Practice and team games don't count.

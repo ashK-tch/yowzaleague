@@ -23,7 +23,13 @@
     { name: "Screwball", blurb: "Light, with a wild spin.", mass: 3.5, hook: 1.7, speed: 1.04, wob: 0 },
     { name: "The Pigskin", blurb: "A football. Wobbles wherever it wants.", mass: 6.4, hook: 0.9, speed: 1, wob: 1 },
     { name: "Eight Ball", blurb: "A House Ball in a tuxedo.", mass: 4.5, hook: 1, speed: 1, wob: 0 },
-    { name: "Disco Ball", blurb: "A House Ball that went out dancing.", mass: 4.5, hook: 1, speed: 1, wob: 0 }
+    { name: "Disco Ball", blurb: "A House Ball that went out dancing.", mass: 4.5, hook: 1, speed: 1, wob: 0 },
+    { name: "Watermelon", blurb: "Seedless. Rolls like a House Ball.", mass: 4.5, hook: 1, speed: 1, wob: 0 },
+    { name: "Eyeball", blurb: "It sees the pins. The pins see it.", mass: 4.5, hook: 1, speed: 1, wob: 0 },
+    { name: "Ringed Planet", blurb: "A small gas giant. House Ball weight, somehow.", mass: 4.5, hook: 1, speed: 1, wob: 0 },
+    { name: "Bomb", blurb: "The fuse is for show. Probably.", mass: 4.5, hook: 1, speed: 1, wob: 0 },
+    { name: "Beach Ball", blurb: "Looks light. Isn't.", mass: 4.5, hook: 1, speed: 1, wob: 0 },
+    { name: "Meatball", blurb: "On top of spaghetti, all covered in pins.", mass: 4.5, hook: 1, speed: 1, wob: 0 }
   ];
 
   // ----- seeded random numbers (integer math only, identical everywhere) -----
