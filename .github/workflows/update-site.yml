@@ -45,6 +45,7 @@ jobs:
           ESPN_SWID: ${{ secrets.ESPN_SWID }}
           SITE_PASSWORDS: ${{ secrets.SITE_PASSWORDS }}
           SITE_QUESTION: ${{ vars.SITE_QUESTION }}
+          BOWL_OFFLINE: ${{ vars.BOWL_OFFLINE }}
         run: |
           if [ -n "$LEAGUE_ID" ]; then
             python build.py

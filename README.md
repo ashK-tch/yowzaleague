@@ -173,24 +173,42 @@ Then open `site/index.html`.
 
 ## Yowza Bowl
 
-A ten-pin bowling game in its own window at the bottom of the page (**Start > Yowza Bowl**), in the
-spirit of the early-2000s browser bowling games where a few cartoon bowlers shared a lane and a chat box.
+A ten-pin bowling game in its own window at the bottom of the page (**Start > Yowza Bowl**). It is a
+spiritual successor to Oddballs Bowling, the Gamer.tv / WePlayHere browser game that Atari closed in
+2007: cartoon bowlers you dress up, two to four on a lane or two against two, a lobby with a chat box,
+star ranks and prize money. All code, art and sound here is original.
 
-- Two to four bowlers a game: you, other people on the same phone or computer (pass and play), and
-  computer players. Every league manager is a computer player whose skill comes from their trading
-  card (COACH, OFF and LUCK set their aim; CLUTCH sets their tenth-frame nerves). Three house bowlers
-  cover easy, medium and hard. With four bowlers you can play teams.
-- Build a bowler (body, color, eyes, hat) and pick one of four balls that roll differently.
-- Three presses to bowl: pick a spot, stop the power bar, stop the spin needle.
-- The lane chat has Glorbo calling the frames and the computer players talking trash with real
-  league numbers.
-- **Challenge links:** a finished game fits in a link (`yowzaleague.com/#bowl-...`). Paste it in the
-  group chat and whoever opens it bowls against that exact game, throw for throw. There is no game
-  server, so this is how league members play each other.
-- Best game, games bowled and strikes are remembered on each device. There is no shared leaderboard.
-- The game is one file, `games/yowzabowl.js`, with its art drawn in code and its sounds synthesized.
-  To retune it, the lane constants and the four balls are at the top of that file; run
-  `node games/test_bowl.js` afterwards.
+- **The lane** is seen from behind the bowler. Three alleys: Glorbo's Lounge, The Gridiron, Moonbase 12.
+- **Bowling** works like the original: arrows pick your spot, one press stops the direction arrow, one
+  press stops the power bar, and holding left or right while the ball rolls adds spin.
+- **Online lanes:** open a lane, copy the invite link (`yowzaleague.com/#bowl-room-...`) into the group
+  chat, and start when people have joined. Standard games (2 to 4, a frame each) or team games (two
+  against two on a shared scoresheet, partners swapping every frame or every ball). Anyone can watch a
+  game in progress. The lobby shows who is waiting, who is playing and who is around, with a chat box.
+- **Offline:** bowl against computer players (every league manager, with skill from their trading card,
+  plus three house bowlers) or pass the phone around. Bowling alone is practice.
+- **Dressing room and pro shop:** everyone starts as the league grey bowler. Games pay prize money ($1 a
+  pin, $20 a strike, $500 for a 200 game, $2,000 for a 300) to spend on shirts, hats, glasses and balls.
+- **Stars and the Hall of Fame:** your star is your average (green under 100, yellow, blue, red, black
+  at 250 and up), shown after 3 counting games. The Hall of Fame has all-time and weekly tables sorted
+  by average, strikes or earnings. Practice and team games don't count.
+
+### The online part
+
+Online play uses a free Firebase project, **yowza-bowl** (Realtime Database plus anonymous sign-in),
+owned by Ahrian's Google account. The web config is in `games/firebase.json`; it is not a secret. What
+keeps the lanes league-only is that everything is stored under a private key made from the members-only
+answers at build time, and that key only reaches browsers inside the encrypted league data. Changing
+`SITE_PASSWORDS` therefore starts a fresh, empty lobby and Hall of Fame.
+
+- Each device gets its own anonymous ID, so a person's record lives on the device they bowl on.
+- The database rules (console > Realtime Database > Rules) only let a signed-in device write its own
+  record, and nobody can list what is in the database from the top.
+- Free plan limits: 100 devices connected at once and 1 GB stored. A league won't get near either.
+- To turn online play off, delete `games/firebase.json` (or set a repository variable `BOWL_OFFLINE`).
+
+The game is four files in `games/`. To retune the physics, the lane constants and balls are at the top
+of `yb-engine.js`; run `node games/test_bowl.js` afterwards.
 
 ## Files
 
@@ -206,7 +224,11 @@ spirit of the early-2000s browser bowling games where a few cartoon bowlers shar
 | `cards.py` | The manager trading cards |
 | `history/` | League history before ESPN, and who owned which team |
 | `test_history.py` | Checks the Hall of Fame math |
-| `games/yowzabowl.js` | Yowza Bowl: lane physics, scoring, computer bowlers, challenge links and the game window |
+| `games/yb-engine.js` | Yowza Bowl: lane physics, scoring, turn order, computer bowlers, ranks |
+| `games/yb-art.js` | Yowza Bowl: the lane view, alleys, pins, balls and bowlers, all drawn in code |
+| `games/yb-net.js` | Yowza Bowl: the connection to the online lanes |
+| `games/yb-ui.js` | Yowza Bowl: lobby, dressing room, Hall of Fame and the match |
+| `games/firebase.json` | Where the online lanes live (Firebase web config) |
 | `games/test_bowl.js` | Checks the bowling engine |
 | `art/` | Pictures published with the page (Glorbo's sprite sheet) |
 | `music/` | Drop the theme song here |

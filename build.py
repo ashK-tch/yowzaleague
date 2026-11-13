@@ -110,6 +110,20 @@ def add_art(out):
         shutil.copytree(HERE / "art", dest)
 
 
+def bowl_settings():
+    """Online settings for Yowza Bowl. The Firebase web config is not a secret (it only says where the database is).
+    What keeps the lanes league-only is the "space": every read and write happens under a key made from the
+    members-only answers, and that key only ever leaves here inside the encrypted league data."""
+    path = HERE / "games" / "firebase.json"
+    if os.environ.get("BOWL_OFFLINE") or not path.exists():
+        return None
+    secret = os.environ.get("SITE_PASSWORDS", "").strip()
+    space = hashlib.sha256(("yowza-bowl|" + secret).encode()).hexdigest()[:24] if secret else "open"
+    if os.environ.get("BOWL_MOCK"):
+        return {"firebase": "mock", "space": "test"}
+    return {"firebase": json.loads(path.read_text(encoding="utf-8")), "space": space}
+
+
 def current_season(today):
     return today.year if today.month >= 3 else today.year - 1
 
@@ -130,8 +144,9 @@ def render(payload, full_document=True, card=None, site_url=SITE_URL, lock=None)
     }
     for k, v in swaps.items():
         template = template.replace(k, v)
-    game = HERE / "games" / "yowzabowl.js"
-    template = template.replace("__BOWL_JS__", game.read_text(encoding="utf-8").replace("</", "<\\/") if game.exists() else "")
+    parts = [HERE / "games" / name for name in ("yb-engine.js", "yb-art.js", "yb-net.js", "yb-ui.js")]
+    game = "\n".join(p.read_text(encoding="utf-8") for p in parts) if all(p.exists() for p in parts) else ""
+    template = template.replace("__BOWL_JS__", game.replace("</", "<\\/"))
     page = template.replace("__YOWZA_DATA__", data)
     return SKELETON.format(page=page) if full_document else page
 
@@ -167,6 +182,7 @@ def main():
     out = HERE / args.out
     out.mkdir(parents=True, exist_ok=True)
     payload["music"] = add_music(out)
+    payload["bowl"] = bowl_settings()
     add_art(out)
     card = None
     try:
