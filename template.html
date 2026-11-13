@@ -631,6 +631,11 @@ __LOCK_STYLE__
         <div class="binder sunken" id="binder" role="list" aria-label="Manager trading cards"></div>
       </div>
     </section>
+
+    <section class="win raised" id="bowl" aria-labelledby="bowl-title">
+      <div class="title-bar"><h2 id="bowl-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body" id="bowl-root"></div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -725,6 +730,7 @@ __LOCK_STYLE__
   </div>
 </div>
 
+<script>__BOWL_JS__</script>
 <script id="yowza-data" type="application/json">__YOWZA_DATA__</script>
 <script id="yowza-lock" type="application/json">__YOWZA_LOCK__</script>
 <script>
@@ -767,6 +773,9 @@ function yowzaApp(D) {
     toilet: ["................", "..KKKKK.........", "..KWWWK.........", "..KWWWK.........", "..KWWWK.........", "..KKKKKKKKKKKKK.",
       "..KWWWWWWWWWWWK.", "...KWWWWWWWWWK..", "....KKWWWWWKK...", "......KWWWK.....", "......KWWWK.....", ".....KWWWWWK....",
       ".....KKKKKKK....", "................", "................", "................"],
+    pin: ["................", "......KKKK......", ".....KWWWWK.....", ".....KWWWWK.....", ".....KRRRRK.....", ".....KWWWWK.....",
+      ".....KRRRRK.....", "....KWWWWWWK....", "...KWWWWWWWWK...", "...KWWWWWWWWK...", "...KWWWWWWWWK...", "...KWWWWWWWWK...",
+      "...KWWWWWWWWK...", "....KWWWWWWK....", ".....KKKKKK.....", "................"],
     card: ["...KKKKKKKKKK...", "...KYYYYYYYYK...", "...KYKKKKKKYK...", "...KYKLLLLKYK...", "...KYKLAALKYK...", "...KYKLAALKYK...",
       "...KYKLAALKYK...", "...KYKKKKKKYK...", "...KYYYYYYYYK...", "...KYRRRRRRYK...", "...KYYYYYYYYK...", "...KYKKKYYYYK...",
       "...KYYYYYYYYK...", "...KKKKKKKKKK...", "................", "................"]
@@ -844,6 +853,32 @@ function yowzaApp(D) {
   $("shame-head").innerHTML = sprite("toilet") + "Wall of Shame";
   $("hall").hidden = !D.hall;
   $("cards").hidden = !(D.cards && D.cards.length);
+
+  // ----- Yowza Bowl: league managers bowl as computer players, with skill taken from their trading-card ratings -----
+  setTitle("bowl-title", "pin", "Yowza Bowl - Lane 1");
+  let bowl = null;
+  const bowlCode = () => { const m = /^#bowl-([\w-]+)$/.exec(location.hash); return m && m[1]; };
+  const toBowl = () => $("bowl").scrollIntoView({ block: "start" });
+  if (window.YowzaBowl) {
+    const cardOf = Object.fromEntries((D.cards || []).map(c => [c.team, c]));
+    const rowOf = Object.fromEntries((D.standings || []).map(s => [s.team, s]));
+    bowl = window.YowzaBowl.mount($("bowl-root"), {
+      url: location.origin + location.pathname,
+      challenge: bowlCode(),
+      teams: D.teams.map(t => {
+        const c = cardOf[t.id], s = rowOf[t.id], r = c ? Object.fromEntries(c.ratings) : null;
+        const grade = r ? Math.max(0, Math.min(1, (0.5 * r.COACH + 0.3 * r.OFF + 0.2 * r.LUCK - 40) / 59)) : null;
+        return {
+          id: t.id, name: t.name, manager: t.manager || "", rec: s ? record(s.w, s.l, s.t) : "", bench: s ? s.benchLeft : 0,
+          skill: grade == null ? null : 0.4 + 0.55 * grade, nerves: r ? 1.5 - r.CLUTCH / 100 : 1
+        };
+      })
+    });
+    if (bowl.hasChallenge()) setTimeout(toBowl, 400);
+    window.addEventListener("hashchange", () => { const code = bowlCode(); if (code && bowl.challenge(code)) toBowl(); });
+  } else {
+    $("bowl").hidden = true;
+  }
   $("rec-head").innerHTML = sprite("trophy") + "Season records";
   $("flags-head").innerHTML = sprite("flag") + "Yowza flags";
 
@@ -1310,7 +1345,7 @@ function yowzaApp(D) {
   const menu = $("start-menu"), startBtn = $("start-btn");
   const items = [["this-week", "flag", "Yowza of the Week"], ["playoffs", "ball", "Playoff Race"], ["standings", "trophy", "Standings"],
     ["coaching", "ball", "Coach Efficiency"], ["luck", "ball", "Luck Index"], ["schedules", "ball", "Schedule Swap"], ["records", "trophy", "Record Book"],
-    ["hall", "trophy", "Hall of Fame"], ["cards", "card", "Trading Cards"]]
+    ["hall", "trophy", "Hall of Fame"], ["cards", "card", "Trading Cards"], ["bowl", "pin", "Yowza Bowl"]]
     .filter(([id]) => !$(id).hidden);
   $("start-items").innerHTML = items.map(([id, icon, label]) => '<li><a href="#' + id + '">' + sprite(icon) + label + '</a></li>').join("") +
     '<li><hr></li><li><a href="#jukebox" id="menu-jukebox">' + sprite("note") + 'Jukebox</a></li>' +

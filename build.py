@@ -130,6 +130,8 @@ def render(payload, full_document=True, card=None, site_url=SITE_URL, lock=None)
     }
     for k, v in swaps.items():
         template = template.replace(k, v)
+    game = HERE / "games" / "yowzabowl.js"
+    template = template.replace("__BOWL_JS__", game.read_text(encoding="utf-8").replace("</", "<\\/") if game.exists() else "")
     page = template.replace("__YOWZA_DATA__", data)
     return SKELETON.format(page=page) if full_document else page
 

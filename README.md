@@ -171,6 +171,27 @@ Then open `site/index.html`.
 - **Link preview**: every build draws `og.png`, the picture iMessage shows when someone
   pastes the site's link, with that week's Yowza of the Week.
 
+## Yowza Bowl
+
+A ten-pin bowling game in its own window at the bottom of the page (**Start > Yowza Bowl**), in the
+spirit of the early-2000s browser bowling games where a few cartoon bowlers shared a lane and a chat box.
+
+- Two to four bowlers a game: you, other people on the same phone or computer (pass and play), and
+  computer players. Every league manager is a computer player whose skill comes from their trading
+  card (COACH, OFF and LUCK set their aim; CLUTCH sets their tenth-frame nerves). Three house bowlers
+  cover easy, medium and hard. With four bowlers you can play teams.
+- Build a bowler (body, color, eyes, hat) and pick one of four balls that roll differently.
+- Three presses to bowl: pick a spot, stop the power bar, stop the spin needle.
+- The lane chat has Glorbo calling the frames and the computer players talking trash with real
+  league numbers.
+- **Challenge links:** a finished game fits in a link (`yowzaleague.com/#bowl-...`). Paste it in the
+  group chat and whoever opens it bowls against that exact game, throw for throw. There is no game
+  server, so this is how league members play each other.
+- Best game, games bowled and strikes are remembered on each device. There is no shared leaderboard.
+- The game is one file, `games/yowzabowl.js`, with its art drawn in code and its sounds synthesized.
+  To retune it, the lane constants and the four balls are at the top of that file; run
+  `node games/test_bowl.js` afterwards.
+
 ## Files
 
 | File | What it does |
@@ -185,6 +206,8 @@ Then open `site/index.html`.
 | `cards.py` | The manager trading cards |
 | `history/` | League history before ESPN, and who owned which team |
 | `test_history.py` | Checks the Hall of Fame math |
+| `games/yowzabowl.js` | Yowza Bowl: lane physics, scoring, computer bowlers, challenge links and the game window |
+| `games/test_bowl.js` | Checks the bowling engine |
 | `art/` | Pictures published with the page (Glorbo's sprite sheet) |
 | `music/` | Drop the theme song here |
 | `sample.py` | Made-up league for previews |
