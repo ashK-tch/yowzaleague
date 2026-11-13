@@ -261,7 +261,7 @@ html.yb-playing #glorbo { display: none !important; }
 
     // ----- lobby -----
     const roomKind = r => (r.mode === "team" ? "Team game, alternate " + (r.alt === "ball" ? "ball" : "frame") : "Standard game") + ", " + A.ALLEYS[r.alley || 0].name;
-    const seatsOf = r => Object.keys(r.seats || {}).map(Number).sort((a, b) => a - b).map(i => Object.assign({ i }, r.seats[i]));
+    const seatsOf = r => Object.keys(r.seats || {}).map(Number).sort((a, b) => a - b).filter(i => r.seats[i] && r.seats[i].n).map(i => Object.assign({ i }, r.seats[i]));
     function renderLobby() {
       const opp = n => '<label>Lane ' + n + '<select class="yb-opp" data-n="' + n + '"><option value="">Nobody</option><option value="human">Another person (pass and play)</option>' +
         '<optgroup label="House bowlers">' + HOUSE.map(h => '<option value="cpu:' + h.id + '">' + esc(h.name) + " (" + h.blurb + ")</option>").join("") + "</optgroup>" +
