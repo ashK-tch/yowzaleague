@@ -104,15 +104,38 @@ def team_name(t):
     return f"{t.get('location', '')} {t.get('nickname', '')}".strip() or f"Team {t['id']}"
 
 
-def manager_name(t, members):
+def _owner(t, members):
     owner = t.get("primaryOwner") or (t.get("owners") or [None])[0]
     if isinstance(owner, dict):
         owner = owner.get("id")
-    m = members.get(owner)
-    if not m:
-        return ""
+    return members.get(owner) or {}
+
+
+def manager_name(t, members):
+    m = _owner(t, members)
     first = (m.get("firstName") or "").strip()
     return first.title() if first else (m.get("displayName") or "")
+
+
+def manager_aliases(t, members):
+    """Ways the league might write this manager's name ('Mike', 'Mike S', 'Mike Smith').
+    Used only to match the league history file; never published."""
+    m = _owner(t, members)
+    first = (m.get("firstName") or "").strip()
+    last = (m.get("lastName") or "").strip()
+    out = [f"{first} {last}", f"{first} {last[:1]}", m.get("displayName") or "", first]  # most specific first
+    return [a.strip() for a in out if a and a.strip()]
+
+
+def team_extras(t):
+    """Logo, waiver and trade counts, and final rank: what the trading cards and Hall of Fame use."""
+    logo = (t.get("logo") or "").strip()
+    tc = t.get("transactionCounter") or {}
+    return {
+        "logo": logo if logo.startswith("https://") else "",
+        "moves": {"adds": int(tc.get("acquisitions") or 0), "trades": int(tc.get("trades") or 0)} if tc else None,
+        "finalRank": int(t.get("rankCalculatedFinal") or 0),
+    }
 
 
 def player_points(entry, scoring_period):
@@ -145,9 +168,13 @@ def normalize(league, boxes, season, is_sample=False):
     members = {m["id"]: m for m in league.get("members", [])}
     teams = [
         {"id": t["id"], "name": team_name(t), "abbrev": t.get("abbrev", ""),
-         "manager": manager_name(t, members)}
+         "manager": manager_name(t, members), "_aliases": manager_aliases(t, members), **team_extras(t)}
         for t in league.get("teams", [])
     ]
+    schedule = league.get("schedule", [])
+    season_over = bool(schedule) and all(g.get("winner", "UNDECIDED") != "UNDECIDED" for g in schedule) \
+        and any(g.get("playoffTierType", "NONE") not in ("NONE", None) for g in schedule) \
+        and all(t["finalRank"] > 0 for t in teams)
     counts = settings.get("rosterSettings", {}).get("lineupSlotCounts", {})
     slot_counts = {int(k): v for k, v in counts.items() if v and int(k) not in (BENCH, IR)}
 
@@ -196,4 +223,5 @@ def normalize(league, boxes, season, is_sample=False):
         "playoffTeams": sched.get("playoffTeamCount") or 0,
         "divisions": len(sched.get("divisions") or []),
         "remaining": remaining,
+        "seasonOver": season_over,
     }

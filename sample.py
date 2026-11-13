@@ -70,7 +70,9 @@ def make(season, seed=7):
 
     members = [{"id": f"{{MEMBER-{i}}}", "firstName": m, "displayName": m.lower()}
                for i, (_, _, m) in enumerate(TEAMS, 1)]
-    teams = [{"id": i, "name": n, "abbrev": a, "primaryOwner": f"{{MEMBER-{i}}}"}
+    moves = random.Random(seed + 1)  # separate stream so the scores don't change
+    teams = [{"id": i, "name": n, "abbrev": a, "primaryOwner": f"{{MEMBER-{i}}}",
+              "transactionCounter": {"acquisitions": moves.randint(0, 30), "trades": moves.choice([0, 0, 0, 1, 1, 2, 3])}}
              for i, (n, a, _) in enumerate(TEAMS, 1)]
 
     pairings = _round_robin(range(1, len(TEAMS) + 1), WEEKS_TOTAL)

@@ -109,6 +109,31 @@ The built-in theme is composed in code in `template.html` (search for "jukebox: 
 original theme"): `BPM` is the tempo, the `A`, `B` and `C` lists are the melody as MIDI
 note numbers (60 is middle C), and `roots` is the bass line.
 
+## Hall of Fame
+
+Every season before ESPN lives in `history/seasons.csv`, one row per team per season:
+`season,place,team,wins,losses,ties` (place is the final finish, 1 = champion). The
+site adds each ESPN season on its own once that season's championship is decided.
+
+Teams get renamed, so `history/managers.csv` says who owned which team, one line per team
+name: `manager,team,seasons`. Leave `seasons` blank unless two people used the same team
+name (then list the years, like `2016 2017`). Use the names people have on ESPN, so the
+trading cards can find each manager's history. Any team name not listed is credited to
+the team name itself.
+
+To edit either file on GitHub, open it, click the pencil, change it, and commit. The site
+rebuilds a minute later.
+
+## Trading cards
+
+One card per manager, numbered by the standings and rebuilt every morning: record, points
+for and against, playoff odds, five ratings (OFF, COACH, LUCK, HUSTLE, CLUTCH, each scored
+40–99 against the rest of the league), team MVP, best week, a nickname picked from whatever
+stands out most about that team, and their league career from the Hall of Fame. Champions
+get a holo card; managers with a top-3 finish get a rare one. Cards use the team's ESPN logo
+when it has one, otherwise a pixel creature drawn from the team name. Clicking a team in the
+standings jumps to its card, and links like `yowzaleague.com/#card-3` open one directly.
+
 ## Glorbo
 
 Glorbo the lounge alien stands on the taskbar in the bottom-left corner. He dances while
@@ -156,6 +181,10 @@ Then open `site/index.html`.
 | `build.py` | Puts it together into `site/index.html` |
 | `season.py` | Playoff odds, schedule swap grid, record book |
 | `share.py` | The link preview picture and app icon |
+| `history.py` | The Hall of Fame: champions, all-time table, league lore |
+| `cards.py` | The manager trading cards |
+| `history/` | League history before ESPN, and who owned which team |
+| `test_history.py` | Checks the Hall of Fame math |
 | `art/` | Pictures published with the page (Glorbo's sprite sheet) |
 | `music/` | Drop the theme song here |
 | `sample.py` | Made-up league for previews |

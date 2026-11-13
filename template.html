@@ -368,6 +368,110 @@ select.retro {
   .jukebox { width: min(270px, calc(100vw - 20px)); }
 }
 
+/* Hall of Fame: championship banners hung from the rafters, the all-time table, lore and the wall of shame */
+.rafters { display: grid; grid-template-columns: repeat(auto-fill, minmax(126px, 1fr)); gap: 26px 12px; padding: 26px 14px 18px;
+  background: #15172b; box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--lo), inset -2px -2px var(--lite), inset 2px 2px var(--dk); }
+.banner { position: relative; display: grid; filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, .55)); }
+.banner::before { content: ""; position: absolute; top: -9px; left: -7px; right: -7px; height: 5px; background: #a7a9b8; border: 1px solid #000; }
+.banner .cloth { display: grid; padding: 3px; background: var(--flag); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), 50% 100%, 0 calc(100% - 18px)); }
+.banner .cloth > span { display: grid; align-content: start; justify-items: center; gap: 5px; text-align: center; padding: 10px 8px 28px;
+  background: var(--title-1); color: #fff; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), 50% 100%, 0 calc(100% - 16px)); }
+.banner svg { width: 24px; height: 24px; }
+.banner .yr { font: 400 32px/1 var(--wordart); color: var(--flag); letter-spacing: 0.02em; }
+.banner .champ { font: 700 10px var(--pixel); letter-spacing: 0.14em; color: #d6dcff; }
+.banner .who { font: 700 13px/1.2 var(--pixel); overflow-wrap: anywhere; }
+.banner .mgr { font-size: 11px; color: #d6dcff; }
+.banner .rec { font: 400 20px/1 var(--led-font); color: var(--flag); }
+.banner .b2b { font: 700 10px var(--pixel); background: var(--flag); color: #000; padding: 1px 5px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.dynasty table { min-width: 660px; }
+.dynasty .trophies { display: inline-flex; gap: 1px; vertical-align: middle; }
+.dynasty .trophies svg { width: 16px; height: 16px; }
+.dynasty td small { display: block; color: var(--ink-2); font-size: 11px; }
+.dynasty tr.more { display: none; }
+.dynasty.all tr.more { display: table-row; }
+#dynasty-more { justify-self: start; }
+.every-season > summary { list-style: none; display: inline-flex; align-items: center; font: 700 13px var(--pixel); }
+.every-season > summary::-webkit-details-marker { display: none; }
+.every-season[open] > summary { box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--dk), inset -2px -2px var(--lite), inset 2px 2px var(--lo); }
+.season-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; margin-top: 12px; }
+.season-grid .notepad { font-size: 12px; gap: 6px; }
+.season-grid h4 { font: 400 22px/1 var(--wordart); letter-spacing: 0.02em; }
+.season-grid ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.season-grid li { display: grid; grid-template-columns: 2.4ch minmax(0, 1fr) auto; gap: 6px; }
+.season-grid li .who { overflow-wrap: anywhere; }
+.season-grid li small { color: var(--ink-2); }
+.season-grid li.gold { font-weight: 700; }
+
+/* Manager trading cards: 1st edition, series 1. Tap to flip. */
+.binder { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px; padding: 20px;
+  background: #23304d; box-shadow: inset -1px -1px var(--hi), inset 1px 1px var(--lo), inset -2px -2px var(--lite), inset 2px 2px var(--dk); }
+.tc-slot { perspective: 1100px; }
+.tc { display: block; position: relative; width: 100%; aspect-ratio: 5 / 7; padding: 0; border: 0; background: none; cursor: pointer;
+  font: inherit; color: inherit; text-align: left; }
+.tc:focus-visible { outline: 2px dashed var(--flag); outline-offset: 5px; }
+.tc.flash .tc-inner { animation: tc-flash 0.9s ease-out 2; }
+@keyframes tc-flash { 50% { filter: drop-shadow(0 0 10px var(--flag)) brightness(1.15); } }
+.tc-inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 0.55s cubic-bezier(.2, .7, .2, 1); }
+.tc[aria-pressed="true"] .tc-inner { transform: rotateY(180deg); }
+.tc-face { position: absolute; inset: 0; display: grid; border-radius: 9px; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  box-shadow: 0 0 0 1px #000, 4px 5px 0 rgba(0, 0, 0, .45); }
+.tc-back { transform: rotateY(180deg); }
+.tc-front { --c: #0b3d91; grid-template-rows: auto minmax(0, 1fr) auto; gap: 6px; padding: 8px; background: #fbfbf6; }
+.tc-front.rare { background: linear-gradient(135deg, #f4f4f4, #a3a8ad 30%, #ffffff 52%, #8e9399 75%, #e9e9e9); }
+.tc-front.holo { background: linear-gradient(135deg, #fff1a8, #c79a1e 28%, #fff6c9 50%, #b8861a 72%, #ffe58a); }
+.tc-front.holo::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: overlay; opacity: .85;
+  background: linear-gradient(115deg, transparent 22%, #ff3ea5 32%, #ffe53e 42%, #3effb2 52%, #3ea8ff 62%, transparent 72%);
+  background-size: 260% 100%; animation: holo 5s linear infinite; }
+@keyframes holo { from { background-position: 100% 0; } to { background-position: -160% 0; } }
+.tc-top { display: flex; justify-content: space-between; align-items: center; gap: 6px; font: 700 11px var(--pixel); }
+.tc-no { background: #000; color: #fff; padding: 1px 6px; }
+.tc-rarity { background: #fff; color: #000; border: 1px solid #000; padding: 0 5px; white-space: nowrap; }
+.tc-photo { position: relative; display: grid; place-items: center; min-height: 0; overflow: hidden; border: 3px solid var(--c);
+  background: repeating-linear-gradient(0deg, var(--turf-1) 0 14px, var(--turf-2) 14px 28px); }
+.tc-photo::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(90deg, transparent 0 22%, rgba(255, 255, 255, .28) 22% calc(22% + 2px)); }
+.tc-photo .pic { position: relative; z-index: 1; width: 58%; aspect-ratio: 1; border: 3px solid #000; background: #fff; box-shadow: 3px 3px 0 rgba(0, 0, 0, .45);
+  object-fit: cover; image-rendering: pixelated; display: block; }
+.tc-nick { position: absolute; z-index: 2; left: -3px; top: 9px; max-width: 92%; background: var(--flag); color: #000; border: 1px solid #000; box-shadow: 2px 2px 0 #000;
+  padding: 2px 7px; font: 700 11px var(--pixel); text-transform: uppercase; letter-spacing: 0.04em; transform: rotate(-3deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tc-rec { position: absolute; z-index: 2; right: 6px; bottom: 6px; background: var(--led-bg); color: var(--led); font: 400 21px/1 var(--led-font); padding: 2px 6px; }
+.tc-plate { display: grid; gap: 3px; padding: 7px 9px 8px; background: var(--c); color: #fff; }
+.tc-team { font: 400 21px/1.02 var(--wordart); text-transform: uppercase; letter-spacing: 0.01em; overflow-wrap: anywhere; text-shadow: 2px 2px 0 rgba(0, 0, 0, .5); }
+.tc-mgr { display: flex; justify-content: space-between; gap: 6px; font: 700 12px var(--pixel); }
+.tc-mgr span:last-child { font-weight: 400; opacity: .9; white-space: nowrap; }
+.tc-back { --ink-b: #2b1d0e; grid-template-rows: auto auto auto auto auto 1fr; overflow-y: auto; gap: 6px; padding: 9px;
+  background: #ead9b0; color: var(--ink-b); font: 400 11px/1.35 var(--mono); border: 5px solid #fbfbf6; }
+.tc-bhead { display: flex; justify-content: space-between; gap: 6px; background: var(--ink-b); color: #ead9b0; padding: 3px 6px; font: 700 11px var(--pixel); }
+.tc-bhead span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tc-season { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--ink-b); text-align: center; }
+.tc-season > span { display: grid; padding: 2px 0; border-left: 1px solid var(--ink-b); font-size: 9px; letter-spacing: 0.06em; }
+.tc-season > span:first-child { border-left: 0; }
+.tc-season b { font: 400 17px/1 var(--led-font); letter-spacing: 0; }
+.tc-rates { display: grid; gap: 3px; }
+.tc-rate { display: grid; grid-template-columns: 6.6ch minmax(0, 1fr) 2.4ch; gap: 6px; align-items: center; font-weight: 700; font-size: 10px; }
+.tc-rate .num { text-align: right; font: 400 15px/1 var(--led-font); }
+.tc-bar { height: 9px; border: 1px solid var(--ink-b); background: #fff7e0; }
+.tc-bar i { display: block; height: 100%; width: var(--v); background: repeating-linear-gradient(90deg, var(--rc) 0 5px, transparent 5px 7px); }
+.tc-p { display: block; }
+.tc-back .k { font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.04em; }
+.tc-career { border-top: 1px dashed var(--ink-b); padding-top: 5px; display: grid; gap: 1px; }
+.tc-flavor { border-top: 1px dashed var(--ink-b); padding-top: 5px; font-style: italic; align-self: end; }
+.card-link { color: inherit; text-decoration: underline dotted; text-underline-offset: 3px; }
+.card-link:hover { color: var(--link); }
+@media (max-width: 760px) {
+  /* swipe through the banners and the cards */
+  .rafters { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 128px; overflow-x: auto; scroll-snap-type: x proximity; }
+  .banner { scroll-snap-align: start; }
+  .binder { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(272px, 80vw); overflow-x: auto; scroll-snap-type: x mandatory; padding: 16px 14px; }
+  .tc-slot { scroll-snap-align: center; }
+  .tc-back { padding: 7px; gap: 4px; font-size: 10px; line-height: 1.3; }
+  .tc-season b { font-size: 15px; }
+  .tc-rates { gap: 2px; }
+  .tc-rate .num { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) { .tc-inner { transition: none; } .tc-front.holo::after { animation: none; } .tc.flash .tc-inner { animation: none; } }
+
 /* Glorbo, the lounge alien: a desktop buddy standing on the taskbar */
 .glorbo { --s: 2; position: fixed; z-index: 31; left: max(8px, env(safe-area-inset-left, 0px)); bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px) - 2px * var(--s)); pointer-events: none; }
 .glorbo-btn { pointer-events: auto; display: block; padding: 0; border: 0; background: none; cursor: pointer; }
@@ -495,6 +599,36 @@ __LOCK_STYLE__
             <ol class="flags" id="flags"></ol>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="win raised" id="hall" aria-labelledby="hall-title">
+      <div class="title-bar"><h2 id="hall-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body">
+        <p class="lede" id="hall-note"></p>
+        <div class="rafters sunken" id="banners" role="list" aria-label="Champions"></div>
+        <div class="listview sunken dynasty"><table id="dynasty"></table></div>
+        <button class="btn" type="button" id="dynasty-more" hidden></button>
+        <div class="hof">
+          <div class="notepad sunken"><h3 id="lore-head"></h3><dl id="lore"></dl></div>
+          <div class="notepad sunken">
+            <h3 id="shame-head"></h3>
+            <p class="flags-note">Last place in the final standings, every season.</p>
+            <ol class="flags" id="shame"></ol>
+          </div>
+        </div>
+        <details class="every-season">
+          <summary class="btn" id="every-summary"></summary>
+          <div class="season-grid" id="every-season"></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="win raised" id="cards" aria-labelledby="cards-title">
+      <div class="title-bar"><h2 id="cards-title"></h2><button class="btn tb-btn" type="button" data-min aria-label="Minimize" title="Minimize">_</button></div>
+      <div class="win-body">
+        <p class="lede" id="cards-note"></p>
+        <div class="binder sunken" id="binder" role="list" aria-label="Manager trading cards"></div>
       </div>
     </section>
   </main>
@@ -629,7 +763,13 @@ function yowzaApp(D) {
       "...KKKKK..KKKKK.", "....KKK....KKK..", "................", "................"],
     alien: [".KKK......KKK...", "KWWWK....KWWWK..", "KWKYK....KYKWK..", ".KKK.K..K.KKK...", "....KAK.KAK.....", ".....KAKAK......",
       "....KKALAAKK....", "...KALLAAAAAK...", "..KALAAAAAAAAK..", "..KAAAAAAAAAAK..", "..KAAKAAAAKAAK..", "..KAAAKKKKAAAK..",
-      "...KRRKYYKRRK...", "...KAAKYYKAAK...", "....KKAAAAKK....", "......KKKK......"]
+      "...KRRKYYKRRK...", "...KAAKYYKAAK...", "....KKAAAAKK....", "......KKKK......"],
+    toilet: ["................", "..KKKKK.........", "..KWWWK.........", "..KWWWK.........", "..KWWWK.........", "..KKKKKKKKKKKKK.",
+      "..KWWWWWWWWWWWK.", "...KWWWWWWWWWK..", "....KKWWWWWKK...", "......KWWWK.....", "......KWWWK.....", ".....KWWWWWK....",
+      ".....KKKKKKK....", "................", "................", "................"],
+    card: ["...KKKKKKKKKK...", "...KYYYYYYYYK...", "...KYKKKKKKYK...", "...KYKLLLLKYK...", "...KYKLAALKYK...", "...KYKLAALKYK...",
+      "...KYKLAALKYK...", "...KYKKKKKKYK...", "...KYYYYYYYYK...", "...KYRRRRRRYK...", "...KYYYYYYYYK...", "...KYKKKYYYYK...",
+      "...KYYYYYYYYK...", "...KKKKKKKKKK...", "................", "................"]
   };
   function sprite(key) {
     const rows = SPRITES[key];
@@ -698,6 +838,12 @@ function yowzaApp(D) {
   setTitle("luck-title", "ball", "Luck Index");
   setTitle("swap-title", "ball", "schedule_swap.xls");
   setTitle("records-title", "trophy", "Record Book");
+  setTitle("hall-title", "trophy", "Hall of Fame");
+  setTitle("cards-title", "card", "Manager Trading Cards");
+  $("lore-head").innerHTML = sprite("trophy") + "League lore";
+  $("shame-head").innerHTML = sprite("toilet") + "Wall of Shame";
+  $("hall").hidden = !D.hall;
+  $("cards").hidden = !(D.cards && D.cards.length);
   $("rec-head").innerHTML = sprite("trophy") + "Season records";
   $("flags-head").innerHTML = sprite("flag") + "Yowza flags";
 
@@ -872,7 +1018,7 @@ function yowzaApp(D) {
         const t = T[r.team] || {};
         const color = r.luck > 0.005 ? "var(--lucky)" : r.luck < -0.005 ? "var(--unlucky)" : "var(--lo)";
         return '<tr><td class="num">' + (i + 1) + '</td>' +
-          '<td class="team-cell"><b>' + name(r.team) + '</b>' + (t.manager ? '<small>' + esc(t.manager) + '</small>' : "") + '</td>' +
+          '<td class="team-cell"><b>' + (D.cards && D.cards.length ? '<a class="card-link" href="#card-' + r.team + '">' + name(r.team) + '</a>' : name(r.team)) + '</b>' + (t.manager ? '<small>' + esc(t.manager) + '</small>' : "") + '</td>' +
           '<td class="num">' + record(r.w, r.l, r.t) + '</td><td class="num">' + pts(r.pf) + '</td><td class="num">' + pts(r.pa) + '</td>' +
           '<td class="num">' + record(r.apW, r.apL, r.apT) + '</td>' +
           '<td class="num"><span class="luck-mark" style="background:' + color + '"></span>' + signed(r.luck) + '</td></tr>';
@@ -963,7 +1109,7 @@ function yowzaApp(D) {
     const B = D.records;
     if (!B) { $("records").hidden = true; return; }
     const R = B.records;
-    $("records-note").textContent = "The " + L.season + " season so far. This is the league’s first season on ESPN, so next year this becomes the all-time book.";
+    $("records-note").textContent = "The " + L.season + " season so far." + (D.hall ? " Every season since " + D.hall.range[0] + " is in the Hall of Fame below." : " This is the league’s first season on ESPN, so next year this becomes the all-time book.");
     const rows = [];
     if (R.high) rows.push(["Highest score", name(R.high.team) + ", Week " + R.high.week, pts(R.high.score)]);
     if (R.low) rows.push(["Lowest score", name(R.low.team) + ", Week " + R.low.week, pts(R.low.score)]);
@@ -986,6 +1132,156 @@ function yowzaApp(D) {
         '<div class="count" aria-label="' + f.count + (f.count === 1 ? " flag" : " flags") + '">' + flag.repeat(f.count) + '</div></li>';
     }).join("") || "<li>No flags yet.</li>";
   }
+
+  // ----- Hall of Fame -----
+  const plural = (n, w) => n + " " + w + (n === 1 ? "" : "s");
+  const andList = a => a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+  const key = s => String(s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const ord = n => n + (n % 100 >= 11 && n % 100 <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[n % 10] || "th"));
+  const avg3 = p => p.toFixed(3).replace(/^0/, "");
+  function renderHall() {
+    const H = D.hall;
+    if (!H) return;
+    $("hall-note").textContent = H.seasons.length + " seasons of Yowza League history, " + H.range[0] + " to " + H.range[1] + "." +
+      (H.missing.length ? " No standings on file for " + andList(H.missing.map(String)) + "." : "") +
+      (H.byPerson ? " Titles and records follow each manager through every team name they’ve used." : " Titles and records are credited by team name.");
+
+    const trophy = sprite("trophy");
+    const who = r => key(r.who || r.team);
+    $("banners").innerHTML = H.seasons.map((s, i) => {
+      const c = s.rows[0], older = H.seasons[i + 1];
+      const b2b = older && older.season === s.season - 1 && who(older.rows[0]) === who(c);
+      return '<div class="banner" role="listitem"><div class="cloth"><span>' + trophy +
+        '<span class="yr">' + s.season + '</span><span class="champ">CHAMPION</span>' +
+        '<span class="who">' + esc(c.team) + '</span>' + (c.who ? '<span class="mgr">' + esc(c.who) + '</span>' : "") +
+        '<span class="rec">' + record(c.w, c.l, c.t) + '</span>' + (b2b ? '<span class="b2b">BACK-TO-BACK</span>' : "") +
+        '</span></div></div>';
+    }).join("");
+
+    const SHOW = 12;
+    const people = H.people;
+    $("dynasty").innerHTML = '<caption class="sr-only">All-time standings</caption><thead><tr><th scope="col">#</th><th scope="col">' + (H.byPerson ? "Manager" : "Team") + '</th><th scope="col">Titles</th><th scope="col">Title games</th><th scope="col">Top 3</th><th scope="col">Seasons</th><th scope="col">Record</th><th scope="col">Win %</th><th scope="col">Last place</th></tr></thead><tbody>' +
+      people.map((p, i) => {
+        const span = p.seasons.length > 1 ? p.seasons[0] + "–" + p.seasons[p.seasons.length - 1] : String(p.seasons[0]);
+        const aka = p.person ? p.teams.slice(-3).join(", ") + (p.teams.length > 3 ? ", …" : "") : span;
+        return '<tr' + (i >= SHOW ? ' class="more"' : "") + '><td class="num">' + (i + 1) + '</td>' +
+          '<td class="team-cell"><b>' + esc(p.name) + '</b><small>' + esc(aka) + '</small></td>' +
+          '<td>' + (p.titles.length ? '<span class="trophies" aria-label="' + plural(p.titles.length, "title") + '">' + trophy.repeat(p.titles.length) + '</span><small>' + p.titles.join(", ") + '</small>' : "–") + '</td>' +
+          '<td class="num">' + (p.finals.length || "–") + '</td><td class="num">' + (p.podiums.length || "–") + '</td>' +
+          '<td class="num">' + p.seasons.length + '</td><td class="num">' + record(p.w, p.l, p.t) + '</td><td class="num">' + avg3(p.pct) + '</td>' +
+          '<td class="num">' + (p.lasts.length || "–") + '</td></tr>';
+      }).join("") + '</tbody>';
+    const more = $("dynasty-more"), wrap = $("dynasty").closest(".dynasty");
+    if (people.length > SHOW) {
+      more.hidden = false;
+      const label = () => { more.textContent = wrap.classList.contains("all") ? "Show the top " + SHOW : "Show all " + people.length; };
+      label();
+      more.addEventListener("click", () => { wrap.classList.toggle("all"); label(); });
+    }
+
+    $("lore").innerHTML = H.lore.map(l => '<div class="note"><dt>' + esc(l.label) + '</dt><dd>' + esc(l.text) + '</dd><span class="v num">' + esc(l.value) + '</span></div>').join("");
+
+    const toilet = sprite("toilet");
+    $("shame").innerHTML = H.seasons.map(s => {
+      const r = s.rows[s.rows.length - 1];
+      return '<li><div class="who"><b>' + esc(r.team) + '</b><small>' + s.season + " · " + record(r.w, r.l, r.t) + (r.who ? " · " + esc(r.who) : "") + '</small></div><div class="count" aria-hidden="true">' + toilet + '</div></li>';
+    }).join("");
+
+    $("every-summary").textContent = "All final standings, " + H.range[0] + "–" + H.range[1];
+    $("every-season").innerHTML = H.seasons.map(s => '<div class="notepad sunken"><h4>' + s.season + '</h4><ol>' +
+      s.rows.map(r => '<li' + (r.place <= 3 ? ' class="gold"' : "") + '><span class="num">' + r.place + '</span><span class="who">' + esc(r.team) +
+        (r.who ? ' <small>(' + esc(r.who) + ')</small>' : "") + '</span><span class="num">' + record(r.w, r.l, r.t) + '</span></li>').join("") +
+      '</ol></div>').join("");
+  }
+
+  // ----- manager trading cards -----
+  const CARD_COLORS = ["#b3001b", "#0b3d91", "#006b3c", "#5b2a86", "#c2410c", "#00616e", "#7a1f1f", "#1f4e8c", "#3f6b00", "#8a1c4a", "#9a5b00", "#2d2926"];
+  const cardColor = id => CARD_COLORS[((Number(id) - 1) % CARD_COLORS.length + CARD_COLORS.length) % CARD_COLORS.length];
+  function avatar(t) {
+    // a little pixel creature for every team without an ESPN logo, the same one every time
+    let h = 2166136261;
+    for (const ch of String(t.name) + "#" + t.id) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+    const next = () => { h ^= h << 13; h >>>= 0; h ^= h >>> 17; h ^= h << 5; h >>>= 0; return h; };
+    const fg = cardColor(t.id);
+    let rects = "";
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 4; x++) {
+        const eye = y === 3 && x === 2;
+        if (!eye && next() % 100 >= 55) continue;
+        const fill = eye ? "#000" : fg;
+        rects += '<rect x="' + (1 + x) + '" y="' + (1 + y) + '" width="1" height="1" fill="' + fill + '"/><rect x="' + (8 - x) + '" y="' + (1 + y) + '" width="1" height="1" fill="' + fill + '"/>';
+      }
+    }
+    return '<svg class="pic" viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true"><rect width="10" height="10" fill="#fff"/>' + rects + '</svg>';
+  }
+  function renderCards() {
+    const C = D.cards || [];
+    if (!C.length) return;
+    const H = D.hall;
+    $("cards-note").textContent = "Series 1, " + L.season + " edition. One card per manager, numbered by the standings. " +
+      (window.matchMedia("(hover: hover)").matches ? "Click" : "Tap") + " a card to flip it for the stats. League champions get the holo.";
+    const rarity = { holo: "★ HOLO", rare: "◆ RARE", common: "● COMMON" };
+    const rateColor = v => v >= 85 ? "#1d6b1d" : v >= 65 ? "#1f4e8c" : v >= 50 ? "#8a5a00" : "#a80000";
+    $("binder").innerHTML = C.map(c => {
+      const t = T[c.team] || { id: c.team, name: "Unknown team" };
+      const no = "#" + String(c.no).padStart(2, "0");
+      const pic = t.logo ? '<img class="pic tc-logo" src="' + esc(t.logo) + '" alt="" loading="lazy" referrerpolicy="no-referrer" data-team="' + c.team + '">' : avatar(t);
+      const front = '<span class="tc-face tc-front ' + c.rarity + '" style="--c:' + cardColor(c.team) + '">' +
+        '<span class="tc-top"><span class="tc-no">' + no + '</span><span class="tc-rarity">' + rarity[c.rarity] + '</span></span>' +
+        '<span class="tc-photo">' + pic + '<span class="tc-nick">' + esc(c.nickname) + '</span><span class="tc-rec">' + record(c.w, c.l, c.t) + '</span></span>' +
+        '<span class="tc-plate"><span class="tc-team">' + name(c.team) + '</span><span class="tc-mgr"><span>' + esc(t.manager || "") + '</span><span>' + ord(c.rank) + ' place</span></span></span></span>';
+
+      const rates = c.ratings.map(([k, v]) => '<span class="tc-rate"><span>' + k + '</span><span class="tc-bar"><i style="--v:' + v + '%;--rc:' + rateColor(v) + '"></i></span><span class="num">' + v + '</span></span>').join("");
+      const lines = [];
+      if (c.mvp) lines.push('<span class="tc-p"><span class="k">Team MVP</span> ' + esc(c.mvp.name) + ' (' + esc(c.mvp.pos) + '), ' + pts(c.mvp.points) + ' pts</span>');
+      if (c.bestWeek) lines.push('<span class="tc-p"><span class="k">Best week</span> ' + pts(c.bestWeek.score) + ' in Week ' + c.bestWeek.week + (c.flags ? " · " + plural(c.flags, "Yowza flag") : "") + '</span>');
+      const cr = c.career;
+      let career = '<span class="tc-p k">League career</span>';
+      if (cr) {
+        const aka = cr.teams.filter(n => key(n) !== key(t.name));
+        career += '<span class="tc-p">' + plural(cr.seasons.length, "season") + " since " + cr.seasons[0] + " · " + record(cr.w, cr.l, cr.t) + " (" + avg3(cr.pct) + ")</span>" +
+          '<span class="tc-p">' + (cr.titles.length ? "Titles: " + cr.titles.join(", ") + (cr.finals.length > cr.titles.length ? " · Title games: " + cr.finals.length : "")
+            : "No titles yet" + (cr.finals.length ? " · Title games: " + cr.finals.join(", ") : cr.podiums.length ? " · Top 3: " + cr.podiums.join(", ") : "")) + '</span>' +
+          (aka.length ? '<span class="tc-p">Also played as ' + esc(aka.slice(-2).join(", ")) + (aka.length > 2 ? " and more" : "") + '</span>' : "");
+      } else {
+        career += '<span class="tc-p">' + (H && H.byPerson ? "Rookie card: first season in the league." : "No past seasons under this team name.") + '</span>';
+      }
+      const back = '<span class="tc-face tc-back" aria-hidden="true">' +
+        '<span class="tc-bhead"><span>' + no + " " + name(c.team) + '</span><span>' + L.season + '</span></span>' +
+        '<span class="tc-season"><span>REC<b>' + record(c.w, c.l, c.t) + '</b></span><span>PF<b>' + Math.round(c.pf) + '</b></span><span>PA<b>' + Math.round(c.pa) + '</b></span><span>ODDS<b>' + (c.odds == null ? "–" : pct(c.odds)) + '</b></span></span>' +
+        '<span class="tc-rates">' + rates + '</span>' +
+        '<span class="tc-p">' + lines.join("") + '</span>' +
+        '<span class="tc-p tc-career">' + career + '</span>' +
+        '<span class="tc-p tc-flavor">“' + esc(c.flavor) + '”</span></span>';
+      return '<div class="tc-slot" role="listitem"><button class="tc" type="button" id="card-' + c.team + '" aria-pressed="false">' +
+        '<span class="tc-inner">' + front + back + '</span></button></div>';
+    }).join("");
+    const binder = $("binder");
+    binder.querySelectorAll("img.tc-logo").forEach(img => img.addEventListener("error", () => { img.outerHTML = avatar(T[img.dataset.team] || { id: img.dataset.team, name: "" }); }, { once: true }));
+    binder.addEventListener("click", e => {
+      const card = e.target.closest(".tc");
+      if (!card) return;
+      const flipped = card.getAttribute("aria-pressed") !== "true";
+      card.setAttribute("aria-pressed", String(flipped));
+      card.querySelector(".tc-front").setAttribute("aria-hidden", String(flipped));
+      card.querySelector(".tc-back").setAttribute("aria-hidden", String(!flipped));
+    });
+  }
+  function showCard(id) {
+    const card = $("card-" + id);
+    if (!card || $("cards").hidden) return false;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    card.closest(".tc-slot").scrollIntoView({ block: "center", inline: "center", behavior: still ? "auto" : "smooth" });
+    card.focus({ preventScroll: true });
+    card.classList.remove("flash");
+    void card.offsetWidth;
+    card.classList.add("flash");
+    return true;
+  }
+  document.addEventListener("click", e => {
+    const a = e.target.closest && e.target.closest("a.card-link");
+    if (a && showCard(a.getAttribute("href").slice(6))) { e.preventDefault(); history.replaceState(null, "", a.getAttribute("href")); }
+  });
 
   // ----- tooltip -----
   const tip = $("tip");
@@ -1013,7 +1309,8 @@ function yowzaApp(D) {
   $("start-icon").innerHTML = sprite("flag");
   const menu = $("start-menu"), startBtn = $("start-btn");
   const items = [["this-week", "flag", "Yowza of the Week"], ["playoffs", "ball", "Playoff Race"], ["standings", "trophy", "Standings"],
-    ["coaching", "ball", "Coach Efficiency"], ["luck", "ball", "Luck Index"], ["schedules", "ball", "Schedule Swap"], ["records", "trophy", "Record Book"]]
+    ["coaching", "ball", "Coach Efficiency"], ["luck", "ball", "Luck Index"], ["schedules", "ball", "Schedule Swap"], ["records", "trophy", "Record Book"],
+    ["hall", "trophy", "Hall of Fame"], ["cards", "card", "Trading Cards"]]
     .filter(([id]) => !$(id).hidden);
   $("start-items").innerHTML = items.map(([id, icon, label]) => '<li><a href="#' + id + '">' + sprite(icon) + label + '</a></li>').join("") +
     '<li><hr></li><li><a href="#jukebox" id="menu-jukebox">' + sprite("note") + 'Jukebox</a></li>' +
@@ -1238,6 +1535,12 @@ function yowzaApp(D) {
     }
     const rec = D.records && D.records.records;
     if (rec && rec.high) lines.push("Season high: " + pts(rec.high.score) + " by " + plain(rec.high.team) + " in Week " + rec.high.week + ". I framed it and hung it behind the bar.");
+    if (D.hall && D.hall.seasons.length) {
+      const last = D.hall.seasons[0], ch = last.rows[0];
+      lines.push(ch.team + (ch.who ? " (" + ch.who + ")" : "") + " won the " + last.season + " title. Glorbo is still sweeping up the confetti.");
+      const maid = D.hall.people.filter(p => !p.titles.length && p.podiums.length >= 2).sort((a, b) => b.podiums.length - a.podiums.length)[0];
+      if (maid) lines.push(maid.name + " has finished in the top three " + maid.podiums.length + " times without a title. Glorbo believes this is the year.");
+    }
     lines.push("Welcome to the lounge. Two-drink minimum, zero-points-on-the-bench maximum.");
     lines.push("Set your lineup before Sunday. Glorbo is begging you.");
     if (audio.paused) lines.push("Press Play on the jukebox. Glorbo needs a beat.");
@@ -1319,6 +1622,10 @@ function yowzaApp(D) {
   renderLuck();
   renderSwap();
   renderRecords();
+  renderHall();
+  renderCards();
+  const cardHash = /^#card-(\d+)$/.exec(location.hash);
+  if (cardHash) setTimeout(() => showCard(cardHash[1]), 300);
 }
 
 // ----- members-only gate: the league data is encrypted, and the right answer is the key -----

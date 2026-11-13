@@ -178,21 +178,29 @@ def season_table(league, summaries):
     return out, len(regular)
 
 
-def build_payload(league, updated_at):
+def build_payload(league, updated_at, history_folder=None):
+    import cards
+    import history
     import season
 
     summaries = [week_summary(w, league["slotCounts"]) for w in league["weeks"]]
     standings, weeks_played = season_table(league, summaries)
     for s in summaries:
         s.pop("reviews")  # keep the published file small
+    race = season.playoff_odds(league, standings, summaries)
+    records = season.season_records(league, summaries)
+    hall, careers = history.hall_of_fame(league, standings, history_folder or history.FOLDER)
     return {
         "league": {"name": league["name"], "season": league["season"],
                    "isSample": league["isSample"], "updatedAt": updated_at,
                    "weeksPlayed": weeks_played},
-        "teams": league["teams"],
+        # names starting with _ are for matching only and stay off the page
+        "teams": [{k: v for k, v in t.items() if not k.startswith("_")} for t in league["teams"]],
         "standings": standings,
         "weeks": summaries,
-        "race": season.playoff_odds(league, standings, summaries),
+        "race": race,
         "swap": season.schedule_swap(league, summaries),
-        "records": season.season_records(league, summaries),
+        "records": records,
+        "hall": hall,
+        "cards": cards.build_cards(league, standings, race, records, careers),
     }
